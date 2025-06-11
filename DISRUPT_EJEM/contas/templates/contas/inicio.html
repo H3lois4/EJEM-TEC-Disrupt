@@ -1,0 +1,26 @@
+{% load static %}
+<link rel="stylesheet" href="{% static 'contas/css/style.css' %}">
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Disrupt-CT | Início</title>
+    <link rel="stylesheet" href="{% static 'contas/css/style.css' %}">
+</head>
+<body>
+    <div class="pagina-inicial">
+        <p class="slogan-topo">Preparação, Resposta e Recuperação</p>
+        <img src="{% static 'contas/imagens/disrupt.png' %}?v=2" alt="Logo Disrupt" class="logo">
+        
+        <div class="botoes-inicio">
+            <a href="{% url 'cadastro' %}" class="botao-inicio">Cadastro</a>
+            <a href="{% url 'login' %}" class="botao-inicio">Login</a>
+        </div>
+
+        <p class="slogan-base">
+            Soluções inteligentes para gestão de crise<br>
+            com precisão e confiança
+        </p>
+    </div>
+</body>
+</html>

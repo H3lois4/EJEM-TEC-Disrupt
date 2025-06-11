@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Homepage | Disrupt-CT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'contas/css/style.css' %}">
+</head>
+<body class="pagina-home">
+
+    <!-- Topo com imagem -->
+    <div class="imagem-topo-home">
+        <img src="{% static 'contas/imagens/foto_fundo.png' %}?v=2" alt="Imagem topo">
+    </div>
+    
+    <!-- Logo -->
+     <img src="{% static 'contas/imagens/disrupt.png' %}" alt="Logo" class="logo-home">
+
+    <!-- Navbar lateral -->
+    <nav class="navbar-lateral">
+        <i class="fas fa-bars"></i>
+        <i class="fas fa-home"></i>
+        <i class="fas fa-tablet-alt"></i>
+        <i class="fas fa-users"></i>
+
+        <!-- Botão de logout -->
+        <a href="{% url 'logout' %}" class="logout-btn">
+            <i class="fas fa-sign-out-alt"></i>
+        </a>
+    </nav>
+
+    <!-- Conteúdo principal -->
+    <main class="conteudo-principal">
+        <div class="boas-vindas">
+            <p><strong>Bem-vindo(a)  </strong> {{ user.first_name }}</p>
+            <p>Email: {{ user.email }}</p>
+            <p>ID: {{ user.id }}</p>
+        </div>
+    </main>
+
+</body>
+</html>

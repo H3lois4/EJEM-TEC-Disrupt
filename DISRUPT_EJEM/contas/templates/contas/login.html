@@ -1,0 +1,60 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <title>Login | Disrupt-CT</title>
+
+    <!-- Fonte e ícones -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'contas/css/style.css' %}">
+
+</head>
+<body class="pagina-login">
+
+    <!-- Imagem de topo -->
+    <img src="{% static 'contas/imagens/foto_fundo.png' %}?v=2" class="imagem-topo" alt="Imagem topo">
+
+    <!-- Área principal -->
+    <div class="pagina-formulario">
+
+        <div class="card-formulario">
+
+            <!-- Logo -->
+            <img src="{% static 'contas/imagens/disrupt.png' %}?v=2" alt="Logo Disrupt" class="logo">
+
+            <!-- Título -->
+            <h2>Login!</h2>
+
+            <!-- Formulário -->
+            <form method="POST">
+                {% csrf_token %}
+
+                <!-- Campo Email -->
+                <label for="id_email">Email</label>
+                <div class="input-icon">
+                    <i class="fas fa-envelope"></i>
+                    <input type="email" name="email" id="id_email" placeholder="Digite seu email ..." required>
+                </div>
+
+                <!-- Campo Senha -->
+                <label for="id_senha">Senha</label>
+                <div class="input-icon">
+                    <i class="fas fa-key"></i>
+                    <input type="password" name="senha" id="id_senha" placeholder="Digite sua senha ..." required>
+                </div>
+
+                <!-- Botão -->
+                <button type="submit">Entrar</button>
+
+                <!-- Links extras -->
+                <div class="link-extra">
+                    <a href="#">Esqueceu sua senha?</a>
+                    <a href="{% url 'cadastro' %}">Ir para cadastro!</a>
+                </div>
+            </form>
+        </div>
+    </div>
+
+</body>
+</html>
