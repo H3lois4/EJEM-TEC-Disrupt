@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Criar Projeto</title>
+</head>
+<body>
+    <h1>Criar Novo Projeto</h1>
+    
+    <form method="post">
+        {% csrf_token %}
+        <label for="nome">Nome:</label><br>
+        <input type="text" id="nome" name="nome" required><br><br>
+
+        <label for="descricao">Descrição:</label><br>
+        <textarea id="descricao" name="descricao"></textarea><br><br>
+
+        <button type="submit">Salvar</button>
+    </form>
+
+    <br>
+    <a href="{% url 'lista_projetos' %}">Cancelar e Voltar</a>
+</body>
+</html>

@@ -17,8 +17,18 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic import RedirectView
+from projetos import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('contas.urls')),
+    path('projetos/', views.lista_projetos, name='lista_projetos'),
+    path('projetos/<int:id>/', views.detalhe_projeto, name='detalhe_projeto'),
+    path('projetos/<int:id>/planilha/', views.planilha_projeto, name='planilha_projeto'),
+    path('projetos/novo/', views.criar_projeto, name='criar_projeto'),
+    path('drexus/novo/', views.criar_drexus, name='criar_drexus'), 
+    path('formulario/', views.formulario_drexus_view, name='formulario'),
+    path('resultado/<int:pk>/', views.resultado_view, name='resultado'),
+    path('editarDrexus/<int:pk>/', views.editar_drexus, name='editar_drexus'),
+    path('contas/', include('contas.urls'))
 ]

@@ -1,0 +1,29 @@
+<h1>Resultado de {{ drexus.nome }}</h1>
+
+<ul>
+    <li>Integridade Funcional (IF): {{ drexus.IF|floatformat:2 }}</li>
+    <li>Capacidade de Modularidade (Cm): {{ drexus.Cm|floatformat:2 }}</li>
+    <li>Evolução sob Estresse (Et): {{ drexus.Et|floatformat:2 }}</li>
+    <li>Densidade de DREs (DREq): {{ drexus.DREq|floatformat:2 }}</li>
+    <li>Lógica Contextual (Lc): {{ drexus.Lc|floatformat:2 }}</li>
+    <li>Impacto Sistêmico (Im): {{ drexus.Im|floatformat:2 }}</li>
+    <li>Propósito Vivo (Pv): {{ drexus.Pv|floatformat:2 }}</li>
+</ul>
+
+<h2>Nota Final (Rexp): {{ drexus.nota_final|floatformat:2 }}</h2>
+<h2>Diagnostico: {{ drexus.diagnostico }}</h2>
+
+<ul>
+    <li>Maturidade Cognitiva: {{ drexus.maturidade_cognitiva|floatformat:2 }} - {{ drexus.diagnostico_cognitiva }} </li>
+    <li>Maturidade Estratégica: {{ drexus.maturidade_estrategica|floatformat:2 }} - {{ drexus.diagnostico_estrategica}} </li>
+    <li>Maturidade Operacional: {{ drexus.maturidade_operacional|floatformat:2 }} - {{ drexus.diagnostico_operacional }} </li>
+    <li>Maturidade Cultural: {{ drexus.maturidade_cultural|floatformat:2 }} - {{ drexus.diagnostico_cultural }} </li>
+</ul>
+
+
+
+
+<br>
+<a href="{% url 'editar_drexus' drexus.id %}">Editar</a>
+<br>
+<a href="{% url 'lista_projetos' %}">Voltar para Lista</a>

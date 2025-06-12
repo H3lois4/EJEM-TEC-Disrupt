@@ -1,0 +1,7 @@
+<h1>{{ projeto.nome }}</h1>
+<p>{{ projeto.descricao }}</p>
+
+<a href="{% url 'planilha_projeto' projeto.id %}">Ver Planilha do Projeto</a>
+
+<br>
+<a href="{% url 'lista_projetos' %}">Voltar para Lista</a>
