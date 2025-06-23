@@ -95,25 +95,21 @@ class Drexus(models.Model):
     def calcular_maturidade_cognitiva(self):
         #Maturidade_Cognitiva = (Lc × 0.5) + (Et × 0.3) + (DREq × 0.2)
         self.maturidade_cognitiva = (self.IF * 0.5) + (self.Et * 0.3) + (self.DREq * 0.2)
-        self.maturidade_cognitiva = self.maturidade_cognitiva * 5
         return self.maturidade_cognitiva
     
     def calcular_maturidade_estrategica(self):
         #Maturidade_Estratégica = (Pv × 0.4) + (Im × 0.3) + (DREq × 0.3)
         self.maturidade_estrategica = (self.Pv * 0.4) + (self.Im * 0.3) + (self.DREq * 0.3)
-        self.maturidade_estrategica = self.maturidade_estrategica * 5
         return self.maturidade_estrategica
         
     def calcular_maturidade_operacional(self):
         #Maturidade_Operacional = (If × 0.4) + (Cm × 0.3) + (Et × 0.3)
         self.maturidade_operacional = (self.IF * 0.4) + (self.Cm * 0.3) + (self.Et * 0.3)
-        self.maturidade_operacional = self.maturidade_operacional * 5
         return self.maturidade_operacional
     
     def calcular_maturidade_cultural(self):
         #Maturidade_Cultural = (Et × 0.4) + (DREq × 0.3) + (Pv × 0.3)
         self.maturidade_cultural = (self.Et * 0.4) + (self.DREq * 0.3) + (self.Pv * 0.3)
-        self.maturidade_cultural = self.maturidade_cultural * 5
         return self.maturidade_cultural
     
     def calcular_todas_variaveis(self):
@@ -160,49 +156,49 @@ class Drexus(models.Model):
             self.diagnostico_maturidade = "Antifrágil ICE³-R"
         
         #Gera o diaginotico da maturidade cognitiva
-        if self.maturidade_cognitiva < 2:
+        if self.maturidade_cognitiva < 0.4:
             self.diagnostico_cognitiva = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_cognitiva < 3:
+        elif self.maturidade_cognitiva < 0.6:
             self.diagnostico_cognitiva = "Nível Emergente"
-        elif self.maturidade_cognitiva < 4:
+        elif self.maturidade_cognitiva < 0.8:
             self.diagnostico_cognitiva = "Nível Funcional"
-        elif self.maturidade_cognitiva < 4.6:
+        elif self.maturidade_cognitiva <= 0.9:
             self.diagnostico_cognitiva = "Nível Integrado"
         else:
             self.diagnostico_cognitiva = "Nível Regenerativo Exemplar"
         
         #Gera o diaginotico da maturidade estratégica
-        if self.maturidade_estrategica < 2:
+        if self.maturidade_estrategica < 0.4:
             self.diagnostico_estrategica = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_estrategica < 3:
+        elif self.maturidade_estrategica < 0.6:
             self.diagnostico_estrategica = "Nível Emergente"
-        elif self.maturidade_estrategica < 4:
+        elif self.maturidade_estrategica < 0.8:
             self.diagnostico_estrategica = "Nível Funcional"
-        elif self.maturidade_estrategica < 4.6:
+        elif self.maturidade_estrategica <= 0.9:
             self.diagnostico_estrategica = "Nível Integrado"
         else:
             self.diagnostico_estrategica = "Nível Regenerativo Exemplar"
 
         #Gera o diaginotico da maturidade operacional
-        if self.maturidade_operacional < 2:
+        if self.maturidade_operacional < 0.4:
             self.diagnostico_operacional = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_operacional < 3:
+        elif self.maturidade_operacional < 0.6:
             self.diagnostico_operacional = "Nível Emergente"
-        elif self.maturidade_operacional < 4:
+        elif self.maturidade_operacional < 0.8:
             self.diagnostico_operacional = "Nível Funcional"
-        elif self.maturidade_operacional < 4.6:
+        elif self.maturidade_operacional <= 0.9:
             self.diagnostico_operacional = "Nível Integrado"
         else:
             self.diagnostico_operacional = "Nível Regenerativo Exemplar"
 
         #Gera o diaginotico da maturidade 
-        if self.maturidade_cultural < 2:
+        if self.maturidade_cultural < 0.4:
             self.diagnostico_cultural = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_cultural < 3:
+        elif self.maturidade_cultural < 0.6:
             self.diagnostico_cultural = "Nível Emergente"
-        elif self.maturidade_cultural < 4:
+        elif self.maturidade_cultural < 0.8:
             self.diagnostico_cultural = "Nível Funcional"
-        elif self.maturidade_cultural < 4.6:
+        elif self.maturidade_cultural <= 0.9:
             self.diagnostico_cultural = "Nível Integrado"
         else:
             self.diagnostico_cultural = "Nível Regenerativo Exemplar"
