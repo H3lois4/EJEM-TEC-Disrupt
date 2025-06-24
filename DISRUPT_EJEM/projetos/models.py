@@ -45,7 +45,6 @@ class Drexus(models.Model):
     def calcular_IF(self):
         if self.IF_notas:
             self.IF = (self.IF_notas[0] * 0.15 + self.IF_notas[1] * 0.1 + self.IF_notas[2] * 0.15+ self.IF_notas[3] * 0.1 + self.IF_notas[4] * 0.1 + self.IF_notas[5] * 0.1 + self.IF_notas[6] * 0.1 + self.IF_notas[7] * 0.05 + self.IF_notas[8] * 0.1 + self.IF_notas[9] * 0.05)/5
-            # self.IF = sum(self.IF_notas) / len(self.IF_notas)
         else:
             self.IF = 0
         return self.IF
@@ -156,11 +155,11 @@ class Drexus(models.Model):
             self.diagnostico_maturidade = "Antifrágil ICE³-R"
         
         #Gera o diaginotico da maturidade cognitiva
-        if self.maturidade_cognitiva < 0.4:
+        if self.maturidade_cognitiva <= 0.4:
             self.diagnostico_cognitiva = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_cognitiva < 0.6:
+        elif self.maturidade_cognitiva <= 0.6:
             self.diagnostico_cognitiva = "Nível Emergente"
-        elif self.maturidade_cognitiva < 0.8:
+        elif self.maturidade_cognitiva <= 0.8:
             self.diagnostico_cognitiva = "Nível Funcional"
         elif self.maturidade_cognitiva <= 0.9:
             self.diagnostico_cognitiva = "Nível Integrado"
@@ -168,11 +167,11 @@ class Drexus(models.Model):
             self.diagnostico_cognitiva = "Nível Regenerativo Exemplar"
         
         #Gera o diaginotico da maturidade estratégica
-        if self.maturidade_estrategica < 0.4:
+        if self.maturidade_estrategica <= 0.4:
             self.diagnostico_estrategica = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_estrategica < 0.6:
+        elif self.maturidade_estrategica <= 0.6:
             self.diagnostico_estrategica = "Nível Emergente"
-        elif self.maturidade_estrategica < 0.8:
+        elif self.maturidade_estrategica <= 0.8:
             self.diagnostico_estrategica = "Nível Funcional"
         elif self.maturidade_estrategica <= 0.9:
             self.diagnostico_estrategica = "Nível Integrado"
@@ -180,11 +179,11 @@ class Drexus(models.Model):
             self.diagnostico_estrategica = "Nível Regenerativo Exemplar"
 
         #Gera o diaginotico da maturidade operacional
-        if self.maturidade_operacional < 0.4:
+        if self.maturidade_operacional <= 0.4:
             self.diagnostico_operacional = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_operacional < 0.6:
+        elif self.maturidade_operacional <= 0.6:
             self.diagnostico_operacional = "Nível Emergente"
-        elif self.maturidade_operacional < 0.8:
+        elif self.maturidade_operacional <= 0.8:
             self.diagnostico_operacional = "Nível Funcional"
         elif self.maturidade_operacional <= 0.9:
             self.diagnostico_operacional = "Nível Integrado"
@@ -192,11 +191,11 @@ class Drexus(models.Model):
             self.diagnostico_operacional = "Nível Regenerativo Exemplar"
 
         #Gera o diaginotico da maturidade 
-        if self.maturidade_cultural < 0.4:
+        if self.maturidade_cultural <= 0.4:
             self.diagnostico_cultural = "Zona Crítica (Imaturidade)"
-        elif self.maturidade_cultural < 0.6:
+        elif self.maturidade_cultural <= 0.6:
             self.diagnostico_cultural = "Nível Emergente"
-        elif self.maturidade_cultural < 0.8:
+        elif self.maturidade_cultural <= 0.8:
             self.diagnostico_cultural = "Nível Funcional"
         elif self.maturidade_cultural <= 0.9:
             self.diagnostico_cultural = "Nível Integrado"

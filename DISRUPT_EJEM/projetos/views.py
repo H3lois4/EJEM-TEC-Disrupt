@@ -90,7 +90,6 @@ def formulario_drexus_view(request, pk=None):
             # Preenche as novas notas
             for key, value in form.cleaned_data.items():
                 grupo, _ = key.split("_")
-                grupo = grupo.upper()  # Garante que está em maiúsculas
                 notas = getattr(drexus, f"{grupo}_notas", [])
                 notas.append(int(value))
                 setattr(drexus, f"{grupo}_notas", notas)
