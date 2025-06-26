@@ -1,20 +1,19 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Criar Drexus</title>
-</head>
-<body>
+{% extends "base.html" %}
+
+{% block title %}Criar Drexus{% endblock %}
+
+{% block content %}
     <h1>Criar novo Drexus</h1>
     <form method="post">
         {% csrf_token %}
-        <label>Nome:</label><br>
-        <input type="text" name="nome" required><br><br>
+        
+        <label for="id_nome">Nome:</label><br>
+        <input type="text" name="nome" id="id_nome" required><br><br>
 
-        <label>Descrição:</label><br>
-        <textarea name="descricao" rows="4" cols="50"></textarea><br><br>
+        <label for="id_descricao">Descrição:</label><br>
+        <textarea name="descricao" id="id_descricao" rows="4" cols="50"></textarea><br><br>
 
         <button type="submit">Salvar</button>
+        <a href="{% url 'projetos:lista_projetos' %}">Cancelar</a>
     </form>
-</body>
-</html>
+{% endblock %}

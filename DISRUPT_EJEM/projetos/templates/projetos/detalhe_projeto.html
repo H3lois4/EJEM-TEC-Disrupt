@@ -1,7 +1,14 @@
-<h1>{{ projeto.nome }}</h1>
-<p>{{ projeto.descricao }}</p>
+{% extends "base.html" %}
 
-<a href="{% url 'planilha_projeto' projeto.id %}">Ver Planilha do Projeto</a>
+{% block title %}Detalhes de {{ projeto.nome }}{% endblock %}
 
-<br>
-<a href="{% url 'lista_projetos' %}">Voltar para Lista</a>
+{% block content %}
+    <h1>{{ projeto.nome }}</h1>
+    <p><strong>Descrição:</strong></p>
+    <p>{{ projeto.descricao|linebreaksbr }}</p>
+    <hr>
+    
+    <a href="{% url 'projetos:planilha_projeto' projeto.id %}">Ver Planilha do Projeto</a>
+    <br>
+    <a href="{% url 'projetos:lista_projetos' %}">Voltar para a Lista de Projetos</a>
+{% endblock %}

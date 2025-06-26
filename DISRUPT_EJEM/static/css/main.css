@@ -205,25 +205,27 @@ body, html {
     top: 0;
     left: 0;
     width: 100%;
-    height: 15%; 
+    height: 13%; 
     object-fit: cover;
-    z-index: -1; 
 }
 
 /* Navbar lateral */
 .navbar-lateral {
-    width: 63px;
-    height: calc(100vh - 135px); 
+    width: 63px; /* Sua largura definida */
+    height: 100vh; /* 100% da altura da janela do navegador */
     background-color: #F9BA17;
+
+    position: fixed; /* ESSENCIAL: Fixa o elemento na tela */
+    top: 0;          /* Alinha no topo da tela */
+    left: 0;         /* Alinha na esquerda da tela */
+    z-index: 1000;   /* Garante que a navbar fique sobre outros elementos */
+
+    /* Suas outras propriedades de flex para alinhar os ícones */
     display: flex;
     flex-direction: column;
     align-items: center;
     padding: 20px 0;
     gap: 20px;
-    position: fixed;
-    top: 135px; 
-    left: 0;
-    z-index: 10;
 }
 
 .navbar-lateral i {
@@ -236,12 +238,6 @@ body, html {
     color: #1B1B1B;
 }
 
-/* Conteúdo principal */
-.conteudo-principal {
-    padding: 10% 10% 10%; /* 120px para imagem + espaço extra */
-    flex: 1;
-}
-
 .boas-vindas p {
     font-size: 20px;
     margin-bottom: 10px;
@@ -251,8 +247,106 @@ body, html {
 .logo-home {
     position: absolute;
     top: 20px; 
-    left: 15%;
+    left: 300px;
     transform: translateX(-50%);
     height: 80px; 
     z-index: 1;
+}
+
+/* Parte do pg --------------------------------------------------------------------------------------------------- */
+.main-content {
+    margin-left: 5%;
+    margin-right: 1%;
+    margin-top: 8%;
+    width: 100%;
+}
+
+section {
+    margin-bottom: 40px;
+}
+
+h2 {
+    border-bottom: 2px solid #FFD600;
+    padding-bottom: 5px;
+}
+
+.cards {
+    display: flex;
+    gap: 15px;
+    flex-wrap: wrap;
+    background-color: green;
+}
+
+.card {
+    background-color: #eee;
+    border-radius: 6px;
+    width: 16%;
+}
+
+.card-header {
+    height: 15%;
+    text-align: center;
+    line-height: 24px;
+    background-color: #FFD600;
+    border-radius: 4px 4px 0 0;
+    font-weight: bold;
+}
+
+.card-body {
+    padding: 0px 5px;
+}
+
+.card-text{
+    padding: 0px 10px;
+     white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.nota {
+    padding: 0px 10px;
+    border-radius: 4px;
+    display: inline-block;
+    margin-top: 5px;
+}
+
+.add-card {
+    background-color: #FFD600;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-card:hover {
+    background-color: #FFC107;
+}
+
+.add-card a {
+    text-decoration: none;
+    color: black;
+    font-weight: bold;
+}
+
+.radio-inline {
+    display: flex;
+    gap: 10px;
+}
+
+.radio-inline label {
+    margin-right: 10px;
+}
+
+.pergunta-completa {
+    margin-bottom: 20px;
+    padding: 10px;
+    border-bottom: 1px solid #000;
+}
+
+.radio {
+    display: block; /* força quebra de linha para cada opção */
+    margin-left: 15px;
+    margin-top: 5px;
 }

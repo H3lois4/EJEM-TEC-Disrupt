@@ -1,43 +1,35 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <meta charset="UTF-8">
-    <title>Planilha do Projeto</title>
-  <script src="https://bossanova.uk/jspreadsheet/v4/jspreadsheet.js"></script>
-<link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jspreadsheet.css" type="text/css" />
-<script src="https://jsuites.net/v5/jsuites.js"></script>
-<link rel="stylesheet" href="https://jsuites.net/v5/jsuites.css" type="text/css" />
-</head>
-<body>
+{% extends "base.html" %}
 
-<h1>Planilha do Projeto: {{ projeto.nome }}</h1>
+{% block title %}Planilha de {{ projeto.nome }}{% endblock %}
 
-<!-- Teste para garantir que está chegando -->
-<p>Nome: {{ projeto.nome }}</p>
-<p>Descrição: {{ projeto.descricao }}</p>
-<!-- <p>Data de Criação: {{ projeto.data_criacao }}</p> -->
+{% block extra_css %}
+    <link rel="stylesheet" href="https://bossanova.uk/jspreadsheet/v4/jspreadsheet.css" type="text/css" />
+    <link rel="stylesheet" href="https://jsuites.net/v5/jsuites.css" type="text/css" />
+{% endblock %}
 
-<div id="planilha"></div>
+{% block content %}
+    <h1>Planilha do Projeto: {{ projeto.nome }}</h1>
+    <div id="planilha"></div>
+    <br>
+    <a href="{% url 'projetos:detalhe_projeto' projeto.id %}">Voltar para Detalhes</a>
+{% endblock %}
 
-<script>
-    const data = [
-        ['Nome do Projeto', "{{ projeto.nome|escapejs }}"],
-        ['Descrição', "{{ projeto.descricao|escapejs }}"],
-        //['Data de Criação', "{{ projeto.data_criacao|date:'d/m/Y' }}"],
-    ];
+{% block scripts %}
+    <script src="https://bossanova.uk/jspreadsheet/v4/jspreadsheet.js"></script>
+    <script src="https://jsuites.net/v5/jsuites.js"></script>
+    <script>
+        const data = [
+            ['Nome do Projeto', "{{ projeto.nome|escapejs }}"],
+            ['Descrição', "{{ projeto.descricao|escapejs }}"],
+        ];
 
-    jspreadsheet(document.getElementById('planilha'), {
-        data: data,
-        minDimensions: [2, 4],
-        columns: [
-            { type: 'text', title: 'Campo', width: 200 },
-            { type: 'text', title: 'Valor', width: 400 },
-        ],
-    });
-</script>
-
-<br>
-<a href="{% url 'detalhe_projeto' projeto.id %}">Voltar para Detalhes</a>
-
-</body>
-</html>
+        jspreadsheet(document.getElementById('planilha'), {
+            data: data,
+            minDimensions: [2, 4],
+            columns: [
+                { type: 'text', title: 'Campo', width: 200 },
+                { type: 'text', title: 'Valor', width: 400 },
+            ],
+        });
+    </script>
+{% endblock %}

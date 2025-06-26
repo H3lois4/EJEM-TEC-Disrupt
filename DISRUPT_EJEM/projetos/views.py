@@ -40,7 +40,7 @@ def criar_projeto(request):
 
         if nome:
             Projeto.objects.create(nome=nome, descricao=descricao)
-            return redirect('lista_projetos')
+            return redirect('projetos:lista_projetos')
 
     return render(request, 'projetos/criar_projeto.html')
 
@@ -50,15 +50,13 @@ def criar_drexus(request):
         nome = request.POST.get('nome')
         descricao = request.POST.get('descricao')
 
-        # ✅ Criação simples do objeto
         Drexus.objects.create(
             nome=nome,
             descricao=descricao
         )
-
-        return redirect('lista_projetos')
+        return redirect('projetos:lista_projetos')
     
-    return render(request, 'criar_drexus.html')
+    return render(request, 'projetos/criar_drexus.html')
 
 
 def planilha_projeto(request, id):
@@ -95,7 +93,7 @@ def formulario_drexus_view(request, pk=None):
                 setattr(drexus, f"{grupo}_notas", notas)
 
             drexus.save()
-            return redirect('resultado', pk=drexus.pk)
+            return redirect('projetos:resultado', pk=drexus.pk)
     else:
         if drexus:
             # Preenche dados atuais do objeto no formulário
