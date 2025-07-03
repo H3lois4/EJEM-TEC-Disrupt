@@ -6,7 +6,8 @@
     <h1>{{ projeto.nome }}</h1>
     <p><strong>Descrição:</strong></p>
     <p>{{ projeto.descricao|linebreaksbr }}</p>
-    <hr>
+    
+    <h2></h2>
     
     <a href="{% url 'projetos:planilha_projeto' projeto.id %}">Ver Planilha do Projeto</a>
     <br>

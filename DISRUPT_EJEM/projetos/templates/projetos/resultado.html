@@ -25,6 +25,11 @@
         <li>Maturidade Cultural: {{ drexus.maturidade_cultural|floatformat:2 }} - {{ drexus.diagnostico_cultural }} </li>
     </ul>
 
+    <h2></h2>
+    <h1>Descrição</h1>
+
+    <p>{{ drexus.descricao|linebreaksbr }}</p>
+
     <br>
     <a href="{% url 'projetos:editar_drexus' drexus.pk %}">Editar</a>
     <br>

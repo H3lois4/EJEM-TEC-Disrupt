@@ -254,7 +254,7 @@ body, html {
 }
 
 /* Parte do pg --------------------------------------------------------------------------------------------------- */
-.main-content {
+.main-content { /* Sem esse .main tudo vai ficar descentralizado */
     margin-left: 5%;
     margin-right: 1%;
     margin-top: 8%;
@@ -265,78 +265,13 @@ section {
     margin-bottom: 40px;
 }
 
-h2 {
-    border-bottom: 2px solid #FFD600;
+hr {
+  background-color: #FAB918;  
+}
+
+h2 {  /* Linha aramela que divide as coias */
+    border-bottom: 2px solid #FAB918;
     padding-bottom: 5px;
-}
-
-.cards {
-    display: flex;
-    gap: 15px;
-    flex-wrap: wrap;
-    background-color: green;
-}
-
-.card {
-    background-color: #eee;
-    border-radius: 6px;
-    width: 16%;
-}
-
-.card-header {
-    height: 15%;
-    text-align: center;
-    line-height: 24px;
-    background-color: #FFD600;
-    border-radius: 4px 4px 0 0;
-    font-weight: bold;
-}
-
-.card-body {
-    padding: 0px 5px;
-}
-
-.card-text{
-    padding: 0px 10px;
-     white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
-
-.nota {
-    padding: 0px 10px;
-    border-radius: 4px;
-    display: inline-block;
-    margin-top: 5px;
-}
-
-.add-card {
-    background-color: #FFD600;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 6px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.add-card:hover {
-    background-color: #FFC107;
-}
-
-.add-card a {
-    text-decoration: none;
-    color: black;
-    font-weight: bold;
-}
-
-.radio-inline {
-    display: flex;
-    gap: 10px;
-}
-
-.radio-inline label {
-    margin-right: 10px;
 }
 
 .pergunta-completa {
@@ -349,4 +284,144 @@ h2 {
     display: block; /* força quebra de linha para cada opção */
     margin-left: 15px;
     margin-top: 5px;
+}
+
+/* === ESTILOS PARA A PÁGINA DE PROJETOS === */
+
+.header-interno {
+    margin-bottom: 20px;
+}
+
+.header-interno h1 {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+.secao-projetos h2 {
+    font-size: 20px;
+    color: #333;
+    margin-bottom: 5px;
+    border-bottom: none; 
+}
+
+.secao-projetos hr {
+    border: 0;
+    height: 2px;
+    background-color: #FAB918;
+    margin-bottom: 25px;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); /* Layout responsivo */
+    gap: 25px;
+}
+
+.card {
+    background-color: #f0f0f0;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden; /* Garante que o header não passe da borda */
+    min-height: 200px; /* Altura mínima para os cards */
+}
+
+.card-header {
+    background-color: #FAB918;
+    padding: 10px 15px;
+    text-align: left;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 16px;
+    font-weight: bold;
+    color: #1B1B1B;
+    white-space: nowrap;       
+    overflow: hidden;         
+    text-overflow: ellipsis;
+}
+
+.card-body {
+    padding: 15px;
+    flex-grow: 1; /* Faz o corpo do card crescer para preencher o espaço */
+    display: flex;
+    flex-direction: column;
+}
+
+.card-descricao {
+    margin: 0 0 10px 0;
+    font-size: 14px;
+    color: #555;
+    flex-grow: 1; /* Empurra as infos para baixo */
+}
+
+.card-info {
+    margin: 2px 0;
+    font-size: 13px;
+    color: #333;
+    margin-top: 8px; 
+}
+
+.card-footer {
+    padding: 0 15px 15px 15px;
+    text-align: center;
+}
+
+.btn-acessar {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: #1B1B1B;
+    color: #FAB918;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    font-size: 14px;
+    transition: background-color 0.3s ease;
+}
+
+.btn-acessar:hover {
+    background-color: #333;
+}
+
+/* Card de Adicionar Projeto */
+.card-adicionar {
+    background-color: #FAB918;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: #1B1B1B;
+    font-weight: bold;
+    font-size: 16px;
+    min-height: 200px;
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    text-align: center;
+    padding: 15px;
+}
+
+.card-adicionar:hover {
+    background-color: #FAB918;
+}
+
+.card-adicionar .icone-adicionar {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #1B1B1B;
+    color: #FAB918;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 25px;
 }
