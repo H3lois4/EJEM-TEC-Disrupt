@@ -286,7 +286,7 @@ h2 {  /* Linha aramela que divide as coias */
     margin-top: 5px;
 }
 
-/* === ESTILOS PARA A PÁGINA DE PROJETOS === */
+/*ESTILOS PARA A PÁGINA DE PROJETOS---------------------------------------------------------------------------*/
 
 .header-interno {
     margin-bottom: 20px;
@@ -323,8 +323,15 @@ h2 {  /* Linha aramela que divide as coias */
     border-radius: 8px;
     display: flex;
     flex-direction: column;
-    overflow: hidden; /* Garante que o header não passe da borda */
-    min-height: 200px; /* Altura mínima para os cards */
+    overflow: hidden; 
+    min-height: 200px; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15);
+    z-index: 10;
 }
 
 .card-header {
@@ -345,7 +352,7 @@ h2 {  /* Linha aramela que divide as coias */
 
 .card-body {
     padding: 15px;
-    flex-grow: 1; /* Faz o corpo do card crescer para preencher o espaço */
+    flex-grow: 1; 
     display: flex;
     flex-direction: column;
 }
@@ -354,7 +361,7 @@ h2 {  /* Linha aramela que divide as coias */
     margin: 0 0 10px 0;
     font-size: 14px;
     color: #555;
-    flex-grow: 1; /* Empurra as infos para baixo */
+    flex-grow: 1; 
 }
 
 .card-info {
@@ -364,25 +371,13 @@ h2 {  /* Linha aramela que divide as coias */
     margin-top: 8px; 
 }
 
-.card-footer {
-    padding: 0 15px 15px 15px;
-    text-align: center;
-}
-
-.btn-acessar {
-    display: inline-block;
-    padding: 8px 16px;
-    background-color: #1B1B1B;
-    color: #FAB918;
+.card-link {
     text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    font-size: 14px;
-    transition: background-color 0.3s ease;
+    color: inherit;      
 }
 
-.btn-acessar:hover {
-    background-color: #333;
+.card-link:hover {
+    text-decoration: none;
 }
 
 /* Card de Adicionar Projeto */
@@ -398,14 +393,17 @@ h2 {  /* Linha aramela que divide as coias */
     font-weight: bold;
     font-size: 16px;
     min-height: 200px;
-    transition: background-color 0.3s ease;
     cursor: pointer;
     text-align: center;
     padding: 15px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .card-adicionar:hover {
     background-color: #FAB918;
+    transform: scale(1.05); 
+    box-shadow: 0 12px 25px rgba(0, 0, 0, 0.15); 
+    z-index: 10; 
 }
 
 .card-adicionar .icone-adicionar {
@@ -424,4 +422,70 @@ h2 {  /* Linha aramela que divide as coias */
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
     gap: 25px;
+}
+
+/* CÓDIGO PARA A SIDEBAR EXPANSÍVEL-------------------------------------------------------- */
+
+:root {
+    --sidebar-width-collapsed: 63px;
+    --sidebar-width-expanded: 250px;
+}
+
+.navbar-lateral {
+    width: var(--sidebar-width-collapsed); 
+    transition: width 0.3s ease-in-out; 
+    overflow-x: hidden;
+}
+
+.navbar-lateral.expanded {
+    width: var(--sidebar-width-expanded);
+}
+
+.navbar-lateral .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.navbar-lateral .nav-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: #1B1B1B;
+    width: 100%;
+    padding: 10px 0;
+}
+
+.navbar-lateral .nav-links li a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+.navbar-lateral .nav-links i {
+    min-width: var(--sidebar-width-collapsed);
+    text-align: center;
+    font-size: 22px;
+}
+
+/* O texto que irá aparecer e desaparecer */
+.nav-text {
+    margin-left: 10px;
+    font-size: 16px;
+    font-weight: 500;
+    white-space: nowrap; /* Impede que o texto quebre a linha */
+    
+    /* Começa invisível */
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+}
+
+/* O texto se torna vísivel quando a navbar está expandida */
+.navbar-lateral.expanded .nav-text {
+    opacity: 1;
+    visibility: visible;
+}
+
+.navbar-lateral .logout-btn {
+    margin-top: auto;
 }

@@ -7,7 +7,6 @@
     <title>{% block title %}Disrupt-CT{% endblock %}</title>
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-    
     <link rel="stylesheet" href="{% static 'css/main.css' %}">
     
     {% block extra_css %}{% endblock %}
@@ -21,11 +20,38 @@
     <img src="{% static 'imagens/disrupt.png' %}" alt="Logo" class="logo-home">
 
     <nav class="navbar-lateral">
-        <a href="#"><i class="fas fa-bars"></i></a>
-        <a href="{% url 'homepage' %}"><i class="fas fa-home"></i></a>
-        <a href="{% url 'projetos:lista_projetos' %}"><i class="fas fa-tablet-alt"></i></a>
-        <a href="#"><i class="fas fa-users"></i></a>
-        <a href="{% url 'logout' %}" class="logout-btn"><i class="fas fa-sign-out-alt"></i></a>
+        <ul class="nav-links">
+            <li>
+                <a href="#" id="btn-toggle-sidebar">
+                    <i class="fas fa-bars"></i>
+                    <span class="nav-text">Menu</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'homepage' %}" title="Início">
+                    <i class="fas fa-home"></i>
+                    <span class="nav-text">Início</span>
+                </a>
+            </li>
+            <li>
+                <a href="{% url 'projetos:lista_projetos' %}" title="Projetos">
+                    <i class="fas fa-tablet-alt"></i>
+                    <span class="nav-text">Projetos</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" title="Usuários">
+                    <i class="fas fa-users"></i>
+                    <span class="nav-text">Usuários</span>
+                </a>
+            </li>
+            <li class="logout-btn">
+                <a href="{% url 'logout' %}" title="Sair">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span class="nav-text">Sair</span>
+                </a>
+            </li>
+        </ul>
     </nav>
 
     <main class="main-content">
@@ -33,6 +59,7 @@
         {% endblock %}
     </main>
 
+    <script src="{% static 'js/main.js' %}"></script>
     {% block scripts %}{% endblock %}
 
 </body>
