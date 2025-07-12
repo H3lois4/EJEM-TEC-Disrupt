@@ -154,3 +154,12 @@ def resultado_view(request, pk):
     drexus = get_object_or_404(Drexus, pk=pk)
     context = {'drexus': drexus}
     return render(request, 'projetos/resultado.html', context)
+
+def aqi_bia(request, id):
+    # Busca o projeto pelo ID 
+    projeto = get_object_or_404(Projeto, id=id)
+    context = {
+        'projeto': projeto,
+        
+    }
+    return render(request, 'projetos/AQI_BIA.html', context)

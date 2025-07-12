@@ -1,15 +1,58 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block title %}Detalhes de {{ projeto.nome }}{% endblock %}
 
+{% block titulo_pagina %}
+    <span>{{ projeto.nome }}</span>
+{% endblock %}
+
 {% block content %}
+
     <h1>{{ projeto.nome }}</h1>
-    <p><strong>Descrição:</strong></p>
-    <p>{{ projeto.descricao|linebreaksbr }}</p>
-    
     <h2></h2>
-    
-    <a href="{% url 'projetos:planilha_projeto' projeto.id %}">Ver Planilha do Projeto</a>
-    <br>
+    <div class="card-descricao">
+        <h1><strong>Descrição:</strong></h1>
+        <h3>{{ projeto.descricao|linebreaksbr }}</h3>
+    </div>
+    <h2></h2>
+
+
+    <div class="acoes-grid">
+        <a href="{% url 'projetos:planilha_projeto' projeto.id %}" class="botao-acao-projeto">
+            <span>Entrevista</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>Sistemas de TI</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>Cadastro</span>
+        </a>
+
+        <a href="{% url 'projetos:AQI_BIA' projeto.id %}" class="botao-acao-projeto">
+            <span>AQI</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>CQP</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>Parametrização</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>Probabilidades</span>
+        </a>
+
+        <a href="#" class="botao-acao-projeto">
+            <span>Tempos</span>
+        </a>
+    </div>
+
+    <h2></h2>
     <a href="{% url 'projetos:lista_projetos' %}">Voltar para a Lista de Projetos</a>
+
 {% endblock %}

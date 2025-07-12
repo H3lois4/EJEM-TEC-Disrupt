@@ -1,0 +1,87 @@
+.classificacao-container .header-interno {
+    margin-bottom: 25px;
+}
+
+.classificacao-container h1 {
+    font-size: 1.5rem;
+    color: #333;
+    padding-bottom: 10px;
+    border-bottom: 2px solid #FAB918;
+}
+
+.tabelas-wrapper {
+    display: flex;
+    flex-wrap: nowrap; /* Impede a quebra de linha */
+    overflow-x: auto;  /* Adiciona a barra de rolagem horizontal se necessário */
+    gap: 15px;
+    padding-bottom: 15px; /* Espaço para a barra de rolagem não colar nos itens abaixo */
+}
+
+.tabela-bloco {
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    padding: 10px;
+    min-width: 80px; /* Largura mínima para os blocos menores */
+}
+
+.tabela-bloco h2 {
+    font-size: 0.8rem;
+    text-align: center;
+    margin: 0 0 10px 0;
+    color: #555;
+    font-weight: bold;
+    white-space: nowrap; /* Evita quebra de linha nos títulos */
+}
+
+.grid-celulas {
+    display: grid;
+    border-left: 1px solid #ddd;
+    border-top: 1px solid #ddd;
+}
+
+.celula {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+    height: 30px; /* Altura de cada célula */
+    display: flex; /* Para centralizar o texto se necessário */
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    padding: 2px 4px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+/* Estilos específicos para as tabelas de impacto */
+.tabela-impacto {
+    flex-grow: 1; /* Faz com que as tabelas de impacto tentem ocupar mais espaço */
+    min-width: 300px; /* Garante uma largura mínima */
+}
+
+.tabela-impacto .sub-header {
+    display: grid;
+    grid-template-columns: repeat(6, 1fr);
+    text-align: center;
+    font-size: 0.7rem;
+    font-weight: bold;
+    color: #777;
+    margin-bottom: 5px;
+}
+
+/* Botão de adicionar */
+.btn-adicionar-aqi {
+    background-color: #FAB918;
+    color: #1B1B1B;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.btn-adicionar-aqi:hover {
+    background-color: #e0a800;
+}

@@ -15,4 +15,7 @@ urlpatterns = [
     path('drexus/formulario/', views.formulario_drexus_view, name='formulario'),
     path('drexus/resultado/<int:pk>/', views.resultado_view, name='resultado'),
     path('drexus/editar/<int:pk>/', views.editar_drexus, name='editar_drexus'),
+
+    #URLs BIA
+    path('<int:id>/qualitativa/', views.aqi_bia, name='AQI_BIA'),
 ]
