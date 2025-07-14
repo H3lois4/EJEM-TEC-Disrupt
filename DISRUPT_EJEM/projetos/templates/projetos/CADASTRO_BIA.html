@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Cadastro BIA - {{ projeto.nome }}{% endblock %}
+
+{% block titulo_pagina %}
+    <span>CADASTRO</span>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="classificacao-container">
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
+
+    <div class="tabelas-wrapper">
+
+        <div class="tabela-bloco" style="width: 80px;">
+            <h2>ID</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="flex-grow: 1.5; min-width: 220px;">
+            <h2>PROCESSOS</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.processos }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 150px;">
+            <h2>ÁREA</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.area }}</div>{% endfor %}
+            </div>
+        </div>
+        
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 150px;">
+            <h2>NICHO</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.nicho }}</div>{% endfor %}
+            </div>
+        </div>
+        
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 180px;">
+            <h2>RESPONSÁVEL</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.responsavel }}</div>{% endfor %}
+            </div>
+        </div>
+        
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 180px;">
+            <h2>CENÁRIO</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}<div class="celula">{{ entrada.cenario }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="min-width: 180px;">
+            <h2>PROBABILIDADE</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_cadastro %}
+                    <div class="celula">
+                        {# ✅ Renderiza um menu de seleção para cada linha #}
+                        <select name="probabilidade_{{ entrada.id }}" class="select-probabilidade">
+                            <option value="Remota" {% if entrada.probabilidade == 'Remota' %}selected{% endif %}>Remota</option>
+                            <option value="Possível" {% if entrada.probabilidade == 'Possível' %}selected{% endif %}>Possível</option>
+                            <option value="Provável" {% if entrada.probabilidade == 'Provável' %}selected{% endif %}>Provável</option>
+                            <option value="Muito Provável" {% if entrada.probabilidade == 'Muito Provável' %}selected{% endif %}>Muito Provável</option>
+                        </select>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-top: 25px;">
+        <button class="btn-adicionar-aqi">Adicionar novo Cadastro...</button>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
+    </div>
+</div>
+{% endblock %}

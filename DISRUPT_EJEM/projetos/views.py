@@ -163,3 +163,22 @@ def aqi_bia(request, id):
         
     }
     return render(request, 'projetos/AQI_BIA.html', context)
+
+def cqp_bia(request, id):
+    # Busca o projeto pelo ID 
+    projeto = get_object_or_404(Projeto, id=id)
+    context = {
+        'projeto': projeto,
+        
+    }
+    return render(request, 'projetos/cqp_BIA.html', context)
+
+def cadastro_bia(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    #entradas_cadastro = CadastroBia.objects.filter(projeto=projeto)
+
+    context = {
+        'projeto': projeto,
+        #'entradas_cadastro': entradas_cadastro,
+    }
+    return render(request, 'projetos/CADASTRO_BIA.html', context)

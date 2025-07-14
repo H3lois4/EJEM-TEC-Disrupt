@@ -3,35 +3,48 @@
 {% block title %}Resultado de {{ drexus.nome }}{% endblock %}
 
 {% block content %}
-    <h1>Resultado de {{ drexus.nome }}</h1>
+    <div class="resultado-container">
+        <header class="header-interno">
+            <h1>Resultado de {{ drexus.nome }}</h1>
+        </header>
 
-    <ul>
-        <li>Integridade Funcional (IF): {{ drexus.IF|floatformat:2 }}</li>
-        <li>Capacidade de Modularidade (Cm): {{ drexus.Cm|floatformat:2 }}</li>
-        <li>Evolução sob Estresse (Et): {{ drexus.Et|floatformat:2 }}</li>
-        <li>Densidade de DREs (DREq): {{ drexus.DREq|floatformat:2 }}</li>
-        <li>Lógica Contextual (Lc): {{ drexus.Lc|floatformat:2 }}</li>
-        <li>Impacto Sistêmico (Im): {{ drexus.Im|floatformat:2 }}</li>
-        <li>Propósito Vivo (Pv): {{ drexus.Pv|floatformat:2 }}</li>
-    </ul>
+        <section class="secao-resultado">
+            <h2 class="titulo-amarelo">Indicadores</h2>
+            <ul>
+                <li>Integridade Funcional (IF): {{ drexus.IF|floatformat:2 }}</li>
+                <li>Capacidade de Modularidade (Cm): {{ drexus.Cm|floatformat:2 }}</li>
+                <li>Evolução sob Estresse (Et): {{ drexus.Et|floatformat:2 }}</li>
+                <li>Densidade de DREs (DREq): {{ drexus.DREq|floatformat:2 }}</li>
+                <li>Lógica Contextual (Lc): {{ drexus.Lc|floatformat:2 }}</li>
+                <li>Impacto Sistêmico (Im): {{ drexus.Im|floatformat:2 }}</li>
+                <li>Propósito Vivo (Pv): {{ drexus.Pv|floatformat:2 }}</li>
+            </ul>
+        </section>
 
-    <h2>Nota Final (Rexp): {{ drexus.nota_final|floatformat:2 }}</h2>
-    <h2>Diagnóstico: {{ drexus.diagnostico_maturidade }}</h2>
+        <section class="secao-resultado">
+            <h2 class="titulo-amarelo">Nota Final e Diagnóstico</h2>
+            <p><strong>Nota Final (Rexp):</strong> {{ drexus.nota_final|floatformat:2 }}</p>
+            <p><strong>Diagnóstico:</strong> {{ drexus.diagnostico_maturidade }}</p>
+        </section>
 
-    <ul>
-        <li>Maturidade Cognitiva: {{ drexus.maturidade_cognitiva|floatformat:2 }} - {{ drexus.diagnostico_cognitiva }} </li>
-        <li>Maturidade Estratégica: {{ drexus.maturidade_estrategica|floatformat:2 }} - {{ drexus.diagnostico_estrategica}} </li>
-        <li>Maturidade Operacional: {{ drexus.maturidade_operacional|floatformat:2 }} - {{ drexus.diagnostico_operacional }} </li>
-        <li>Maturidade Cultural: {{ drexus.maturidade_cultural|floatformat:2 }} - {{ drexus.diagnostico_cultural }} </li>
-    </ul>
+        <section class="secao-resultado">
+            <h2 class="titulo-amarelo">Maturidade por Domínio</h2>
+            <ul>
+                <li>Maturidade Cognitiva: {{ drexus.maturidade_cognitiva|floatformat:2 }} - {{ drexus.diagnostico_cognitiva }}</li>
+                <li>Maturidade Estratégica: {{ drexus.maturidade_estrategica|floatformat:2 }} - {{ drexus.diagnostico_estrategica}}</li>
+                <li>Maturidade Operacional: {{ drexus.maturidade_operacional|floatformat:2 }} - {{ drexus.diagnostico_operacional }}</li>
+                <li>Maturidade Cultural: {{ drexus.maturidade_cultural|floatformat:2 }} - {{ drexus.diagnostico_cultural }}</li>
+            </ul>
+        </section>
 
-    <h2></h2>
-    <h1>Descrição</h1>
+        <section class="secao-resultado">
+            <h2 class="titulo-amarelo">Descrição</h2>
+            <p>{{ drexus.descricao|linebreaksbr }}</p>
+        </section>
 
-    <p>{{ drexus.descricao|linebreaksbr }}</p>
-
-    <br>
-    <a href="{% url 'projetos:editar_drexus' drexus.pk %}">Editar</a>
-    <br>
-    <a href="{% url 'projetos:lista_projetos' %}">Voltar para Lista</a>
+        <div class="acoes-resultado">
+            <a href="{% url 'projetos:editar_drexus' drexus.pk %}" class="btn-editar">Editar</a>
+            <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista</a>
+        </div>
+    </div>
 {% endblock %}

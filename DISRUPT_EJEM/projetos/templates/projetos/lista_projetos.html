@@ -9,11 +9,11 @@
         <h1>GERENCIAMENTO DOS PROJETOS</h1>
     </header>
 
-    <div class="projetos-container">
-        <section class="secao-projetos">
+    <section class="secao-projetos">
+        <div class="titulo-secao">
             <h2>DREXUS</h2>
-            <hr>
-            <div class="cards-grid">
+        </div>
+        <div class="cards-grid">
                 {% for projeto in projetos_drexus %}
                     <a href="{% url 'projetos:resultado' projeto.id %}" class="card-link">
                         <div class="card card-clicavel"> 
@@ -31,20 +31,19 @@
                     <p>Nenhum projeto DREXUS encontrado.</p>
                 {% endfor %}
 
-                {# O card de "Adicionar" já funciona como um link, então o mantemos. #}
                 <a href="{% url 'projetos:formulario' %}" class="card-adicionar">
-                    <span>Adicionar projeto DREXUS...</span>
+                    <span>Adicionar projeto  DREXUS ...</span>
                     <div class="icone-adicionar">+</div>
                 </a>
             </div>
         </section>
 
-        <section class="secao-projetos">
+    <section class="secao-projetos">
+        <div class="titulo-secao">
             <h2>PROJETOS EM ANDAMENTO</h2>
-            <hr>
+        </div>
             <div class="cards-grid">
 
-                {# Loop para os projetos em andamento, com a mesma lógica #}
                 {% for projeto in projetos_andamento %}
                     <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="card-link">
                         <div class="card card-clicavel">
@@ -68,9 +67,10 @@
             </div>
         </section>
 
-        <section class="secao-projetos">
+    <section class="secao-projetos">
+        <div class="titulo-secao">
             <h2>PROJETOS FINALIZADOS</h2>
-            <hr>
+        </div>
             <div class="cards-grid">
                 
                 {% for projeto in projetos_finalizados %}

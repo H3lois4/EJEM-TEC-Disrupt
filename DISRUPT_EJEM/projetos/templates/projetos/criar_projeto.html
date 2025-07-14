@@ -1,21 +1,35 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Criar Projeto{% endblock %}
+{% block title %}Criar Novo Projeto{% endblock %}
+
+{% block titulo_pagina %}
+    <span>CRIAR NOVO PROJETO</span>
+{% endblock %}
 
 {% block content %}
-    <h1>Criar Novo Projeto</h1>
-    
-    <form method="post">
-        {% csrf_token %}
-        <label for="nome">Nome:</label><br>
-        <input type="text" id="nome" name="nome" required><br><br>
+    <header class="header-interno">
+        <h1>Criar Novo Projeto</h1>
+    </header>
 
-        <label for="descricao">Descrição:</label><br>
-        <textarea id="descricao" name="descricao"></textarea><br><br>
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="nome">Nome do Projeto</label>
+                <input type="text" id="nome" name="nome" required>
+            </div>
 
-        <button type="submit">Salvar</button>
-    </form>
+            <div class="form-group">
+                <label for="descricao">Descrição</label>
+                <textarea id="descricao" name="descricao" rows="5"></textarea>
+            </div>
 
-    <br>
-    <a href="{% url 'projetos:lista_projetos' %}">Cancelar e Voltar</a>
+            <div class="form-actions">
+                <button type="submit" class="btn-principal">Salvar Projeto</button>
+                <a href="{% url 'projetos:lista_projetos' %}" class="btn-secundario">Cancelar</a>
+            </div>
+        </form>
+    </div>
 {% endblock %}

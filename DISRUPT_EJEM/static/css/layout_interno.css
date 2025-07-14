@@ -1,0 +1,576 @@
+/* static/css/layout_interno.css */
+
+:root {
+    /* Cores */
+    --cor-amarelo: #FAB918;
+    --cor-preto: #1B1B1B;
+    --cor-fundo-header: #111421;
+    --cor-fundo-pagina: #f4f7f6;
+    --cor-texto-claro: #ffffff;
+    --cor-texto-escuro: #333;
+    --cor-texto-suave: #555;
+    --cor-borda-sutil: #e0e0e0;
+    --cor-card-fundo: #f8f8f8;
+
+    /* Layout */
+    --header-height: 100px; /* Altura menor para o header */
+    --sidebar-width-collapsed: 60px; /* Largura menor recolhida */
+    --sidebar-width-expanded: 220px; /* Largura expandida */
+}
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+body.layout-interno {
+    font-family: 'Inter', 'Segoe UI', sans-serif;
+    color: var(--cor-texto-escuro);
+    background-color: var(--cor-fundo-pagina);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Header Fixo */
+.header-topo {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--header-height);
+    background-color: var(--cor-fundo-header);
+    color: var(--cor-texto-claro);
+    display: flex;
+    align-items: center;
+    padding-left: var(--sidebar-width-collapsed);
+    z-index: 1000;
+    transition: padding-left 0.3s ease-in-out;
+}
+.navbar-lateral.expanded ~ .header-topo {
+    padding-left: var(--sidebar-width-expanded);
+}
+.header-logo {
+    margin-left: 20px;
+}
+.header-logo img {
+    height: calc(var(--header-height) - 40px);
+}
+.header-titulo-pagina {
+    flex-grow: 1;
+    text-align: center;
+}
+.header-titulo-pagina h1 {
+    font-size: 1.2rem;
+    margin: 0;
+    color: var(--cor-texto-claro);
+}
+
+/* 3. SIDEBAR EXPANSÍVEL */
+.navbar-lateral {
+    position: fixed;
+    top: 0; /* Começa no topo absoluto para ocupar a altura toda */
+    left: 0;
+    width: var(--sidebar-width-collapsed);
+    height: 100vh;
+    background-color: var(--cor-amarelo);
+    z-index: 1001;
+    overflow-x: hidden;
+    transition: width 0.3s ease-in-out;
+}
+.navbar-lateral.expanded {
+    width: var(--sidebar-width-expanded);
+}
+
+/* Lista de links da navbar */
+.navbar-lateral .nav-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%; /* Ocupa toda a altura da navbar */
+    padding-top: var(--header-height); /* Empurra os links para baixo do header */
+    display: flex;
+    flex-direction: column;
+}
+
+/* Itens individuais da lista */
+.navbar-lateral .nav-links li a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    color: var(--cor-preto);
+    width: 100%;
+    padding: 15px 0;
+    transition: background-color 0.2s ease;
+}
+
+.navbar-lateral .nav-links li a:hover {
+    background-color: rgba(0, 0, 0, 0.1);
+}
+
+/* Ícones */
+.navbar-lateral .nav-links i {
+    min-width: var(--sidebar-width-collapsed);
+    text-align: center;
+    font-size: 1.5rem; /* Tamanho dos ícones */
+}
+
+/* Texto que aparece ao expandir */
+.nav-text {
+    margin-left: 10px;
+    font-size: 1rem;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.2s ease-in-out;
+}
+
+.navbar-lateral.expanded .nav-text {
+    opacity: 1;
+    visibility: visible;
+    transition-delay: 0.1s;
+}
+
+/* Conteúdo Principal */
+.main-content {
+    margin-top: var(--header-height);
+    margin-left: var(--sidebar-width-collapsed);
+    width: calc(100% - var(--sidebar-width-collapsed));
+    transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
+    padding: 20px;
+}
+
+.navbar-lateral.expanded ~ .main-content {
+    margin-left: var(--sidebar-width-expanded);
+    width: calc(100% - var(--sidebar-width-expanded));
+}
+
+.main-content-wrapper {
+    width: 100%;
+    max-width: 95%; 
+    margin: 0 auto;   
+    padding: 40px;
+    background-color: var(--cor-texto-claro);
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+}
+
+/* ----------------- Estilos para lista_projetos.html -------------------------------------- */
+.header-interno h1 {
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+    margin-bottom: 20px;
+    border-bottom: 3px solid var(--cor-amarelo);
+    padding-bottom: 10px;
+}
+
+.secao-projetos {
+    margin-bottom: 30px;
+}
+
+.secao-projetos h2 {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+    margin-bottom: 10px;
+}
+
+.titulo-secao {
+    background-color: var(--cor-amarelo); /* Usa a variável de cor amarela */
+    padding: 10px 20px;
+    border-radius: 6px;
+    margin-bottom: 20px; /* Espaço entre a barra e os cards abaixo */
+    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+}
+
+.titulo-secao h2 {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: var(--cor-preto); /* Usa a variável de cor preta */
+    margin: 0;
+    padding: 0;
+    border-bottom: none; /* Remove a linha de baixo que estava antes */
+}
+
+.cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 25px;
+    grid-auto-rows: 250px;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+    display: flex; 
+}
+
+.card {
+    width: 100%;
+    height: 100%;
+    background-color: var(--cor-texto-claro); 
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--cor-borda-sutil);
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-header {
+    background-color: var(--cor-amarelo);
+    padding: 15px;
+    text-align: center; 
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: bold;
+    color: var(--cor-preto);
+}
+
+.card-body {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.card-descricao {
+    font-size: 1rem;
+    color: var(--cor-texto-escuro);
+    margin-bottom: 15px;
+    flex-grow: 1; 
+}
+
+.card-info {
+    font-size: 0.9rem;
+    color: var(--cor-texto-suave); 
+    margin-top: 5px; 
+}
+
+.card-adicionar {
+    background-color: var(--cor-amarelo);
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-decoration: none;
+    color: var(--cor-preto);
+    font-weight: 500;
+    font-size: 1.1rem;
+    text-align: center;
+    padding: 20px;
+    border: 1px solid transparent; 
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out; 
+}
+
+.card-adicionar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card-adicionar .icone-adicionar {
+    margin-top: 10px;
+    width: 40px;
+    height: 40px;
+    line-height: 40px;
+    background-color: #1B1B1B;
+    color: #FAB918;
+    border-radius: 50%;
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Estilo de cada card de informação */
+.info-card-detalhe {
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    border-radius: 8px;
+    overflow: hidden; /* Garante que o header amarelo não passe da borda */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    width: 100%;
+}
+
+/* Header amarelo dos cards de informação */
+.info-card-detalhe .info-card-header {
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Corpo cinza dos cards de informação */
+.info-card-detalhe .info-card-body {
+    padding: 20px;
+    color: var(--cor-texto-suave);
+}
+
+.info-card-detalhe .info-card-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.info-card-detalhe .info-card-body ul li {
+    padding: 4px 0;
+}
+
+/* Contêiner para os cards do topo (Membros, Andamento, etc.) */
+.info-grid-detalhe {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr); /* FORÇA AS 4 COLUNAS IGUAIS */
+    gap: 25px;
+    margin-bottom: 40px; 
+}
+
+/* Estilo de cada card de informação */
+.info-card-detalhe {
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    border-radius: 8px;
+    overflow: hidden; 
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    height: 100%;
+}
+
+/* Header amarelo dos cards de informação */
+.info-card-detalhe .info-card-header {
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+    padding: 12px 20px;
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+/* Corpo cinza dos cards de informação */
+.info-card-detalhe .info-card-body {
+    padding: 20px;
+    color: var(--cor-texto-suave);
+}
+
+.info-card-detalhe .info-card-body ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.card-link {
+    text-decoration: none;
+    color: inherit;
+}
+.card-link:hover {
+    text-decoration: none;
+}
+
+/* Aplica a animação de flutuar */
+.efeito-flutuar {
+    transition: transform 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+.efeito-flutuar:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+    cursor: pointer;
+}
+
+/* Contêiner para a grade de botões de ação (com as linhas amarelas) */
+.acoes-grid-container {
+    border-top: 3px solid var(--cor-amarelo);
+    border-bottom: 3px solid var(--cor-amarelo);
+    padding: 25px 0; /* Espaçamento vertical entre as linhas e os botões */
+}
+
+/* Grade dos botões de ação */
+.acoes-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+/* Estilo dos botões amarelos */
+.botao-acao-projeto {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100px;
+    padding: 15px;
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+    text-align: center;
+    border-radius: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer;
+}
+
+.botao-acao-projeto:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 15px rgba(0, 0, 0, 0.12);
+}
+
+.container-botao-voltar {
+    margin-top: 40px; 
+}
+
+/* Estilo do novo botão 'Voltar' */
+.btn-voltar {
+    display: inline-block; 
+    padding: 12px 24px;
+    background-color: var(--cor-preto); 
+    color: var(--cor-amarelo);          
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-voltar:hover {
+    background-color: #333;      
+    transform: translateY(-2px); 
+    color: var(--cor-amarelo);    
+}
+
+/*------------------------- Estilos para a página resultado.html --------------------------------*/
+.resultado-container {
+    padding: 30px;
+}
+.secao-resultado {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid var(--cor-borda-sutil); 
+}
+
+.secao-resultado:last-child {
+    border-bottom: none; 
+}
+
+.titulo-amarelo {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+    border-bottom: 3px solid var(--cor-amarelo); 
+}
+
+.secao-resultado ul {
+    list-style: none;
+    padding-left: 20px; 
+}
+
+.secao-resultado ul li {
+    line-height: 1.6;
+    margin-bottom: 8px;
+}
+
+.acoes-resultado {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-editar {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.btn-editar:hover { 
+    transform: translateY(-2px); 
+}
+
+.form-container {
+    max-width: 800px; /* Define uma largura máxima para o formulário */
+}
+
+.form-group {
+    margin-bottom: 25px; /* Espaço entre cada campo do formulário */
+}
+
+.form-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 1rem;
+    color: var(--cor-texto-suave);
+}
+
+.form-group input[type="text"],
+.form-group textarea {
+    width: 100%;
+    padding: 12px;
+    font-size: 1rem;
+    font-family: inherit; 
+    border: 1px solid var(--cor-borda-sutil);
+    border-radius: 6px;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+    resize: none;      
+    overflow: hidden;  
+}
+
+.form-group input[type="text"]:focus,
+.form-group textarea:focus {
+    outline: none;
+    border-color: var(--cor-amarelo);
+    box-shadow: 0 0 0 3px rgba(250, 185, 24, 0.25); 
+}
+
+.form-actions {
+    margin-top: 30px;
+    display: flex;
+    gap: 15px; 
+}
+
+.btn-principal {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.btn-principal:hover {
+    background-color: var(--cor-amarelo-hover);
+    transform: translateY(-2px);
+}
+
+.btn-secundario {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: var(--cor-preto);
+    color: var(--cor-amarelo);
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    transition: background-color 0.2s, transform 0.2s;
+}
+.btn-secundario:hover {
+    transform: translateY(-2px);
+}

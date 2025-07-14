@@ -1,0 +1,94 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}CQP - {{ projeto.nome }}{% endblock %}
+
+{% block titulo_pagina %}
+    <span>CLASSIFICAÇÃO QUALITATIVA DOS PROCESSOS</span>
+{% endblock %}
+
+{% block extra_css %}
+    {# Reutilizamos o mesmo CSS da página AQI, pois o padrão visual é o mesmo #}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="classificacao-container">
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
+
+    <div class="tabelas-wrapper">
+
+        <div class="tabela-bloco" style="width: 80px;">
+            <h2>ID</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.id }}</div>
+                {% empty %}
+                    <div class="celula" style="border: none; background: transparent;"></div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 220px;">
+            <h2>CLASSIFICAÇÃO DO IMPACTO</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.classificacao_impacto }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="min-width: 150px;">
+            <h2>PROBABILIDADE</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.probabilidade }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="tabela-bloco" style="min-width: 150px;">
+            <h2>TOTAL DE CRITICIDADE</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.total_criticidade }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+            <h2>PROCESSOS</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.processos }}</div>
+                {% endfor %}
+            </div>
+        </div>
+        
+        <div class="tabela-bloco" style="width: 120px;">
+            <h2>RTO</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.rto }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="min-width: 150px;">
+            <h2>ÁREA</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in cqp_entries %}
+                    <div class="celula">{{ entrada.area }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+    </div>
+
+    <div style="margin-top: 25px;">
+        <button class="btn-adicionar-aqi">Adicionar nova CQP ...</button>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
+</div>
+{% endblock %}

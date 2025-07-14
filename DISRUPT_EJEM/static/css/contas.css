@@ -1,0 +1,191 @@
+* {
+    box-sizing: border-box;
+}
+
+body, html {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    font-family: 'Segoe UI', sans-serif;
+    color: #000;
+}
+
+/* Página inicial ------------------------------------------------------------------------------------------------*/
+.pagina-inicial {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    text-align: center;
+    background-image: url('../imagens/fundo_inicio.png'); 
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    padding: 40px;
+    gap: 15px; 
+}
+
+/* Logo página inicial */
+.logo {
+    width: 500px;
+    margin: 20px 0;
+    border: 3px solid #ffc300;
+    border-radius: 12px;
+    padding: 15px;
+    background-color: #0a0a0a;
+}
+
+/* Botões página inicial */
+.botoes-inicio {
+    display: flex;
+    gap: 50px;
+    margin: 20px 0;
+}
+
+.botao-inicio {
+    background-color: #0a0a0a;
+    color: #ffd700;
+    padding: 12px 40px;
+    text-decoration: none;
+    border: 2px solid #ffd700;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 25px;
+    transition: all 0.3s ease;
+}
+
+.botao-inicio:hover {
+    background-color: #ffd700;
+    color: #000;
+    border: 2px solid #000;
+}
+
+/* Textos página inicial */
+.slogan-topo {
+    font-size: 26px;
+    margin-bottom: 30px;
+}
+
+.slogan-base {
+    font-size: 26px;
+    color: #ffc300;
+    margin-top: 20px;
+}
+
+/* Página de login/cadastro -----------------------------------------------------------------------------------*/
+.pagina-formulario {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    padding-top: 5%;  
+    min-height: 100vh;
+    background-color: transparent;  
+    position: relative;
+    z-index: 1;
+}
+
+
+/* Cartão de login/cadastro */
+.card-formulario {
+    background-color: white;
+    padding: 50px 40px;
+    border-radius: 15px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    width: 100%;
+    max-width: 40%;
+}
+
+.card-formulario h2 {
+    font-size: 36px;
+    margin-bottom: 30px;
+    border-bottom: 2px solid #ffc300;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Logo dentro do card */
+.card-formulario img.logo {
+    width: 100%;
+    max-width: 85%;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Labels dos campos */
+.card-formulario label {
+    display: block;
+    text-align: left;
+    font-size: 30px;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #1a1a1a;
+}
+
+/* Container com ícone + input */
+.card-formulario .input-icon {
+    position: relative;
+    margin-bottom: 20px;
+}
+
+.card-formulario .input-icon i {
+    position: absolute;
+    top: 50%;
+    left: 12px;
+    transform: translateY(-50%);
+    color: #ffc300;
+    font-size: 16px;
+}
+
+/* Campo de entrada */
+.card-formulario input {
+    width: 100%;
+    padding: 14px 14px 14px 40px;
+    border-radius: 5px;
+    border: 1px solid #ffc300;
+    font-size: 16px;
+}
+
+/* Botão */
+.card-formulario button {
+    width: 100%;
+    padding: 14px;
+    background-color: #1a1a1a;
+    color: #ffc300;
+    font-size: 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-top: 10px;
+}
+
+.card-formulario button:hover {
+    background-color: #ffc300;
+    color: #1a1a1a;
+}
+
+/* Links abaixo do botão */
+.card-formulario .link-extra {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 15px;
+    font-size: 20px;
+}
+
+/* Imagem no topo da página login/cadastro */
+.pagina-cadastro .imagem-topo,
+.pagina-login .imagem-topo {
+    width: 100vw;
+    height: 20vh;
+    object-fit: cover;
+    display: block;
+    margin: 0;
+    padding: 0;
+    border: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: -1;
+}

@@ -4,55 +4,68 @@
 {% block title %}Detalhes de {{ projeto.nome }}{% endblock %}
 
 {% block titulo_pagina %}
-    <span>{{ projeto.nome }}</span>
+    <span>DETALHE PROJETO</span>
 {% endblock %}
 
 {% block content %}
+<div class="detalhe-container">
+    
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
 
-    <h1>{{ projeto.nome }}</h1>
-    <h2></h2>
-    <div class="card-descricao">
-        <h1><strong>Descrição:</strong></h1>
-        <h3>{{ projeto.descricao|linebreaksbr }}</h3>
+    <div class="info-grid-detalhe">
+        <div class="info-card-detalhe">
+            <div class="info-card-header">Membros</div>
+            <div class="info-card-body">
+                <ul>
+                    <li>[Coordenador] - Temporario </li>
+                    <li>[Consultor] - Temporario </li>
+                    <li>[Consultor] - Temporario </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="info-card-detalhe">
+            <div class="info-card-header">Andamento</div>
+            <div class="info-card-body">
+                <p>DREXUS - Temporario</p>
+                <p>Porcentagem - Temporario</p>
+            </div>
+        </div>
+
+        <div class="info-card-detalhe">
+            <div class="info-card-header">Descrição</div>
+            <div class="info-card-body">
+                <p>{{ projeto.descricao }}</p>
+            </div>
+        </div>
+
+        <a href="#" class="card-link efeito-flutuar">  {# Coloque o link do futuro aqui #}
+            <div class="info-card-detalhe">
+                <div class="info-card-header">Informações</div>
+                <div class="info-card-body">
+                    <p>DREXUS</p>
+                </div>
+            </div>
+        </a>
     </div>
-    <h2></h2>
 
-
-    <div class="acoes-grid">
-        <a href="{% url 'projetos:planilha_projeto' projeto.id %}" class="botao-acao-projeto">
-            <span>Entrevista</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>Sistemas de TI</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>Cadastro</span>
-        </a>
-
-        <a href="{% url 'projetos:AQI_BIA' projeto.id %}" class="botao-acao-projeto">
-            <span>AQI</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>CQP</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>Parametrização</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>Probabilidades</span>
-        </a>
-
-        <a href="#" class="botao-acao-projeto">
-            <span>Tempos</span>
-        </a>
+    <div class="acoes-grid-container">
+        <div class="acoes-grid">
+            <a href="{% url 'projetos:planilha_projeto' projeto.id %}" class="botao-acao-projeto"><span>Entrevista</span></a>
+            <a href="#" class="botao-acao-projeto"><span>Sistemas de TI</span></a>
+            <a href="{% url 'projetos:CADASTRO_BIA' projeto.id %}" class="botao-acao-projeto"><span>Cadastro</span></a>
+            <a href="{% url 'projetos:AQI_BIA' projeto.id %}" class="botao-acao-projeto"><span>AQI</span></a>
+            <a href="{% url 'projetos:CQP_BIA' projeto.id %}" class="botao-acao-projeto"><span>CQP</span></a>
+            <a href="#" class="botao-acao-projeto"><span>Parametrização</span></a>
+            <a href="#" class="botao-acao-projeto"><span>Probabilidades</span></a>
+            <a href="#" class="botao-acao-projeto"><span>Tempos</span></a>
+        </div>
+    </div>
+    <div class="container-botao-voltar">
+        <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para a Lista de Projetos</a>
     </div>
 
-    <h2></h2>
-    <a href="{% url 'projetos:lista_projetos' %}">Voltar para a Lista de Projetos</a>
-
+</div>
 {% endblock %}

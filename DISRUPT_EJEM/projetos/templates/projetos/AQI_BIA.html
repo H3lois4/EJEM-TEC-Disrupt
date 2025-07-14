@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Análise Qualitativa{% endblock %}
+{% block title %}Análise de Impacto de {{ projeto.nome }}{% endblock %}
 
 {% block titulo_pagina %}
     <span>ANÁLISE QUANTITATIVA DO IMPACTO</span>
@@ -13,64 +13,129 @@
 
 {% block content %}
 <div class="classificacao-container">
-    <div class="header-interno">
+    <header class="header-interno">
         <h1>{{ projeto.nome }}</h1>
-    </div>
+    </header>
 
     <div class="tabelas-wrapper">
 
-        <div class="tabela-bloco" style="width: 80px;">...</div>
+        <div class="tabela-bloco" style="width: 80px;">
+            <h2>ID</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
+            </div>
+        </div>
 
-        <div class="tabela-bloco" style="flex-grow: 1; min-width: 200px;">...</div>
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 200px;">
+            <h2>PROCESSOS</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.processo }}</div>{% endfor %}
+            </div>
+        </div>
 
-        <div class="tabela-bloco" style="width: 120px;">...</div>
+        <div class="tabela-bloco" style="width: 120px;">
+            <h2>RTO / h</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.rto }}</div>{% endfor %}
+            </div>
+        </div>
         
-        <div class="tabela-bloco" style="width: 120px;">...</div>
+        <div class="tabela-bloco" style="width: 120px;">
+            <h2>MTPD / h</h2>
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.mtpd }}</div>{% endfor %}
+            </div>
+        </div>
 
-        <div class="tabela-bloco tabela-impacto">...</div>
+        <div class="tabela-bloco tabela-impacto">
+            <h2>IMPACTO - FINANCEIRO</h2>
+            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.impacto_financeiro_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_real }}</div>
+                {% endfor %}
+            </div>
+        </div>
         
         <div class="tabela-bloco tabela-impacto">
             <h2>IMPACTO - IMAGEM E REPUTAÇÃO</h2>
             <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr);">
-                {% for i in "123456789012345678901234" %}<div class="celula"></div>{% endfor %}
+            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.impacto_imagem_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_imagem_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_imagem_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_imagem_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_imagem_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_imagem_real }}</div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="tabela-bloco tabela-impacto">
             <h2>IMPACTO - OPERACIONAL</h2>
             <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr);">
-                {% for i in "123456789012345678901234" %}<div class="celula"></div>{% endfor %}
+            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                 {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.impacto_operacional_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_real }}</div>
+                {% endfor %}
             </div>
         </div>
-
+        
         <div class="tabela-bloco tabela-impacto">
             <h2>IMPACTO - LEGAL E COMPLIANCE</h2>
             <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr);">
-                {% for i in "123456789012345678901234" %}<div class="celula"></div>{% endfor %}
+            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                 {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.impacto_legal_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_real }}</div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="tabela-bloco tabela-impacto">
             <h2>IMPACTO - AMBIENTAL</h2>
             <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr); grid-template-rows: repeat(4, 1fr);">
-                {% for i in "123456789012345678901234" %}<div class="celula"></div>{% endfor %}
+            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                 {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.impacto_ambiental_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_real }}</div>
+                {% endfor %}
             </div>
         </div>
 
         <div class="tabela-bloco" style="width: 100px;">
             <h2>BASE</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr; grid-template-rows: repeat(4, 1fr);">
-                {% for i in "1234" %}<div class="celula"></div>{% endfor %}
+            <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                {% for entrada in entradas_aqi %}
+                    <div class="celula">{{ entrada.base }}</div>
+                {% endfor %}
             </div>
         </div>
 
-    </div> <div style="margin-top: 20px;">
+    </div>
+
+    <div style="margin-top: 25px;">
         <button class="btn-adicionar-aqi">Adicionar nova AQI...</button>
-        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" style="margin-left: 15px;">Voltar para Detalhes</a>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
     </div>
 </div>
 {% endblock %}

@@ -1,63 +1,78 @@
-.classificacao-container .header-interno {
-    margin-bottom: 25px;
-}
+/* static/css/tabelas.css (VERSÃO COM TAMANHO FLEXÍVEL) */
 
-.classificacao-container h1 {
+.classificacao-container .header-interno h1 {
     font-size: 1.5rem;
-    color: #333;
+    color: var(--cor-texto-escuro);
     padding-bottom: 10px;
-    border-bottom: 2px solid #FAB918;
+    border-bottom: 2px solid var(--cor-amarelo);
 }
 
 .tabelas-wrapper {
     display: flex;
-    flex-wrap: nowrap; /* Impede a quebra de linha */
-    overflow-x: auto;  /* Adiciona a barra de rolagem horizontal se necessário */
+    flex-wrap: nowrap;
+    overflow-x: auto;
     gap: 15px;
-    padding-bottom: 15px; /* Espaço para a barra de rolagem não colar nos itens abaixo */
+    align-items: stretch; 
+    padding-bottom: 20px; 
 }
 
+/* Regra base para todos os blocos, sem tamanho definido */
 .tabela-bloco {
     background-color: #fff;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    padding: 10px;
-    min-width: 80px; /* Largura mínima para os blocos menores */
+    border: 1px solid var(--cor-borda-sutil);
+    border-radius: 8px;
+    padding: 12px;
+    display: flex; /* Adicionado para controle interno */
+    flex-direction: column; /* Organiza o título e a grade em coluna */
+    flex-shrink: 0; /* Impede que encolham demais */
 }
 
 .tabela-bloco h2 {
     font-size: 0.8rem;
     text-align: center;
-    margin: 0 0 10px 0;
-    color: #555;
     font-weight: bold;
-    white-space: nowrap; /* Evita quebra de linha nos títulos */
+    color: var(--cor-texto-suave);
+    white-space: nowrap;
+    margin-bottom: 8px;
+    padding-bottom: 8px;
+    border-bottom: 2px solid var(--cor-amarelo);
 }
 
 .grid-celulas {
     display: grid;
-    border-left: 1px solid #ddd;
-    border-top: 1px solid #ddd;
+    border-left: 1px solid var(--cor-borda-sutil);
+    border-top: 1px solid var(--cor-borda-sutil);
+    flex-grow: 1; /* Faz a grade de células crescer para ocupar o espaço do card */
 }
 
 .celula {
-    border-right: 1px solid #ddd;
-    border-bottom: 1px solid #ddd;
-    height: 30px; /* Altura de cada célula */
-    display: flex; /* Para centralizar o texto se necessário */
+    border-right: 1px solid var(--cor-borda-sutil);
+    border-bottom: 1px solid var(--cor-borda-sutil);
+    min-height: 35px;
+    display: flex;
     align-items: center;
     justify-content: center;
     font-size: 0.9rem;
-    padding: 2px 4px;
+    padding: 4px;
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
 }
 
-/* Estilos específicos para as tabelas de impacto */
+.tabela-bloco--auto {
+    flex-basis: auto;
+    width: auto;
+}
+
+.tabela-bloco--flex {
+    flex-grow: 1;
+    flex-basis: 220px;
+    min-width: 220px; 
+}
+
 .tabela-impacto {
-    flex-grow: 1; /* Faz com que as tabelas de impacto tentem ocupar mais espaço */
-    min-width: 300px; /* Garante uma largura mínima */
+    flex-grow: 1;
+    min-width: 350px;
 }
 
 .tabela-impacto .sub-header {
@@ -70,18 +85,18 @@
     margin-bottom: 5px;
 }
 
-/* Botão de adicionar */
 .btn-adicionar-aqi {
-    background-color: #FAB918;
-    color: #1B1B1B;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.2s;
+ background-color: var(--cor-amarelo);
+ color: var(--cor-preto);
+ border: none;
+ border-radius: 6px; /* Mesma borda arredondada do botão voltar */
+ font-weight: bold;
+ cursor: pointer;
+ transition: background-color 0.2s, transform 0.2s ease; /* Adicionando transição para igualar o outro botão */
+ padding: 12px 24px; /* Mesmo padding vertical e horizontal do botão voltar */
+ font-size: 1rem; /* Ajustando a fonte para ser similar */
 }
 
 .btn-adicionar-aqi:hover {
-    background-color: #e0a800;
+  transform: translateY(-2px);
 }
