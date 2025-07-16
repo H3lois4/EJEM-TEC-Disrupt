@@ -20,4 +20,5 @@ urlpatterns = [
     path('<int:id>/AQI/', views.aqi_bia, name='AQI_BIA'),
     path('<int:id>/CQP/', views.cqp_bia, name='CQP_BIA'),
     path('<int:projeto_id>/cadastro/', views.cadastro_bia, name='CADASTRO_BIA'),
+    path('<int:id>/PROBABILIDADE/', views.probabilidade_bia, name='PROBABILIDADE_BIA'),
 ]

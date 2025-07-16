@@ -182,3 +182,13 @@ def cadastro_bia(request, projeto_id):
         #'entradas_cadastro': entradas_cadastro,
     }
     return render(request, 'projetos/CADASTRO_BIA.html', context)
+
+def probabilidade_bia(request, id):
+    projeto = get_object_or_404(Projeto, id=id)
+    
+    context = {
+        'projeto': projeto,
+        
+    }
+    return render(request, 'projetos/PROBABILIDADE_BIA.html', context)
+    

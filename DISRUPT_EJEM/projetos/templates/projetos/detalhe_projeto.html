@@ -59,7 +59,7 @@
             <a href="{% url 'projetos:AQI_BIA' projeto.id %}" class="botao-acao-projeto"><span>AQI</span></a>
             <a href="{% url 'projetos:CQP_BIA' projeto.id %}" class="botao-acao-projeto"><span>CQP</span></a>
             <a href="#" class="botao-acao-projeto"><span>Parametrização</span></a>
-            <a href="#" class="botao-acao-projeto"><span>Probabilidades</span></a>
+            <a href="{% url 'projetos:PROBABILIDADE_BIA' projeto.id %}" class="botao-acao-projeto"><span>Probabilidades</span></a>
             <a href="#" class="botao-acao-projeto"><span>Tempos</span></a>
         </div>
     </div>

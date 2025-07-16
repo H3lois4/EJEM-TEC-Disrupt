@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}PROBABILIDADE BIA {{ projeto.nome }}{% endblock %}
+
+{% block titulo_pagina %}
+    <span>PROBABILIDADE</span>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="classificacao-container">
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
+
+    <div class="tabelas-wrapper">
+        <!-- Tabela 1: ID/Processo -->
+        <div class="tabela-bloco" style="width: 80px;">
+            <h2>ID</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_probabilidade %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="flex-grow: 1.5; min-width: 220px;">
+            <h2>PROCESSOS</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_probabilidade %}<div class="celula">{{ entrada.processos }}</div>{% endfor %}
+            </div>
+        </div>
+        
+        <!-- Tabela 2: Nicho -->
+        <div class="tabela-bloco" style="flex-grow: 1; min-width: 150px;">
+            <h2>NICHO</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_probabilidadeo %}<div class="celula">{{ entrada.nicho }}</div>{% endfor %}
+            </div>
+        </div>
+
+        <!-- Tabela 3: Legenda -->
+        <div class="tabela probabilidade">
+            <h2>LEGENDA</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_probabilidadeo %}<div class="celula"></div>{% endfor %}
+                <table class="legenda">
+                    <thead>
+                        <tr>
+                            <th>NÍVEL</th>
+                            <th>DESCRIÇÃO</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Muito Provável</td>
+                            <td>É quase certo que o evento vai ocorrer. Evento de ocorrência esperada ou quase certa nos próximos 2 anos. (Espera-se que ocorra na maioria das vezes).</td>
+                        </tr>
+                        <tr>
+                            <td>Provável</td>
+                            <td>É mais provável que o evento ocorra do que não ocorra. Evento provavelmente ocorrerá nos próximos 2 anos. (Deverá ocorrer diversas vezes).</td>
+                        </tr>
+                        <tr>
+                            <td>Possível</td>
+                            <td>É mais provável que o evento não ocorra do que ocorra. Evento de possível ocorrência nos próximos 2 anos. (Ocorrerá uma vez ou outra).</td>
+                        </tr>
+                        <tr>
+                            <td>Remota</td>
+                            <td>Chance remota de que o evento ocorra. Evento nunca ocorreu em organizações do mesmo segmento e possui chance remota de ocorrer nos próximos 2 anos. (Ocorrerá somente em circunstâncias excepcionais).</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
