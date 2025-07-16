@@ -163,3 +163,11 @@ def aqi_bia(request, id):
         
     }
     return render(request, 'projetos/AQI_BIA.html', context)
+
+def probabilidade_view(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=id)
+    # processos = Processo.objects.filter(projeto=projeto)  -> ñ sei como vamos nomear esse dado
+    return render(request, 'probabilidade.html', {
+        'projeto': projeto,
+        # 'processos': processos
+    })

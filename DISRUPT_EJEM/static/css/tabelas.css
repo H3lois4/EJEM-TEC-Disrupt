@@ -85,3 +85,55 @@
 .btn-adicionar-aqi:hover {
     background-color: #e0a800;
 }
+
+/* -------- Estilos da página Probabilidade -------- */
+
+.probabilidade-container {
+    padding: 20px;
+}
+
+.tabelas-wrapper.probabilidade {
+    display: flex;
+    gap: 30px;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+}
+
+.tabela.probabilidade {
+    border: 2px solid #F7B500;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    max-width: 350px;
+}
+
+.tabela.probabilidade h2 {
+    text-align: center;
+    margin: 10px 0;
+    font-size: 18px;
+    color: #1B1B1B;
+}
+
+.tabela.probabilidade table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 14px;
+}
+
+.tabela.probabilidade th,
+.tabela.probabilidade td {
+    border: 1px solid #F7B500;
+    padding: 8px;
+    text-align: left;
+    vertical-align: top;
+}
+
+.tabela.probabilidade th {
+    background-color: #FFF8DC;
+    color: #1B1B1B;
+    font-weight: bold;
+}
+
+.tabela.probabilidade .legenda td {
+    line-height: 1.4;
+}
