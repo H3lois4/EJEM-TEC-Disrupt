@@ -265,3 +265,12 @@ def deletar_drexus(request, pk):
         drexus.delete()
         return redirect('projetos:lista_projetos')
     return redirect('projetos:lista_projetos')
+
+def probabilidade_bia(request, id):
+    projeto = get_object_or_404(Projeto, id=id)
+    
+    context = {
+        'projeto': projeto,
+        
+    }
+    return render(request, 'projetos/PROBABILIDADE_BIA.html', context)

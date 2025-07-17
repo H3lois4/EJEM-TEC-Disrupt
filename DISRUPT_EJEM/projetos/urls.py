@@ -22,7 +22,8 @@ urlpatterns = [
     path('<int:projeto_id>/cadastro_bia/', views.cadastro_bia_view, name='cadastro_bia'),
     path('<int:projeto_id>/parametrizacao/', views.parametrizacao_bia_view, name='parametrizacao_bia'),
     path('<int:projeto_id>/sistemas_ti/', views.sistemas_ti_bia_view, name='sistemas_ti_bia'),
-
+    path('<int:id>/PROBABILIDADE/', views.probabilidade_bia, name='PROBABILIDADE_BIA'),
+    
     path('editar/<int:id>/', views.editar_projeto, name='editar_projeto'),
 
     #URLs MOVER DREXUS P/ BIA P/ FINALIZADOS
