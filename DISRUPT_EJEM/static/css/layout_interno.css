@@ -11,6 +11,14 @@
     --cor-texto-suave: #555;
     --cor-borda-sutil: #e0e0e0;
     --cor-card-fundo: #f8f8f8;
+    --cor-amarelo-hover: #e0a316; 
+    --cor-verde-claro: #28a745;
+    --cor-verde-escuro: #218838;
+    --cor-vermelho-claro: #dc3545;
+    --cor-vermelho-escuro: #c82333;
+    --cor-cinza-claro: #6c757d;
+    --cor-cinza-escuro: #5a6268;
+
 
     /* Layout */
     --header-height: 100px; /* Altura menor para o header */
@@ -141,11 +149,6 @@ body.layout-interno {
     width: calc(100% - var(--sidebar-width-collapsed));
     transition: margin-left 0.3s ease-in-out, width 0.3s ease-in-out;
     padding: 20px;
-}
-
-.navbar-lateral.expanded ~ .main-content {
-    margin-left: var(--sidebar-width-expanded);
-    width: calc(100% - var(--sidebar-width-expanded));
 }
 
 .main-content-wrapper {
@@ -449,6 +452,7 @@ body.layout-interno {
 .resultado-container {
     padding: 30px;
 }
+
 .secao-resultado {
     margin-bottom: 30px;
     padding-bottom: 20px;
@@ -476,27 +480,6 @@ body.layout-interno {
 .secao-resultado ul li {
     line-height: 1.6;
     margin-bottom: 8px;
-}
-
-.acoes-resultado {
-    margin-top: 30px;
-    display: flex;
-    gap: 15px;
-}
-
-.btn-editar {
-    display: inline-block;
-    padding: 10px 20px;
-    background-color: var(--cor-amarelo);
-    color: var(--cor-preto);
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-    transition: background-color 0.2s ease;
-}
-
-.btn-editar:hover { 
-    transform: translateY(-2px); 
 }
 
 .form-container {
@@ -544,6 +527,22 @@ body.layout-interno {
     gap: 15px; 
 }
 
+/* BOTÕES-------------- */
+.acoes-resultado {
+    display: flex;
+    justify-content: space-between; /* Empurra o primeiro item para a esquerda e o último para a direita */
+    align-items: center; /* Centraliza verticalmente */
+    width: 100%; /* Garante que o flexbox ocupe toda a largura disponível */ 
+    margin-top: 30px;
+    gap: 30px;
+}
+
+.botoes-grupo {
+    display: flex;
+    gap: 15px; /* Espaço entre os botões do mesmo grupo */
+    align-items: center;
+}
+
 .btn-principal {
     display: inline-block;
     padding: 12px 24px;
@@ -554,6 +553,7 @@ body.layout-interno {
     border-radius: 6px;
     border: none;
     cursor: pointer;
+    font-size: 1rem;
     transition: background-color 0.2s, transform 0.2s;
 }
 .btn-principal:hover {
@@ -561,6 +561,7 @@ body.layout-interno {
     transform: translateY(-2px);
 }
 
+/* Botão Secundário (Preto com texto amarelo) */
 .btn-secundario {
     display: inline-block;
     padding: 12px 24px;
@@ -572,5 +573,172 @@ body.layout-interno {
     transition: background-color 0.2s, transform 0.2s;
 }
 .btn-secundario:hover {
+    background-color: #333; /* Um preto um pouco mais claro */
     transform: translateY(-2px);
+    color: var(--cor-amarelo);
+}
+
+/* Contêiner para o grupo de botões à direita (Editar, Mover, Excluir) */
+.botoes-direita {
+    display: flex; /* Habilita Flexbox */
+    gap: 10px; /* Espaçamento entre os botões */
+    /* Remove `margin-left: auto;` se estava aqui */
+}
+
+
+/* ESTILOS BASE PARA TODOS OS BOTÕES DE AÇÃO */
+/* Aplica padding, borda, etc. para que todos os botões tenham um visual consistente */
+.btn-voltar,
+.btn-editar,
+.btn-promover,
+.btn-deletar,
+.btn-finalizar, /* Se você quiser aplicar esses estilos também para btn-finalizar */
+.btn-principal, /* Se você quiser aplicar esses estilos também para btn-principal */
+.btn-secundario /* Se você quiser aplicar esses estilos também para btn-secundario */
+{
+    padding: 10px 20px;
+    border: none; /* Remove bordas padrão */
+    border-radius: 6px; /* Bordas arredondadas consistentes */
+    cursor: pointer;
+    font-size: 1rem; /* Tamanho de fonte consistente */
+    font-weight: bold; /* Peso de fonte consistente */
+    text-decoration: none; /* Remove sublinhado para links */
+    display: inline-flex; /* Usa flex para centralizar texto/ícone dentro do botão */
+    align-items: center;
+    justify-content: center;
+    text-align: center; /* Garante alinhamento do texto */
+    transition: background-color 0.2s ease, transform 0.2s ease, box-shadow 0.2s ease;
+    white-space: nowrap; /* Evita que o texto quebre em várias linhas */
+}
+
+/* -------------------------------------------------------------------------------- */
+/* ESTILOS PARA MODAIS (ajustes para consistência visual e display) */
+/* -------------------------------------------------------------------------------- */
+
+.modal-overlay {
+    display: none; /* Padrão oculto */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6); /* Fundo um pouco mais escuro para destaque */
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;   /* Centraliza verticalmente */
+    z-index: 1000;
+}
+
+.modal-content {
+    background-color: var(--cor-card-fundo); /* Usando a variável de cor para consistência */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Sombra mais pronunciada */
+    max-width: 500px;
+    width: 90%; /* Ajuste para responsividade */
+    text-align: center;
+    color: var(--cor-texto-escuro); /* Cor do texto no modal */
+    animation: fadeIn 0.3s ease-out; /* Animação simples de fade-in */
+}
+
+.modal-content p {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    line-height: 1.5;
+}
+
+.modal-actions {
+    margin-top: 25px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* Estilos dos botões dentro do modal */
+.btn-confirmar-modal,
+.btn-cancelar-modal {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 6px; /* Consistente com outros botões */
+    cursor: pointer;
+    font-size: 1rem; /* Consistente */
+    font-weight: bold; /* Consistente */
+    transition: background-color 0.2s ease, transform 0.2s ease;
+}
+
+.btn-confirmar-modal {
+    background-color: var(--cor-amarelo);
+    color: var(--cor-texto-claro);
+}
+.btn-confirmar-modal:hover {
+    background-color: var(--cor-amarelo-hover);
+    transform: translateY(-2px);
+}
+
+.btn-cancelar-modal {
+    background-color: var(--cor-cinza-claro);
+    color: var(--cor-texto-claro);
+}
+.btn-cancelar-modal:hover {
+    background-color: var(--cor-cinza-escuro);
+    transform: translateY(-2px);
+}
+
+.destaque-verde {
+    color: var(--cor-verde-claro); /* Usando variável de cor */
+    font-weight: bold;
+}
+
+.destaque-vermelho {
+    color: var(--cor-vermelho-claro); /* Usando variável de cor */
+    font-weight: bold;
+}
+
+/* Animação para o modal */
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
+}
+
+a.btn-editar:hover {
+    color: var(--cor-preto); /* Mantenha a cor do texto preta no hover para o botão editar */
+}
+
+.btn-deletar { /* Botão Excluir Drexus */
+    background-color: var(--cor-vermelho-claro); /* Usa a variável de cor vermelha */
+    color: var(--cor-texto-claro); /* Cor do texto branco */
+}
+.btn-deletar:hover {
+    background-color: var(--cor-vermelho-escuro); /* Hover mais escuro */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.btn-editar {
+    background-color: var(--cor-amarelo); /* Define o fundo como a cor amarela principal */
+    color: var(--cor-preto);               /* Define a cor do texto como preto para contraste */
+}
+
+.btn-editar:hover {
+    background-color: var(--cor-amarelo-hover); /* A cor mais escura para o efeito hover */
+    transform: translateY(-2px); /* Efeito de "levantar" no hover */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra no hover */
+}
+
+a.btn-editar:hover {
+    color: var(--cor-preto); /* Mantenha a cor do texto preta no hover para o botão editar */
+}
+
+.btn-promover {
+    background-color: #3d25c5; 
+    color: var(--cor-preto);               
+}
+
+.btn-promover:hover {
+    background-color: #3519D7; 
+    transform: translateY(-2px); 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+}
+
+a.btn-promover:hover {
+    color: var(--cor-preto); 
 }

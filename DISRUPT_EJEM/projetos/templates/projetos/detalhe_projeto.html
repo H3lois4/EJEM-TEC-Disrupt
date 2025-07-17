@@ -19,29 +19,25 @@
             <div class="info-card-header">Membros</div>
             <div class="info-card-body">
                 <ul>
-                    <li>[Coordenador] - Temporario </li>
-                    <li>[Consultor] - Temporario </li>
-                    <li>[Consultor] - Temporario </li>
+                    <li>[Coordenador] - Temporario</li>
+                    <li>[Consultor] - Temporario</li>
+                    <li>[Consultor] - Temporario</li>
                 </ul>
             </div>
         </div>
-
         <div class="info-card-detalhe">
             <div class="info-card-header">Andamento</div>
             <div class="info-card-body">
-                <p>DREXUS - Temporario</p>
                 <p>Porcentagem - Temporario</p>
             </div>
         </div>
-
         <div class="info-card-detalhe">
             <div class="info-card-header">Descrição</div>
             <div class="info-card-body">
-                <p>{{ projeto.descricao }}</p>
+                <p>{{ projeto.descricao|truncatechars:120 }}</p>
             </div>
         </div>
-
-        <a href="#" class="card-link efeito-flutuar">  {# Coloque o link do futuro aqui #}
+        <a href="#" class="card-link efeito-flutuar">
             <div class="info-card-detalhe">
                 <div class="info-card-header">Informações</div>
                 <div class="info-card-body">
@@ -54,18 +50,55 @@
     <div class="acoes-grid-container">
         <div class="acoes-grid">
             <a href="{% url 'projetos:planilha_projeto' projeto.id %}" class="botao-acao-projeto"><span>Entrevista</span></a>
-            <a href="#" class="botao-acao-projeto"><span>Sistemas de TI</span></a>
-            <a href="{% url 'projetos:CADASTRO_BIA' projeto.id %}" class="botao-acao-projeto"><span>Cadastro</span></a>
+            <a href="{% url 'projetos:sistemas_ti_bia' projeto.id %}" class="botao-acao-projeto"><span>Sistemas de TI</span></a>
+            <a href="{% url 'projetos:cadastro_bia' projeto.id %}" class="botao-acao-projeto"><span>Cadastro</span></a>
             <a href="{% url 'projetos:AQI_BIA' projeto.id %}" class="botao-acao-projeto"><span>AQI</span></a>
             <a href="{% url 'projetos:CQP_BIA' projeto.id %}" class="botao-acao-projeto"><span>CQP</span></a>
-            <a href="#" class="botao-acao-projeto"><span>Parametrização</span></a>
+            <a href="{% url 'projetos:parametrizacao_bia' projeto.id %}" class="botao-acao-projeto"><span>Parametrização</span></a>
             <a href="#" class="botao-acao-projeto"><span>Probabilidades</span></a>
             <a href="#" class="botao-acao-projeto"><span>Tempos</span></a>
         </div>
     </div>
-    <div class="container-botao-voltar">
-        <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para a Lista de Projetos</a>
+    
+    <div class="acoes-resultado">
+        <div class="botoes-grupo">
+            <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para a Lista</a>
+            {% if projeto.status == 'andamento' %}
+                <a href="{% url 'projetos:editar_projeto' projeto.id %}" class="btn-editar">Editar</a>
+                <button type="button" class="btn-finalizar" data-modal-target="#modal-finalizar-projeto">Finalizar Projeto</button>
+            {% endif %}
+        </div>
+        
+        <button type="button" class="btn-deletar" data-modal-target="#modal-excluir-projeto">Excluir Projeto</button>
+        
     </div>
-
 </div>
+
+<div id="modal-excluir-projeto" class="modal-overlay">
+    <div class="modal-content">
+        <p><strong>Você tem certeza que deseja</strong> <strong class="destaque-vermelho">excluir</strong> <strong>o projeto "{{ projeto.nome }}" de ID {{ projeto.id }}?</strong></p>
+        <p class="aviso"><strong class="destaque-vermelho">Atenção:</strong> Esta ação não poderá ser desfeita!</p>
+        <div class="modal-actions">
+            <form action="{% url 'projetos:deletar_projeto' projeto.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-confirmar-modal">Sim, excluir</button>
+            </form>
+            <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+        </div>
+    </div>
+</div>
+
+<div id="modal-finalizar-projeto" class="modal-overlay">
+    <div class="modal-content">
+        <p>Você deseja <strong class="destaque-azul">finalizar</strong> o projeto <strong>"{{ projeto.nome }}"</strong> de ID <strong>{{ projeto.id }}</strong>?</p>
+        <div class="modal-actions">
+            <form action="{% url 'projetos:finalizar_projeto' projeto.id %}" method="POST">
+                {% csrf_token %}
+                <button type="submit" class="btn-confirmar-modal">Sim, finalizar</button>
+            </form>
+            <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+        </div>
+    </div>
+</div>
+
 {% endblock %}

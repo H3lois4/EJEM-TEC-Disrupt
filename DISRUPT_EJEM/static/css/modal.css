@@ -1,0 +1,195 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2000;
+
+    /* Começa escondido */
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+/* Classe que torna o modal visível (adicionada via JavaScript) */
+.modal-overlay.visivel {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* A caixa branca do pop-up */
+.modal-content {
+    background-color: #f0f0f0; /* Fundo cinza claro como na imagem */
+    padding: 35px;
+    border-radius: 16px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 550px;
+    text-align: center;
+    border: 1px solid #ddd;
+    transform: scale(0.95);
+    transition: transform 0.3s ease;
+}
+
+/* Efeito de zoom ao aparecer */
+.modal-overlay.visivel .modal-content {
+    transform: scale(1);
+}
+
+.modal-content p {
+    font-size: 1.2rem;
+    line-height: 1.6;
+    color: var(--cor-texto-escuro);
+    margin: 0;
+}
+
+/* Estilo para as palavras em destaque (excluir, Atenção) */
+.modal-content p strong.destaque-vermelho {
+    color: #c82333; /* Vermelho para destaque */
+    font-weight: 600; /* Pode ajustar o peso da fonte se necessário */
+}
+
+.modal-content .aviso {
+    font-size: 1rem;
+    color: var(--cor-texto-suave);
+    margin-top: 20px;
+}
+
+/* Contêiner para os botões */
+.modal-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* Estilos base para os botões */
+.btn-confirmar-modal,
+.btn-cancelar-modal {
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-confirmar-modal:hover,
+.btn-cancelar-modal:hover {
+    transform: scale(1.05);
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+}
+
+/* Botão Amarelo ("Sim, excluir") */
+.btn-confirmar-modal {
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
+}
+
+/* Botão Preto ("Não, cancelar") */
+.btn-cancelar-modal {
+    background-color: #343a40;
+    color: white;
+}
+
+.modal-content strong.destaque-verde {
+    color: #28a745; 
+    font-weight: 600;
+}
+
+.acoes-resultado {
+    margin-top: 30px;
+    display: flex; 
+    gap: 15px; 
+    align-items: center; 
+}
+
+.acoes-resultado .btn-voltar {
+    margin-left: auto; 
+}
+
+.btn-promover {
+    display: inline-block;
+    padding: 10px 20px; 
+    background-color: #28a745; 
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+    font-weight: bold;
+    transition: background-color 0.2s ease, transform 0.2s;
+    outline: #28a745;
+}
+
+.btn-promover:hover {
+    background-color: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-finalizar {
+    display: inline-block;
+    padding: 12px 24px;
+    background-color: #007bff; 
+    color: white;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem; 
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.btn-finalizar:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+}
+
+.pergunta-completa {
+    margin-bottom: 35px; 
+    padding-bottom: 25px; 
+    border-bottom: 1px solid var(--cor-borda-sutil); 
+}
+
+.pergunta-completa strong {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--cor-texto-escuro);
+    margin-bottom: 20px; 
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--cor-amarelo); 
+}
+
+.pergunta-label {
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--cor-texto-escuro);
+    display: block;
+    margin-bottom: 15px;
+}
+
+.opcoes-radio {
+    flex-wrap: wrap; 
+    gap: 10px 25px; 
+}
+
+.opcoes-radio div {
+    display: block; 
+    margin-bottom: 15px;
+    font-size: 1rem;
+}
+
+.opcoes-radio label {
+    margin-left: 8px; 
+}
+
+.modal-content strong.destaque-azul {
+    color: #007bff; /* Azul */
+    font-weight: 600;
+}

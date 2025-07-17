@@ -1,8 +1,8 @@
 # views.py
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import DrexusForm
-from .models import Projeto, Drexus 
+from .forms import DrexusForm, ProjetoForm
+from .models import Projeto, Drexus
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
@@ -155,30 +155,113 @@ def resultado_view(request, pk):
     context = {'drexus': drexus}
     return render(request, 'projetos/resultado.html', context)
 
-def aqi_bia(request, id):
-    # Busca o projeto pelo ID 
+
+#Funções para as tabelas (ainda sem o banco de dados) --------------------------------------------------
+def aqi_bia(request, id): 
     projeto = get_object_or_404(Projeto, id=id)
     context = {
-        'projeto': projeto,
-        
+        'projeto': projeto,      
     }
     return render(request, 'projetos/AQI_BIA.html', context)
 
-def cqp_bia(request, id):
-    # Busca o projeto pelo ID 
+def cqp_bia(request, id): 
     projeto = get_object_or_404(Projeto, id=id)
     context = {
-        'projeto': projeto,
-        
+        'projeto': projeto,     
     }
     return render(request, 'projetos/cqp_BIA.html', context)
 
-def cadastro_bia(request, projeto_id):
+def cadastro_bia_view(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
-    #entradas_cadastro = CadastroBia.objects.filter(projeto=projeto)
-
     context = {
         'projeto': projeto,
-        #'entradas_cadastro': entradas_cadastro,
     }
     return render(request, 'projetos/CADASTRO_BIA.html', context)
+
+def parametrizacao_bia_view(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    context = {
+        'projeto': projeto,
+    }
+    return render(request, 'projetos/PARAMETRIZACAO_BIA.html', context)
+
+def sistemas_ti_bia_view(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    context = {
+        'projeto': projeto,
+    }
+    return render(request, 'projetos/SISTEMAS_TI_BIA.html', context)
+
+
+# Função de editar projeto ------------------------------------------------------------------
+def editar_projeto(request, id):
+    projeto = get_object_or_404(Projeto, id=id)
+    if request.method == 'POST':
+        form = ProjetoForm(request.POST, instance=projeto)
+        if form.is_valid():
+            form.save() 
+            return redirect('projetos:detalhe_projeto', id=projeto.id)     
+    else:
+        form = ProjetoForm(instance=projeto)
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/editar_projeto.html', context)
+
+# Função para mover da drexus para projetos em andamento
+def mover_drexus(request, drexus_id):
+    if request.method == 'POST':
+        # 1. Encontra o Drexus que queremos promover
+        drexus_a_mover = get_object_or_404(Drexus, id=drexus_id)
+
+        # 2. Cria um NOVO objeto Projeto, copiando os dados
+        novo_projeto = Projeto.objects.create(
+            nome=drexus_a_mover.nome,
+            descricao=drexus_a_mover.descricao,
+            status='andamento' # Define o status inicial como 'Em Andamento'
+        )
+
+        # OBS: Ainda não sei como vamos organizar o banco de dados, por hora ta apagando todos os dados da drexus, 
+        #talvez tenha q na própria parte de projetos_projetos ter um lugar para guardar esses dados
+        drexus_a_mover.delete()
+
+        # 3. Redireciona o usuário para a página de detalhes do NOVO projeto criado
+        return redirect('projetos:detalhe_projeto', id=novo_projeto.id)
+
+    # Se alguém tentar acessar a URL via GET, apenas redireciona para a lista
+    return redirect('projetos:lista_projetos')
+
+# Função para mover projetos em andamento para projetos finalizados
+def finalizar_projeto(request, id):
+    if request.method == 'POST':
+        # 1. Encontra o projeto que queremos finalizar
+        projeto = get_object_or_404(Projeto, id=id)
+
+        # 2. Altera o status para 'finalizado'
+        projeto.status = 'finalizado'
+
+        # 3. Salva a mudança no banco de dados
+        projeto.save()
+
+        # 4. Redireciona o usuário de volta para a lista de projetos
+        return redirect('projetos:lista_projetos')
+    
+    # Se alguém tentar acessar a URL diretamente, apenas redireciona
+    return redirect('projetos:detalhe_projeto', id=id)
+
+# Função para deletar projetos em andamento ou finalizados
+def deletar_projeto(request, pk):
+    projeto = get_object_or_404(Projeto, pk=pk)
+    if request.method == 'POST':
+        projeto.delete()
+        return redirect('projetos:lista_projetos')
+    return redirect('projetos:detalhe_projeto', id=projeto.pk)
+
+# Função para deletar drexus
+def deletar_drexus(request, pk):
+    drexus = get_object_or_404(Drexus, pk=pk)
+    if request.method == 'POST':
+        drexus.delete()
+        return redirect('projetos:lista_projetos')
+    return redirect('projetos:lista_projetos')

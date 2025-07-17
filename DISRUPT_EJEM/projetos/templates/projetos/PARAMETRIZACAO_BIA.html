@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Parametrização do Projeto{% endblock %}
+
+{% block titulo_pagina %}
+    <span>PARAMETRIZAÇÃO</span>
+{% endblock %}
+
+{% block extra_css %}
+    {# A página vai carregar o layout_interno.css do base.html e este CSS específico #}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="parametrizacao-container">
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
+
+    <div class="tabela-scroll-wrapper">
+        <table class="tabela-parametrizacao">
+            <thead>
+                <tr>
+                    <th rowspan="2">NÍVEL DO IMPACTO</th>
+                    <th rowspan="2">CLASSIFICAÇÃO DO IMPACTO</th>
+                    <th colspan="1">FINANCEIRO</th>
+                    <th colspan="2">IMAGEM E REPUTAÇÃO</th>
+                    <th colspan="3">OPERACIONAL</th>
+                    <th colspan="2">LEGAL E COMPLIANCE</th>
+                    <th colspan="3">ESG</th>
+                </tr>
+                <tr>
+                    <th>Valor de exposição</th>
+                    <th>Mídias</th>
+                    <th>Stakeholders</th>
+                    <th style="width: 80px;"></th>
+                    <th style="width: 80px;"></th>
+                    <th style="width: 80px;"></th>
+                    <th>Penalidade</th>
+                    <th>Contrato</th>
+                    <th>Impacto ao Meio Ambiente</th>
+                    <th>Impacto Social</th>
+                    <th>Impacto na Estratégia e Governança</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Loop para criar 5 linhas de exemplo. No futuro, virá do banco. #}
+                {% for item in "12345" %}
+                <tr>
+                    <td>{{ forloop.counter }}</td> <td>
+                        {% if forloop.counter == 1 %}Muito Alto{% endif %}
+                        {% if forloop.counter == 2 %}Alto{% endif %}
+                        {% if forloop.counter == 3 %}Médio{% endif %}
+                        {% if forloop.counter == 4 %}Baixo{% endif %}
+                        {% if forloop.counter == 5 %}Muito Baixo{% endif %}
+                    </td>
+                    <td></td><td></td><td></td><td></td><td></td><td></td>
+                    <td></td><td></td><td></td><td></td><td></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 25px;">
+        <button class="btn-adicionar-aqi">Adicionar nova Parametrização...</button>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
+    </div>
+</div>
+{% endblock %}

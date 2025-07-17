@@ -32,4 +32,16 @@
             </div>
         </form>
     </div>
+
+    <script>
+        const textarea = document.getElementById('id_descricao');
+        if (textarea) {
+            function autoResize() {
+                this.style.height = 'auto';
+                this.style.height = this.scrollHeight + 'px';
+            }
+            textarea.addEventListener('input', autoResize, false);
+            autoResize.call(textarea);
+        }
+    </script>
 {% endblock %}

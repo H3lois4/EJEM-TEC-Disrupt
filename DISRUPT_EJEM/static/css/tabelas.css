@@ -100,3 +100,45 @@
 .btn-adicionar-aqi:hover {
   transform: translateY(-2px);
 }
+
+.tabela-scroll-wrapper {
+    width: 100%;
+    overflow-x: auto; /* A mágica da rolagem horizontal */
+    padding-bottom: 15px; /* Espaço para a barra de rolagem */
+    border: 1px solid var(--cor-borda-sutil);
+    border-radius: 8px;
+}
+
+/* Tabela principal */
+.tabela-parametrizacao {
+    width: 100%;
+    min-width: 1800px; /* Largura mínima para forçar a rolagem em telas menores */
+    border-collapse: collapse;
+    font-size: 0.9rem;
+    background-color: #fff;
+}
+
+.tabela-parametrizacao th, 
+.tabela-parametrizacao td {
+    border: 1px solid var(--cor-amarelo); /* Bordas amarelas como no design */
+    padding: 12px 8px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.tabela-parametrizacao thead {
+    background-color: #f8f9fa;
+    color: var(--cor-texto-escuro);
+    font-weight: bold;
+}
+
+.tabela-parametrizacao thead th {
+    font-size: 0.8rem;
+    white-space: normal; /* Permite que o texto do cabeçalho quebre a linha */
+}
+
+.tabela-parametrizacao tbody td:first-child,
+.tabela-parametrizacao tbody td:nth-child(2) {
+    font-weight: bold;
+    color: var(--cor-texto-escuro);
+}

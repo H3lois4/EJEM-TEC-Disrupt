@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Sistemas de TI - {{ projeto.nome }}{% endblock %}
+
+{% block titulo_pagina %}
+    <span>SISTEMAS DE TI</span>
+{% endblock %}
+
+{% block extra_css %}
+    {# Vamos criar estilos específicos para esta tabela em um arquivo separado #}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="classificacao-container">
+    <header class="header-interno">
+        <h1>{{ projeto.nome }}</h1>
+    </header>
+
+    <div class="tabela-scroll-wrapper">
+        <table class="tabela-parametrizacao">
+            <thead>
+                <tr>
+                    <th rowspan="2">SUBPROCESSOS</th>
+                    <th rowspan="2">APLICAÇÕES E SISTEMAS</th>
+                    <th rowspan="2">URL</th>
+                    <th rowspan="2">ALTERNATIVA MANUAL</th>
+                    <th colspan="6">IMPACTOS DAS APLICAÇÕES E SISTEMAS</th>
+                    <th rowspan="2">RTO</th>
+                    <th rowspan="2">RPO</th>
+                    <th rowspan="2">OBSERVAÇÕES</th>
+                </tr>
+                <tr>
+                    <th>30min</th>
+                    <th>1H</th>
+                    <th>2H</th>
+                    <th>6H</th>
+                    <th>12H</th>
+                    <th>>24H</th>
+                </tr>
+            </thead>
+            <tbody>
+                {# Loop para criar 4 linhas de exemplo. No futuro, virá do banco. #}
+                {% for item in "1234" %}
+                <tr>
+                    <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> <td></td> </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <div style="margin-top: 25px;">
+        <button class="btn-adicionar-aqi">Adicionar nova Sistema de TI...</button>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
+    </div>
+</div>
+{% endblock %}

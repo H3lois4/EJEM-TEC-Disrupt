@@ -1,5 +1,6 @@
 from django import forms
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS
+from .models import Projeto
 
 class DrexusForm(forms.Form):
     nome = forms.CharField(
@@ -43,3 +44,9 @@ class DrexusForm(forms.Form):
             if value in [None, '', []]:
                 self.add_error(field_name, 'Este campo é obrigatório.')
         return cleaned_data
+
+class ProjetoForm(forms.ModelForm):
+    class Meta:
+        model = Projeto
+        # Defina os campos que o usuário poderá editar
+        fields = ['nome', 'descricao']

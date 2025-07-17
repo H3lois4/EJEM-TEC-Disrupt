@@ -216,7 +216,7 @@ class Projeto(models.Model):
         ('andamento', 'Em Andamento'),
         ('finalizado', 'Finalizado'),
     ]
-    id = models.IntegerField(primary_key=True,unique=True)  # ou use o ID
+    
     nome = models.CharField(max_length=100)
     descricao = models.TextField()
     status = models.CharField(
@@ -227,4 +227,3 @@ class Projeto(models.Model):
 
     def __str__(self):
         return self.nome
-    

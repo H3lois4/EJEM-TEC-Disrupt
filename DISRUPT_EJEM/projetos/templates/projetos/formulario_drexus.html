@@ -3,25 +3,43 @@
 
 {% block title %}Formulário Drexus{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/main.css' %}">
+{% block titulo_pagina %}
+    <span>FORMULÁRIO DE DIAGNÓSTICO DREXUS</span>
 {% endblock %}
 
 {% block content %}
-    <h1>Formulário de Diagnóstico Drexus</h1>
-    <form method="post">
-        {% csrf_token %}
-        {% for field in form %}
-        <div class="pergunta-completa">
-            <strong>{{ field.label }}</strong>
-            <br><br>
-            {{ field }}
-        </div>
-        {% endfor %}
-        <button type="submit">Enviar</button>
-    </form>
-    <br>
-    <div style="width: 300px;">
-        <a class="btn add-card" href="{% url 'projetos:lista_projetos' %}">Cancelar e Voltar</a>
+    <header class="header-interno">
+        <h1>Formulário de Diagnóstico Drexus</h1>
+    </header>
+
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            
+            <div class="form-group">
+                <label for="{{ form.nome.id_for_label }}">{{ form.nome.label }}</label>
+                {{ form.nome }}
+            </div>
+            <div class="form-group">
+                <label for="{{ form.descricao.id_for_label }}">{{ form.descricao.label }}</label>
+                {{ form.descricao }}
+            </div>
+
+            {% for field in form %}
+                {% if field.name != 'nome' and field.name != 'descricao' and field.name != 'csrfmiddlewaretoken' %}
+                    <div class="pergunta-completa">
+                        <strong class="pergunta-label">{{ field.label }}</strong>
+                        <div class="opcoes-radio">
+                            {{ field }}
+                        </div>
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-principal">Salvar Drexus</button>
+                <a href="{% url 'projetos:lista_projetos' %}" class="btn-secundario">Cancelar</a>
+            </div>
+        </form>
     </div>
 {% endblock %}
