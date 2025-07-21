@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Adicionar Cadastro BIA{% endblock %}
+
+{% block titulo_pagina %}
+    <span>ADICIONAR CADASTRO BIA</span>
+{% endblock %}
+
+{% block content %}
+    <header class="header-interno">
+        <h1>Adicionar Cadastro ao Projeto: {{ projeto.nome }}</h1>
+    </header>
+
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            
+            {# O Django vai renderizar os campos do CadastroBiaForm aqui #}
+            {{ form.as_p }}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-principal">Salvar</button>
+                <a href="{% url 'projetos:cadastro_bia' projeto.id %}" class="btn-secundario">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

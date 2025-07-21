@@ -82,7 +82,7 @@
     </div>
 
     <div style="margin-top: 25px;">
-        <button class="btn-adicionar-aqi">Adicionar novo Cadastro...</button>
+        <a href="{% url 'projetos:adicionar_cadastro_bia' projeto.id %}" class="btn-adicionar-aqi">Adicionar novo Cadastro...</a>
         <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
     </div>
 </div>

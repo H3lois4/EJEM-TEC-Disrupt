@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block title %}Adicionar CQP BIA{% endblock %}
+
+{% block titulo_pagina %}
+    <span>ADICIONAR PARAMETRIZÇÃO BIA</span>
+{% endblock %}
+
+{% block content %}
+    <header class="header-interno">
+        <h1>Adicionar Parametrização ao Projeto: {{ projeto.nome }}</h1>
+    </header>
+
+    <div class="form-container">
+        <form method="post">
+            {% csrf_token %}
+            
+            {# O Django vai renderizar os campos do CQPBiaForm aqui #}
+            {{ form.as_p }}
+
+            <div class="form-actions">
+                <button type="submit" class="btn-principal">Salvar</button>
+                <a href="{% url 'projetos:parametrizacao_bia' projeto.id %}" class="btn-secundario">Cancelar</a>
+            </div>
+        </form>
+    </div>
+{% endblock %}

@@ -134,7 +134,7 @@
     </div>
 
     <div style="margin-top: 25px;">
-        <button class="btn-adicionar-aqi">Adicionar nova AQI...</button>
+        <a href="{% url 'projetos:adicionar_aqi_bia' projeto.id %}" class="btn-adicionar-aqi">Adicionar nova AQI...</a>
         <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
     </div>
 </div>

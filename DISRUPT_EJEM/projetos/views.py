@@ -1,19 +1,13 @@
 # views.py
 
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import DrexusForm, ProjetoForm
-from .models import Projeto, Drexus
+from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm
+from .models import Projeto, Drexus, CadastroBia, AQIBia, AQIBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
 
 admin.site.register(Drexus)
-
-# View que lista todos os projetos
-# def lista_projetos(request):
-#     projetos = Projeto.objects.all()
-#     return render(request, 'projetos/lista_projetos.html', {'projetos': projetos})
-
 
 def lista_projetos(request):
     projetos_drexus = Drexus.objects.all()
@@ -274,3 +268,127 @@ def probabilidade_bia(request, id):
         
     }
     return render(request, 'projetos/PROBABILIDADE_BIA.html', context)
+
+
+#--------- FORMULÁRIO PARA ADCICIONAR PROJETOS NAS TABELAS ---------------------#
+def adicionar_aqi_bia(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+
+    # Se o formulário foi enviado (método POST)
+    if request.method == 'POST':
+        form = AQIBiaForm(request.POST)
+        if form.is_valid():
+            # Salva o formulário na memória, sem enviar ao banco ainda
+            novo_cadastro = form.save(commit=False)
+            # Associa o novo cadastro ao projeto correto
+            novo_cadastro.projeto = projeto
+            # Agora sim, salva no banco de dados
+            novo_cadastro.save()
+            # Redireciona o usuário de volta para a página da tabela
+            return redirect('projetos:aqi_bia', projeto_id=projeto.id)
+    
+    # Se a página foi apenas acessada (método GET), mostra um formulário em branco
+    else:
+        form = AQIBiaForm()
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    # Renderiza a página do formulário
+    return render(request, 'projetos/adicionar_aqi_bia.html', context)
+
+#-------------------------------------------------------------------------------------------------------------#
+def adicionar_cadastro_bia(request, projeto_id):#########
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = CadastroBiaForm(request.POST)##########
+        if form.is_valid():
+            novo_cadastro = form.save(commit=False)
+            novo_cadastro.projeto = projeto
+            novo_cadastro.save()
+            return redirect('projetos:cadastro_bia', projeto_id=projeto.id)########
+    else:
+        form = CadastroBiaForm() ########
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/adicionar_cadastro_bia.html', context)#########
+
+#-------------------------------------------------------------------------------------------------------------#
+def adicionar_cqp_bia(request, projeto_id):#########
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = CQPBiaForm(request.POST)##########
+        if form.is_valid():
+            novo_cadastro = form.save(commit=False)
+            novo_cadastro.projeto = projeto
+            novo_cadastro.save()
+            return redirect('projetos:cqp_bia', projeto_id=projeto.id)########
+    else:
+        form = CQPBiaForm() ########
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/adicionar_cqp_bia.html', context)#######
+
+#-------------------------------------------------------------------------------------------------------------#
+def adicionar_parametrizacao_bia(request, projeto_id):#########
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = ParametrizacaoBiaForm(request.POST)##########
+        if form.is_valid():
+            novo_cadastro = form.save(commit=False)
+            novo_cadastro.projeto = projeto
+            novo_cadastro.save()
+            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)########
+    else:
+        form = ParametrizacaoBiaForm() ########
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)#######
+
+#-------------------------------------------------------------------------------------------------------------#
+def adicionar_probabilidade_bia(request, projeto_id):#########
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = ProbabilidadeBiaForm(request.POST)##########
+        if form.is_valid():
+            novo_cadastro = form.save(commit=False)
+            novo_cadastro.projeto = projeto
+            novo_cadastro.save()
+            return redirect('projetos:probabilidade_bia', projeto_id=projeto.id)########
+    else:
+        form = ProbabilidadeBiaForm() ########
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/adicionar_probabilidade_bia.html', context)#######
+
+#-------------------------------------------------------------------------------------------------------------#
+def adicionar_sistemas_ti_bia(request, projeto_id):#########
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = SistemasTIBiaForm(request.POST)##########
+        if form.is_valid():
+            novo_cadastro = form.save(commit=False)
+            novo_cadastro.projeto = projeto
+            novo_cadastro.save()
+            return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id)########
+    else:
+        form = SistemasTIBiaForm() ########
+
+    context = {
+        'form': form,
+        'projeto': projeto
+    }
+    return render(request, 'projetos/adicionar_sistemas_ti_bia.html', context)#######

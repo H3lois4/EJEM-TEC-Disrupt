@@ -1,6 +1,6 @@
 from django import forms
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS
-from .models import Projeto
+from .models import Projeto, Drexus, AQIBia, CadastroBia, CQPBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
 
 class DrexusForm(forms.Form):
     nome = forms.CharField(
@@ -50,3 +50,40 @@ class ProjetoForm(forms.ModelForm):
         model = Projeto
         # Defina os campos que o usuário poderá editar
         fields = ['nome', 'descricao']
+
+#FORMs das tabelas bia
+class AQIBiaForm(forms.ModelForm):
+    class Meta:
+        model = AQIBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto']
+
+class CadastroBiaForm(forms.ModelForm):
+    class Meta:
+        model = CadastroBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto'] 
+
+class CQPBiaForm(forms.ModelForm):
+    class Meta:
+        model = CQPBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto'] 
+
+class ParametrizacaoBiaForm(forms.ModelForm):
+    class Meta:
+        model = ParametrizacaoBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto']
+
+class ProbabilidadeBiaForm(forms.ModelForm):
+    class Meta:
+        model = ProbabilidadeBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto'] 
+
+class SistemasTIBiaForm(forms.ModelForm):
+    class Meta:
+        model = SistemasTIBia
+        # Inclui todos os campos do modelo, menos o 'projeto' que será associado automaticamente
+        exclude = ['projeto']

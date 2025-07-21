@@ -88,7 +88,7 @@
     </div>
 
     <div style="margin-top: 25px;">
-        <button class="btn-adicionar-aqi">Adicionar nova CQP ...</button>
+        <a href="{% url 'projetos:adicionar_cqp_bia' projeto.id %}" class="btn-adicionar-aqi">Adicionar nova CQP ...</a>
         <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
 </div>
 {% endblock %}

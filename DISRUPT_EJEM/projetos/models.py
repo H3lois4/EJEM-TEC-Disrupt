@@ -207,9 +207,6 @@ class Drexus(models.Model):
         self.calcular_nota_final()
         self.gerar_diagnosticos()
         super().save(*args, **kwargs)
-
-
-   
     
 class Projeto(models.Model):
     STATUS_CHOICES = [
@@ -227,3 +224,21 @@ class Projeto(models.Model):
 
     def __str__(self):
         return self.nome
+    
+class CadastroBia(models.Model):
+    pass
+
+class AQIBia(models.Model):
+    pass
+
+class ParametrizacaoBia(models.Model):
+    pass
+
+class CQPBia(models.Model):
+    pass
+
+class ProbabilidadeBia(models.Model):
+    pass
+
+class SistemasTIBia(models.Model):
+    pass

@@ -26,6 +26,14 @@ urlpatterns = [
     
     path('editar/<int:id>/', views.editar_projeto, name='editar_projeto'),
 
+    #URLs formulários BIA
+    path('<int:projeto_id>/aqi_bia/adicionar/', views.adicionar_aqi_bia, name='adicionar_aqi_bia'),
+    path('<int:projeto_id>/cadastro_bia/adicionar/', views.adicionar_cadastro_bia, name='adicionar_cadastro_bia'),
+    path('<int:projeto_id>/cqp_bia/adicionar/', views.adicionar_cqp_bia, name='adicionar_cqp_bia'),
+    path('<int:projeto_id>/parametrizacao_bia/adicionar/', views.adicionar_parametrizacao_bia, name='adicionar_parametrizacao_bia'),
+    path('<int:projeto_id>/probabilidade_bia/adicionar/', views.adicionar_probabilidade_bia, name='adicionar_probabilidade_bia'),
+    path('<int:projeto_id>/sistemas_ti_bia/adicionar/', views.adicionar_sistemas_ti_bia, name='adicionar_sistemas_ti_bia'),
+
     #URLs MOVER DREXUS P/ BIA P/ FINALIZADOS
     path('drexus/mover/<int:drexus_id>/', views.mover_drexus, name='mover_drexus'),
     path('finalizar/<int:id>/', views.finalizar_projeto, name='finalizar_projeto'),
