@@ -1,5 +1,3 @@
-/* static/css/tabelas.css (VERSÃO COM TAMANHO FLEXÍVEL) */
-
 .classificacao-container .header-interno h1 {
     font-size: 1.5rem;
     color: var(--cor-texto-escuro);
@@ -181,4 +179,39 @@
 
 .tabela.probabilidade .legenda td {
     line-height: 1.4;
+}
+
+.btn-editar-tabela {
+    background-color: var(--cor-amarelo); 
+    color: var(--cor-preto);
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    display: inline-block;
+    margin-bottom: 5px; 
+}
+
+.btn-editar-tabela:hover {
+    background-color: #f0c14b; 
+}
+
+.btn-deletar-tabela {
+    background-color: #dc3545; 
+    color: white;
+    border: none;
+    border-radius: 5px;
+    padding: 8px 12px;
+    text-decoration: none;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: background-color 0.2s ease-in-out;
+    display: inline-block;
+}
+
+.btn-deletar-tabela:hover {
+    background-color: #c82333; 
 }

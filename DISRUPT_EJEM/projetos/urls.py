@@ -16,7 +16,7 @@ urlpatterns = [
     path('drexus/resultado/<int:pk>/', views.resultado_view, name='resultado'),
     path('drexus/editar/<int:pk>/', views.editar_drexus, name='editar_drexus'),
 
-    #URLs BIA
+    #URLs BIA - Visualização das Tabelas
     path('<int:id>/AQI/', views.aqi_bia, name='AQI_BIA'),
     path('<int:id>/CQP/', views.cqp_bia, name='CQP_BIA'),
     path('<int:projeto_id>/cadastro_bia/', views.cadastro_bia_view, name='cadastro_bia'),
@@ -26,13 +26,21 @@ urlpatterns = [
     
     path('editar/<int:id>/', views.editar_projeto, name='editar_projeto'),
 
-    #URLs formulários BIA
+    #URLs formulários BIA - Adicionar
     path('<int:projeto_id>/aqi_bia/adicionar/', views.adicionar_aqi_bia, name='adicionar_aqi_bia'),
     path('<int:projeto_id>/cadastro_bia/adicionar/', views.adicionar_cadastro_bia, name='adicionar_cadastro_bia'),
     path('<int:projeto_id>/cqp_bia/adicionar/', views.adicionar_cqp_bia, name='adicionar_cqp_bia'),
     path('<int:projeto_id>/parametrizacao_bia/adicionar/', views.adicionar_parametrizacao_bia, name='adicionar_parametrizacao_bia'),
     path('<int:projeto_id>/probabilidade_bia/adicionar/', views.adicionar_probabilidade_bia, name='adicionar_probabilidade_bia'),
     path('<int:projeto_id>/sistemas_ti_bia/adicionar/', views.adicionar_sistemas_ti_bia, name='adicionar_sistemas_ti_bia'),
+
+    #URLs para Editar e Deletar AQIBia
+    path('<int:projeto_id>/aqi_bia/editar/<int:aqi_id>/', views.editar_aqi_bia, name='editar_aqi_bia'),
+    path('<int:projeto_id>/aqi_bia/deletar/<int:aqi_id>/', views.deletar_aqi_bia, name='deletar_aqi_bia'),
+
+    #URLs para Editar e Deletar CQPBia
+    path('<int:projeto_id>/cqp_bia/editar/<int:cqp_id>/', views.editar_cqp_bia, name='editar_cqp_bia'),
+    path('<int:projeto_id>/cqp_bia/deletar/<int:cqp_id>/', views.deletar_cqp_bia, name='deletar_cqp_bia'),
 
     #URLs MOVER DREXUS P/ BIA P/ FINALIZADOS
     path('drexus/mover/<int:drexus_id>/', views.mover_drexus, name='mover_drexus'),

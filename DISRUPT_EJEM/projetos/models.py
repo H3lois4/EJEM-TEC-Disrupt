@@ -1,6 +1,8 @@
 # models.py
 
 from django.db import models
+# Importe PERGUNTAS_TABELAS para usar em lógicas futuras se necessário
+# from Disrupt.utils.perguntas_tabelas import PERGUNTAS_TABELAS # Pode ser útil para validações ou metadados, mas não estritamente necessário para a definição do modelo em si.
 
 class Drexus(models.Model):
     nome = models.CharField(max_length=100)
@@ -224,21 +226,165 @@ class Projeto(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
+# --- Modelos BIA atualizados com base em perguntas_tabelas.py ---
+
 class CadastroBia(models.Model):
-    pass
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='cadastros_bia')
+    processos = models.CharField(max_length=255)
+    area = models.CharField(max_length=255)
+    nicho = models.CharField(max_length=255)
+    responsavel = models.CharField(max_length=255)
+    cenario = models.TextField()
+    probabilidade = models.CharField(max_length=255) # Pode ser IntegerField se for um valor numérico
+
+    def __str__(self):
+        return f"Cadastro BIA para {self.projeto.nome} - {self.processos}"
 
 class AQIBia(models.Model):
-    pass
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='aqis_bia')
+    processo = models.CharField(max_length=255)
+    rto = models.IntegerField(verbose_name='Tempo de Recuperação Objetivo (RTO em horas)') # Ou FloatField se permitir decimais
+    mtpd = models.IntegerField(verbose_name='Período Máximo de Interrupção Tolerável (MTPD em horas)') # Ou FloatField
+    
+    # Campos de impacto financeiro
+    impacto_financeiro_1h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    impacto_financeiro_4h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    impacto_financeiro_8h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    impacto_financeiro_24h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    impacto_financeiro_48h = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    impacto_financeiro_REAL = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
 
-class ParametrizacaoBia(models.Model):
-    pass
+    # Campos de impacto de imagem e reputação (usando CharField, assumindo texto descritivo)
+    impacto_img_rep_1h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_img_rep_4h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_img_rep_8h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_img_rep_24h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_img_rep_48h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_img_rep_REAL = models.CharField(max_length=255, null=True, blank=True)
+
+    # Campos de impacto operacional
+    impacto_operacional_1h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_operacional_4h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_operacional_8h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_operacional_24h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_operacional_48h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_operacional_REAL = models.CharField(max_length=255, null=True, blank=True)
+
+    # Campos de impacto legal
+    impacto_legal_1h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_legal_4h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_legal_8h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_legal_24h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_legal_48h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_legal_REAL = models.CharField(max_length=255, null=True, blank=True)
+
+    # Campos de impacto ambiental
+    impacto_ambiental_1h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_ambiental_4h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_ambiental_8h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_ambiental_24h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_ambiental_48h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_ambiental_REAL = models.CharField(max_length=255, null=True, blank=True)
+
+    base = models.CharField(max_length=255, null=True, blank=True)
+
+    def __str__(self):
+        return f"AQI BIA para {self.processo} do Projeto {self.projeto.nome}"
+
 
 class CQPBia(models.Model):
-    pass
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='cqps_bia')
+    classificacao_impacto = models.CharField(max_length=255)
+    probabilidade = models.CharField(max_length=255) # Pode ser IntegerField/FloatField
+    total_criticidade = models.CharField(max_length=255) # Pode ser IntegerField/FloatField
+    processos = models.TextField(verbose_name='Quais são os Processos Envolvidos?') # Textarea para múltiplos processos
+    rto = models.CharField(max_length=255) # Ou IntegerField/FloatField
+    area = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"CQP BIA para {self.processos} do Projeto {self.projeto.nome}"
+
+
+class ParametrizacaoBia(models.Model):
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='parametrizacoes_bia')
+    # Use DecimalField para valores monetários ou que exigem precisão
+    valor_exposicao_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_midias_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_stakeholders_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_penalidade_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_contrato_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    amb_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    social_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estrategia_1 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    valor_exposicao_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_midias_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_stakeholders_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_penalidade_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_contrato_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    amb_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    social_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estrategia_2 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    valor_exposicao_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_midias_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_stakeholders_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_penalidade_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_contrato_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    amb_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    social_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estrategia_3 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    valor_exposicao_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_midias_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_stakeholders_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_penalidade_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_contrato_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    amb_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    social_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estrategia_4 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    valor_exposicao_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_midias_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    img_rep_stakeholders_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_penalidade_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    legal_contrato_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    amb_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    social_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    estrategia_5 = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+
+    def __str__(self):
+        return f"Parametrização BIA para Projeto {self.projeto.nome}"
 
 class ProbabilidadeBia(models.Model):
-    pass
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='probabilidades_bia')
+    processos = models.CharField(max_length=255)
+    nicho = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"Probabilidade BIA para {self.processos} do Projeto {self.projeto.nome}"
 
 class SistemasTIBia(models.Model):
-    pass
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='sistemas_ti_bia')
+    subprocessos = models.CharField(max_length=255)
+    aplicacoes_sistemas = models.CharField(max_length=255)
+    url = models.URLField(max_length=200, blank=True, null=True) # URLField para URLs
+    alternativa_manual = models.CharField(max_length=255) # Poderia ser BooleanField se for 'Sim/Não'
+    
+    # Campos de impacto de aplicações e sistemas
+    impacto_aplicacoes_30min = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_1h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_2h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_6h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_8h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_12h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_24h = models.CharField(max_length=255, null=True, blank=True)
+    impacto_aplicacoes_mais_24h = models.CharField(max_length=255, null=True, blank=True, verbose_name='impacto_aplicacoes_+24h') # Renomeado para evitar '+' em nome de campo
+    
+    rto = models.CharField(max_length=255) # Ou IntegerField/FloatField
+    rpo = models.CharField(max_length=255) # Ou IntegerField/FloatField
+    observacao = models.TextField(blank=True, null=True) # TextField para observações
+
+    def __str__(self):
+        return f"Sistema de TI BIA para {self.aplicacoes_sistemas} do Projeto {self.projeto.nome}"

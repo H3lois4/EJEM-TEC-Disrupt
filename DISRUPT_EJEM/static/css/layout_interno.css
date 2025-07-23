@@ -494,15 +494,17 @@ body.layout-interno {
     display: block;
     font-weight: bold;
     margin-bottom: 8px;
-    font-size: 1rem;
+    font-size: 1.2rem;
     color: var(--cor-texto-suave);
 }
 
 .form-group input[type="text"],
+.form-group input[type="number"], 
+.form-group input[type="url"],    
 .form-group textarea {
     width: 100%;
     padding: 12px;
-    font-size: 1rem;
+    font-size: 1rem; 
     font-family: inherit; 
     border: 1px solid var(--cor-borda-sutil);
     border-radius: 6px;
@@ -515,6 +517,8 @@ body.layout-interno {
 }
 
 .form-group input[type="text"]:focus,
+.form-group input[type="number"]:focus,
+.form-group input[type="url"]:focus,
 .form-group textarea:focus {
     outline: none;
     border-color: var(--cor-amarelo);

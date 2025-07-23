@@ -1,8 +1,6 @@
-# views.py
-
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm
-from .models import Projeto, Drexus, CadastroBia, AQIBia, AQIBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
+from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
@@ -25,8 +23,6 @@ def detalhe_projeto(request, id):
     projeto = get_object_or_404(Projeto, id=id)
     return render(request, 'projetos/detalhe_projeto.html', {'projeto': projeto})
 
-
-
 def criar_projeto(request):
     if request.method == 'POST':
         nome = request.POST.get('nome')
@@ -37,7 +33,6 @@ def criar_projeto(request):
             return redirect('projetos:lista_projetos')
 
     return render(request, 'projetos/criar_projeto.html')
-
 
 def criar_drexus(request):
     if request.method == 'POST':
@@ -51,7 +46,6 @@ def criar_drexus(request):
         return redirect('projetos:lista_projetos')
     
     return render(request, 'projetos/criar_drexus.html')
-
 
 def planilha_projeto(request, id):
     projeto = get_object_or_404(Projeto, pk=id)
@@ -124,7 +118,7 @@ def editar_drexus(request, pk):
                 setattr(drexus, f"{grupo}_notas", notas)
 
             drexus.save()
-            return redirect('resultado', pk=drexus.pk)
+            return redirect('projetos:resultado', pk=drexus.pk) 
     else:
         initial_data = {
             'nome': drexus.nome,
@@ -150,39 +144,49 @@ def resultado_view(request, pk):
     return render(request, 'projetos/resultado.html', context)
 
 
-#Funções para as tabelas (ainda sem o banco de dados) --------------------------------------------------
+# Funções para as tabelas BIA --------------------------------------------------
 def aqi_bia(request, id): 
     projeto = get_object_or_404(Projeto, id=id)
+    entradas_aqi = AQIBia.objects.filter(projeto=projeto).order_by('id') 
     context = {
-        'projeto': projeto,      
+        'projeto': projeto, 
+        'entradas_aqi': entradas_aqi, 
     }
     return render(request, 'projetos/AQI_BIA.html', context)
 
 def cqp_bia(request, id): 
     projeto = get_object_or_404(Projeto, id=id)
+    entradas_cqp = CQPBia.objects.filter(projeto=projeto).order_by('id')
     context = {
-        'projeto': projeto,     
+        'projeto': projeto, 
+        'entradas_cqp': entradas_cqp, 
     }
     return render(request, 'projetos/cqp_BIA.html', context)
 
 def cadastro_bia_view(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
+    entradas_cadastro = CadastroBia.objects.filter(projeto=projeto).order_by('id')
     context = {
         'projeto': projeto,
+        'entradas_cadastro': entradas_cadastro, 
     }
     return render(request, 'projetos/CADASTRO_BIA.html', context)
 
 def parametrizacao_bia_view(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
+    entradas_parametrizacao = ParametrizacaoBia.objects.filter(projeto=projeto).order_by('id')
     context = {
         'projeto': projeto,
+        'entradas_parametrizacao': entradas_parametrizacao, 
     }
     return render(request, 'projetos/PARAMETRIZACAO_BIA.html', context)
 
 def sistemas_ti_bia_view(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
+    entradas_sistemas_ti = SistemasTIBia.objects.filter(projeto=projeto).order_by('id')
     context = {
         'projeto': projeto,
+        'entradas_sistemas_ti': entradas_sistemas_ti, 
     }
     return render(request, 'projetos/SISTEMAS_TI_BIA.html', context)
 
@@ -206,42 +210,23 @@ def editar_projeto(request, id):
 # Função para mover da drexus para projetos em andamento
 def mover_drexus(request, drexus_id):
     if request.method == 'POST':
-        # 1. Encontra o Drexus que queremos promover
         drexus_a_mover = get_object_or_404(Drexus, id=drexus_id)
-
-        # 2. Cria um NOVO objeto Projeto, copiando os dados
         novo_projeto = Projeto.objects.create(
             nome=drexus_a_mover.nome,
             descricao=drexus_a_mover.descricao,
-            status='andamento' # Define o status inicial como 'Em Andamento'
+            status='andamento'
         )
-
-        # OBS: Ainda não sei como vamos organizar o banco de dados, por hora ta apagando todos os dados da drexus, 
-        #talvez tenha q na própria parte de projetos_projetos ter um lugar para guardar esses dados
         drexus_a_mover.delete()
-
-        # 3. Redireciona o usuário para a página de detalhes do NOVO projeto criado
         return redirect('projetos:detalhe_projeto', id=novo_projeto.id)
-
-    # Se alguém tentar acessar a URL via GET, apenas redireciona para a lista
     return redirect('projetos:lista_projetos')
 
 # Função para mover projetos em andamento para projetos finalizados
 def finalizar_projeto(request, id):
     if request.method == 'POST':
-        # 1. Encontra o projeto que queremos finalizar
         projeto = get_object_or_404(Projeto, id=id)
-
-        # 2. Altera o status para 'finalizado'
         projeto.status = 'finalizado'
-
-        # 3. Salva a mudança no banco de dados
         projeto.save()
-
-        # 4. Redireciona o usuário de volta para a lista de projetos
         return redirect('projetos:lista_projetos')
-    
-    # Se alguém tentar acessar a URL diretamente, apenas redireciona
     return redirect('projetos:detalhe_projeto', id=id)
 
 # Função para deletar projetos em andamento ou finalizados
@@ -262,32 +247,25 @@ def deletar_drexus(request, pk):
 
 def probabilidade_bia(request, id):
     projeto = get_object_or_404(Projeto, id=id)
-    
+    entradas_probabilidade = ProbabilidadeBia.objects.filter(projeto=projeto).order_by('id')
     context = {
         'projeto': projeto,
-        
+        'entradas_probabilidade': entradas_probabilidade, 
     }
     return render(request, 'projetos/PROBABILIDADE_BIA.html', context)
 
 
-#--------- FORMULÁRIO PARA ADCICIONAR PROJETOS NAS TABELAS ---------------------#
+#--------- FORMULÁRIOS PARA ADCICIONAR AQI ------------------------------------------------------------------------------------#
 def adicionar_aqi_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
-
-    # Se o formulário foi enviado (método POST)
     if request.method == 'POST':
         form = AQIBiaForm(request.POST)
         if form.is_valid():
-            # Salva o formulário na memória, sem enviar ao banco ainda
             novo_cadastro = form.save(commit=False)
-            # Associa o novo cadastro ao projeto correto
             novo_cadastro.projeto = projeto
-            # Agora sim, salva no banco de dados
             novo_cadastro.save()
-            # Redireciona o usuário de volta para a página da tabela
-            return redirect('projetos:aqi_bia', projeto_id=projeto.id)
-    
-    # Se a página foi apenas acessada (método GET), mostra um formulário em branco
+            # Redireciona para a URL de visualização da tabela AQI_BIA
+            return redirect('projetos:AQI_BIA', id=projeto.id) 
     else:
         form = AQIBiaForm()
 
@@ -295,100 +273,165 @@ def adicionar_aqi_bia(request, projeto_id):
         'form': form,
         'projeto': projeto
     }
-    # Renderiza a página do formulário
     return render(request, 'projetos/adicionar_aqi_bia.html', context)
 
-#-------------------------------------------------------------------------------------------------------------#
-def adicionar_cadastro_bia(request, projeto_id):#########
+#--------- Views para Edição e Exclusão de AQIBia --------------------
+def editar_aqi_bia(request, projeto_id, aqi_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    aqi_entrada = get_object_or_404(AQIBia, id=aqi_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = AQIBiaForm(request.POST, instance=aqi_entrada)
+        if form.is_valid():
+            form.save()
+            # Redireciona para a URL de visualização da tabela AQI_BIA
+            return redirect('projetos:AQI_BIA', id=projeto.id) 
+    else:
+        form = AQIBiaForm(instance=aqi_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'aqi_entrada': aqi_entrada, 
+    }
+    # Reutilize o template de adicionar para a página de edição
+    return render(request, 'projetos/adicionar_aqi_bia.html', context) 
+
+def deletar_aqi_bia(request, projeto_id, aqi_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    aqi_entrada = get_object_or_404(AQIBia, id=aqi_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        aqi_entrada.delete()
+        # Redireciona para a URL de visualização da tabela AQI_BIA após a exclusão
+        return redirect('projetos:AQI_BIA', id=projeto.id)
+    
+    # Se alguém tentar acessar a URL via GET, apenas redireciona para a lista
+    return redirect('projetos:AQI_BIA', id=projeto.id) 
+
+#------------------------ FORMULÁRIOS PARA ADICIONAR CADASTRO -----------------------------------------------------#
+def adicionar_cadastro_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     if request.method == 'POST':
-        form = CadastroBiaForm(request.POST)##########
+        form = CadastroBiaForm(request.POST)
         if form.is_valid():
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
-            return redirect('projetos:cadastro_bia', projeto_id=projeto.id)########
+            return redirect('projetos:cadastro_bia', projeto_id=projeto.id)
     else:
-        form = CadastroBiaForm() ########
+        form = CadastroBiaForm()
 
     context = {
         'form': form,
         'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_cadastro_bia.html', context)#########
+    return render(request, 'projetos/adicionar_cadastro_bia.html', context)
 
-#-------------------------------------------------------------------------------------------------------------#
-def adicionar_cqp_bia(request, projeto_id):#########
+#------------------------ FORMULÁRIO PARA ADICONAR CQP ---------------------------------------------------#
+def adicionar_cqp_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     if request.method == 'POST':
-        form = CQPBiaForm(request.POST)##########
+        form = CQPBiaForm(request.POST)
         if form.is_valid():
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
-            return redirect('projetos:cqp_bia', projeto_id=projeto.id)########
+            return redirect('projetos:CQP_BIA', id=projeto.id) 
     else:
-        form = CQPBiaForm() ########
+        form = CQPBiaForm()
 
     context = {
         'form': form,
         'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_cqp_bia.html', context)#######
+    return render(request, 'projetos/adicionar_cqp_bia.html', context)
 
-#-------------------------------------------------------------------------------------------------------------#
-def adicionar_parametrizacao_bia(request, projeto_id):#########
+#-------------------- Views para Edição e Exclusão de CQPBia --------------------
+def editar_cqp_bia(request, projeto_id, cqp_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    cqp_entrada = get_object_or_404(CQPBia, id=cqp_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = CQPBiaForm(request.POST, instance=cqp_entrada)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:CQP_BIA', id=projeto.id) 
+    else:
+        form = CQPBiaForm(instance=cqp_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'cqp_entrada': cqp_entrada, 
+    }
+    # Reutilize o template de adicionar para a página de edição
+    return render(request, 'projetos/adicionar_cqp_bia.html', context) 
+
+def deletar_cqp_bia(request, projeto_id, cqp_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    cqp_entrada = get_object_or_404(CQPBia, id=cqp_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        cqp_entrada.delete()
+        return redirect('projetos:CQP_BIA', id=projeto.id)
+    
+    # Se alguém tentar acessar a URL via GET, apenas redireciona para a lista
+    return redirect('projetos:CQP_BIA', id=projeto.id) 
+
+#--------------------- FORMULÁRIO PARA ADICIONAR PARAMETRIZAÇÃO ------------------------------------------#
+def adicionar_parametrizacao_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     if request.method == 'POST':
-        form = ParametrizacaoBiaForm(request.POST)##########
+        form = ParametrizacaoBiaForm(request.POST)
         if form.is_valid():
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
-            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)########
+            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
     else:
-        form = ParametrizacaoBiaForm() ########
+        form = ParametrizacaoBiaForm()
 
     context = {
         'form': form,
         'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)#######
+    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)
 
-#-------------------------------------------------------------------------------------------------------------#
-def adicionar_probabilidade_bia(request, projeto_id):#########
+#---------------------- FORMULÁRIO PARA ADICIONAR PROBABILIDADE -----------------------------------------------#
+def adicionar_probabilidade_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     if request.method == 'POST':
-        form = ProbabilidadeBiaForm(request.POST)##########
+        form = ProbabilidadeBiaForm(request.POST)
         if form.is_valid():
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
-            return redirect('projetos:probabilidade_bia', projeto_id=projeto.id)########
+            return redirect('projetos:PROBABILIDADE_BIA', id=projeto.id) 
     else:
-        form = ProbabilidadeBiaForm() ########
+        form = ProbabilidadeBiaForm()
 
     context = {
         'form': form,
         'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_probabilidade_bia.html', context)#######
+    return render(request, 'projetos/adicionar_probabilidade_bia.html', context)
 
-#-------------------------------------------------------------------------------------------------------------#
-def adicionar_sistemas_ti_bia(request, projeto_id):#########
+#------------------------FORMULÁRIO PARA ADICIONAR SISTEMAS DE TI ----------------------------------------------#
+def adicionar_sistemas_ti_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     if request.method == 'POST':
-        form = SistemasTIBiaForm(request.POST)##########
+        form = SistemasTIBiaForm(request.POST)
         if form.is_valid():
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
-            return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id)########
+            return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id)
     else:
-        form = SistemasTIBiaForm() ########
+        form = SistemasTIBiaForm()
 
     context = {
         'form': form,
         'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_sistemas_ti_bia.html', context)#######
+    return render(request, 'projetos/adicionar_sistemas_ti_bia.html', context)

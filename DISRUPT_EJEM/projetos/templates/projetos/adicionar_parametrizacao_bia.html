@@ -1,9 +1,10 @@
 {% extends "base.html" %}
+{% load static %} {# Adicionado para consistência #}
 
-{% block title %}Adicionar CQP BIA{% endblock %}
+{% block title %}Adicionar Parametrização BIA{% endblock %} {# Corrigi o título para Parametrização #}
 
 {% block titulo_pagina %}
-    <span>ADICIONAR PARAMETRIZÇÃO BIA</span>
+    <span>ADICIONAR PARAMETRIZAÇÃO BIA</span> {# Corrigi o título para Parametrização #}
 {% endblock %}
 
 {% block content %}
@@ -15,8 +16,42 @@
         <form method="post">
             {% csrf_token %}
             
-            {# O Django vai renderizar os campos do CQPBiaForm aqui #}
-            {{ form.as_p }}
+            {# Itera sobre todos os campos do formulário #}
+            {% for field in form %}
+                {# Exclui campos ocultos ou de CSRF que não precisam de estilização manual #}
+                {% if field.is_hidden %}
+                    {{ field }}
+                {% elif field.name == 'csrfmiddlewaretoken' %}
+                    {# CSRF token é renderizado por {% csrf_token %} acima #}
+                {% else %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {# Para exibir erros específicos de campo, se houver #}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="helptext">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {# Para exibir erros não-campo (non-field errors) #}
+            {% if form.non_field_errors %}
+                <div class="form-group">
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
 
             <div class="form-actions">
                 <button type="submit" class="btn-principal">Salvar</button>

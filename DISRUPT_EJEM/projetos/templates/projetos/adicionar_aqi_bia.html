@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %} {# Certifique-se de ter esta linha para usar static #}
 
 {% block title %}Adicionar AQI BIA{% endblock %}
 
@@ -15,8 +16,42 @@
         <form method="post">
             {% csrf_token %}
             
-            {# O Django vai renderizar os campos do AQIBiaForm aqui #}
-            {{ form.as_p }}
+            {# Itera sobre todos os campos do formulário #}
+            {% for field in form %}
+                {# Exclui campos ocultos ou de CSRF que não precisam de estilização manual #}
+                {% if field.is_hidden %}
+                    {{ field }}
+                {% elif field.name == 'csrfmiddlewaretoken' %}
+                    {# CSRF token é renderizado por {% csrf_token %} acima, então não precisamos renderizá-lo novamente aqui #}
+                {% else %}
+                    <div class="form-group">
+                        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+                        {{ field }}
+                        {# Para exibir erros específicos de campo, se houver #}
+                        {% if field.errors %}
+                            <ul class="errorlist">
+                                {% for error in field.errors %}
+                                    <li>{{ error }}</li>
+                                {% endfor %}
+                            </ul>
+                        {% endif %}
+                        {% if field.help_text %}
+                            <p class="helptext">{{ field.help_text }}</p>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            {% endfor %}
+
+            {# Para exibir erros não-campo (non-field errors) #}
+            {% if form.non_field_errors %}
+                <div class="form-group">
+                    <ul class="errorlist">
+                        {% for error in form.non_field_errors %}
+                            <li>{{ error }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
 
             <div class="form-actions">
                 <button type="submit" class="btn-principal">Salvar</button>
