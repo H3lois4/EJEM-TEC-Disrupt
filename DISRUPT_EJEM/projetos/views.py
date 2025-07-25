@@ -1,6 +1,6 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm
-from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
+from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia 
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
@@ -144,7 +144,7 @@ def resultado_view(request, pk):
     return render(request, 'projetos/resultado.html', context)
 
 
-# Funções para as tabelas BIA --------------------------------------------------
+# Funções para as tabelas BIA (agora buscam dados) --------------------------------------------------
 def aqi_bia(request, id): 
     projeto = get_object_or_404(Projeto, id=id)
     entradas_aqi = AQIBia.objects.filter(projeto=projeto).order_by('id') 
@@ -177,7 +177,7 @@ def parametrizacao_bia_view(request, projeto_id):
     entradas_parametrizacao = ParametrizacaoBia.objects.filter(projeto=projeto).order_by('id')
     context = {
         'projeto': projeto,
-        'entradas_parametrizacao': entradas_parametrizacao, 
+        'entradas_parametrizacao': entradas_parametrizacao, # Passa todas as entradas para o template
     }
     return render(request, 'projetos/PARAMETRIZACAO_BIA.html', context)
 
@@ -275,7 +275,7 @@ def adicionar_aqi_bia(request, projeto_id):
     }
     return render(request, 'projetos/adicionar_aqi_bia.html', context)
 
-#--------- Views para Edição e Exclusão de AQIBia --------------------
+#-------------------- Views para Edição e Exclusão de AQIBia --------------------
 def editar_aqi_bia(request, projeto_id, aqi_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     aqi_entrada = get_object_or_404(AQIBia, id=aqi_id, projeto=projeto)
@@ -365,7 +365,6 @@ def editar_cqp_bia(request, projeto_id, cqp_id):
         'projeto': projeto,
         'cqp_entrada': cqp_entrada, 
     }
-    # Reutilize o template de adicionar para a página de edição
     return render(request, 'projetos/adicionar_cqp_bia.html', context) 
 
 def deletar_cqp_bia(request, projeto_id, cqp_id):
@@ -388,6 +387,7 @@ def adicionar_parametrizacao_bia(request, projeto_id):
             novo_cadastro = form.save(commit=False)
             novo_cadastro.projeto = projeto
             novo_cadastro.save()
+            # Redireciona para a URL de visualização da tabela Parametrizacao_BIA
             return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
     else:
         form = ParametrizacaoBiaForm()
@@ -397,6 +397,36 @@ def adicionar_parametrizacao_bia(request, projeto_id):
         'projeto': projeto
     }
     return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)
+
+#-------------------- Views para Edição e Exclusão de ParametrizacaoBia --------------------
+def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    parametrizacao_entrada = get_object_or_404(ParametrizacaoBia, id=parametrizacao_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = ParametrizacaoBiaForm(request.POST, instance=parametrizacao_entrada)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id) 
+    else:
+        form = ParametrizacaoBiaForm(instance=parametrizacao_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'parametrizacao_entrada': parametrizacao_entrada, 
+    }
+    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context) 
+
+def deletar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    parametrizacao_entrada = get_object_or_404(ParametrizacaoBia, id=parametrizacao_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        parametrizacao_entrada.delete()
+        return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
+    
+    return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id) 
 
 #---------------------- FORMULÁRIO PARA ADICIONAR PROBABILIDADE -----------------------------------------------#
 def adicionar_probabilidade_bia(request, projeto_id):

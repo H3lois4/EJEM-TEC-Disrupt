@@ -108,38 +108,147 @@
     border-radius: 8px;
 }
 
-/* Tabela principal */
-.tabela-parametrizacao {
-    width: 100%;
-    min-width: 1800px; /* Largura mínima para forçar a rolagem em telas menores */
-    border-collapse: collapse;
-    font-size: 0.9rem;
-    background-color: #fff;
+.actions-row {
+    display: flex;
+    gap: 15px; /* Espaçamento entre os botões */
+    justify-content: center; /* Centraliza os botões */
+    margin-bottom: 25px; /* Espaço abaixo da linha de botões */
+}
+.top-actions-row {
+    margin-top: 0; /* Ajuste se precisar de margem no topo da página */
+}
+.bottom-actions-row {
+    margin-top: 25px; /* Espaço acima da linha de botões inferiores */
+    margin-bottom: 0;
 }
 
-.tabela-parametrizacao th, 
-.tabela-parametrizacao td {
-    border: 1px solid var(--cor-amarelo); /* Bordas amarelas como no design */
-    padding: 12px 8px;
+/* Tabela principal */
+.parametrizacao-table-section {
+    background-color: var(--cor-texto-claro); /* Fundo branco para o card */
+    border: 1px solid var(--cor-borda-sutil);
+    border-radius: 8px;
+    padding: 20px; /* Espaçamento interno do card */
+    margin-bottom: 30px; /* Espaçamento entre os múltiplos cards de parametrização */
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05); /* Sombra suave para o card */
+}
+
+/* --- Cabeçalho de cada Tabela de Parametrização (ID e Botões Editar/Excluir) --- */
+.parametrizacao-table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+    padding-bottom: 10px;
+    border-bottom: 2px solid var(--cor-amarelo); /* Linha amarela abaixo do cabeçalho */
+}
+
+.parametrizacao-table-header h2 {
+    font-size: 1.2rem;
+    color: var(--cor-preto);
+    margin: 0;
+}
+
+.parametrizacao-table-header .parametrizacao-actions {
+    display: flex;
+    gap: 10px; /* Espaçamento entre os botões Editar e Excluir */
+}
+
+
+/* --- Estilos para o Wrapper da Tabela Principal (para rolagem horizontal) --- */
+.table-responsive-custom {
+    width: 100%;
+    overflow-x: auto; /* Permite rolagem horizontal */
+    padding-bottom: 10px; /* Espaço para a barra de rolagem */
+}
+
+/* --- Estilos da Tabela HTML Principal de Parametrização (<table class="parametrizacao-grid-table">) --- */
+.parametrizacao-grid-table {
+    width: 100%; /* Ocupa a largura disponível no wrapper responsivo */
+    /*
+        AJUSTE MIN-WIDTH AQUI: Este valor força a largura mínima da tabela.
+        Calcule aproximadamente a soma das larguras de todas as suas colunas
+        para garantir que elas não quebrem e que a rolagem apareça.
+        Ex: 120 (Nível) + 150 (Classif.) + 150 (Fin.) + 200 (Img.Midias) + 200 (Img.Stake) +
+            150 (Oper.) + 200 (Legal Pen.) + 200 (Legal Contr.) + 200 (Amb.) + 200 (Social) + 250 (Estrat.)
+            = ~2000px (aprox). Comece grande e diminua.
+    */
+    min-width: 1600px; /* Exemplo: Ajuste este valor! */
+    border-collapse: collapse; /* Remove espaçamento entre bordas de células */
+    background-color: #fff;
+    /* Remover borda geral da tabela se quiser que td/th tenham bordas */
+}
+
+/* --- Estilos para Cabeçalhos (th) e Células (td) da Tabela --- */
+.parametrizacao-grid-table th,
+.parametrizacao-grid-table td {
+    border: 1px solid var(--cor-borda-sutil); /* Bordas para todas as células */
+    padding: 8px 5px; /* Padding interno das células */
     text-align: center;
     vertical-align: middle;
+    white-space: nowrap; /* ESSENCIAL: Evita que o texto quebre, forçando a rolagem */
+    overflow: hidden; /* Oculta conteúdo que excede */
+    text-overflow: ellipsis; /* Adiciona "..." se o texto for muito longo e nowrap */
 }
 
-.tabela-parametrizacao thead {
-    background-color: #f8f9fa;
-    color: var(--cor-texto-escuro);
+/* Estilos do cabeçalho (thead) */
+.parametrizacao-grid-table thead th {
+    background-color: var(--cor-amarelo);
+    color: var(--cor-preto);
     font-weight: bold;
+    font-size: 0.8rem; /* Tamanho da fonte dos cabeçalhos principais */
+    line-height: 1.2; /* Ajusta espaçamento de linha para cabeçalhos multi-linha */
+    padding: 10px 5px; /* Padding maior para cabeçalhos */
+    height: 40px; /* Altura mínima para cabeçalhos de linha única */
 }
 
-.tabela-parametrizacao thead th {
-    font-size: 0.8rem;
-    white-space: normal; /* Permite que o texto do cabeçalho quebre a linha */
+/* Ajustes para cabeçalhos com rowspan="2" (NÍVEL DO IMPACTO, CLASSIFICAÇÃO DO IMPACTO) */
+.parametrizacao-grid-table thead tr:first-child th[rowspan="2"] {
+    height: 80px; /* Dobra a altura para os cabeçalhos que abrangem 2 linhas */
 }
 
-.tabela-parametrizacao tbody td:first-child,
-.tabela-parametrizacao tbody td:nth-child(2) {
+/* Estilo para as células do corpo da tabela (tbody) */
+.parametrizacao-grid-table tbody td {
+    font-size: 0.85rem; /* Tamanho da fonte para os dados do corpo */
+    min-height: 40px; /* Altura mínima para as células de dados */
+}
+
+/* Estilos específicos para as primeiras colunas (Nível e Classificação) */
+.parametrizacao-grid-table tbody td:nth-child(1), /* NÍVEL DO IMPACTO */
+.parametrizacao-grid-table tbody td:nth-child(2) { /* CLASSIFICAÇÃO DO IMPACTO */
     font-weight: bold;
     color: var(--cor-texto-escuro);
+    text-align: left; /* Alinhar à esquerda se preferir */
+    padding-left: 10px;
+}
+
+/* Efeito zebrado nas linhas do corpo da tabela */
+.parametrizacao-grid-table tbody tr:nth-child(even) {
+    background-color: #f8f8f8;
+}
+
+/* Efeito hover nas linhas do corpo da tabela */
+.parametrizacao-grid-table tbody tr:hover {
+    background-color: #f0f0f0;
+}
+
+
+/* --- Estilos da Mensagem de Tabela Vazia --- */
+.empty-table-message {
+    text-align: center;
+    padding: 40px 20px;
+    background-color: #f0f0f0;
+    border: 1px dashed var(--cor-amarelo);
+    border-radius: 8px;
+    margin-top: 30px;
+    color: var(--cor-texto-suave);
+    font-size: 1.1rem;
+}
+.empty-table-message p {
+    margin-bottom: 10px;
+}
+.empty-table-message p:last-child {
+    margin-bottom: 0;
+    font-weight: bold;
 }
 
 .tabela.probabilidade {
