@@ -94,6 +94,6 @@ PERGUNTAS_BIA = {
     },
     
     'OBSERVACOES': {
-        'observacoes': 'Espaço para observações adicionais'
+        'observacoes': 'Faça suas observações adicionais'
     }
 }
