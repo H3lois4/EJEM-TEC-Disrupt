@@ -1,34 +1,25 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}Adicionar/Editar Sistema de TI{% endblock %}
+{% block title %}Adicionar Entrevista BIA{% endblock %}
 
 {% block titulo_pagina %}
-    {% if sistema_entrada %}
-        <span>EDITAR SISTEMA DE TI</span>
-    {% else %}
-        <span>ADICIONAR SISTEMA DE TI</span>
-    {% endif %}
+    <span>ADICIONAR ENTREVISTA BIA</span>
 {% endblock %}
 
 {% block content %}
     <header class="header-interno">
-        {% if sistema_entrada %}
-            <h1>Editar Sistema de TI no Projeto: {{ projeto.nome }}</h1>
-        {% else %}
-            <h1>Adicionar Sistema de TI ao Projeto: {{ projeto.nome }}</h1>
-        {% endif %}
+        <h1>{% if entrevista %}Editar{% else %}Adicionar{% endif %} Entrevista BIA para o Projeto: {{ projeto.nome }}</h1>
     </header>
 
     <div class="form-container">
         <form method="post">
             {% csrf_token %}
             
+            {# Iterar sobre os campos do formulário para exibir #}
             {% for field in form %}
                 {% if field.is_hidden %}
                     {{ field }}
-                {% elif field.name == 'csrfmiddlewaretoken' %}
-                    {# Já renderizado pelo {% csrf_token %} #}
                 {% else %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
@@ -47,6 +38,7 @@
                 {% endif %}
             {% endfor %}
 
+            {# Para exibir erros não-campo (non-field errors) #}
             {% if form.non_field_errors %}
                 <div class="form-group">
                     <ul class="errorlist">
@@ -59,7 +51,7 @@
 
             <div class="form-actions">
                 <button type="submit" class="btn-principal">Salvar</button>
-                <a href="{% url 'projetos:sistemas_ti_bia' projeto.id %}" class="btn-secundario">Cancelar</a>
+                <a href="{% url 'projetos:lista_entrevistas_bia' projeto.id %}" class="btn-secundario">Cancelar</a>
             </div>
         </form>
     </div>

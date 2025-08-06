@@ -1,5 +1,6 @@
 {% extends "base.html" %}
 {% load static %}
+{# REMOVIDO: {% load custom_filters %} - Não precisa mais de NENHUM filtro customizado #}
 
 {% block title %}Parametrização - {{ projeto.nome }}{% endblock %}
 
@@ -12,14 +13,15 @@
 {% endblock %}
 
 {% block content %}
-<div class="parametrizacao-page-container"> {# Novo container principal para a página de parametrização #}
+<div class="parametrizacao-page-container">
     <header class="header-interno">
         <h1>Parametrização BIA para o Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    {# Loop para exibir cada parametrização como uma tabela separada #}
-    {% if entradas_parametrizacao %}
-        {% for entrada in entradas_parametrizacao %}
+    {% if parametrizacoes_com_operacoes %}
+        {% for item in parametrizacoes_com_operacoes %}
+            {# Usando 'with' para simplificar o acesso aos dados pré-processados da view #}
+            {% with entrada=item.parametrizacao nomes_operacoes_colunas=item.nomes_operacoes_colunas dados_tabela_por_nivel=item.dados_tabela_por_nivel %}
             <div class="parametrizacao-table-section">
                 <div class="parametrizacao-table-header">
                     <h2>Parametrização #{{ entrada.id }}</h2>
@@ -40,15 +42,26 @@
                                 <th rowspan="2">CLASSIFICAÇÃO DO IMPACTO</th>
                                 <th colspan="1">FINANCEIRO</th>
                                 <th colspan="2">IMAGEM E REPUTAÇÃO</th>
-                                <th colspan="1">OPERACIONAL</th> {# Apenas uma coluna se não tiver sub-divisões #}
+                                
+                                {# COLUNA OPERACIONAL DINÂMICA: colspan baseado no número de nomes de operações #}
+                                <th colspan="{{ nomes_operacoes_colunas|length|default:1 }}">OPERACIONAL</th> 
+                                
                                 <th colspan="2">LEGAL E COMPLIANCE</th>
-                                <th colspan="3">ESG</th> {# Agora 3 sub-colunas: Meio Ambiente, Social, Estratégia #}
+                                <th colspan="3">ESG</th> 
                             </tr>
                             <tr>
                                 <th>Valor de exposição</th>
                                 <th>Mídias</th>
                                 <th>Stakeholders</th>
-                                <th></th> {# Célula vazia para OPERACIONAL se não houver sub-header #}
+                                
+                                {# SUBTÍTULOS OPERACIONAIS DINÂMICOS: Nomes das operações #}
+                                {% for nome_op in nomes_operacoes_colunas %}
+                                    <th>{{ nome_op }}</th>
+                                {% empty %}
+                                    {# Caso não haja operações associadas a essa parametrização #}
+                                    <th class="text-muted">N/A</th> 
+                                {% endfor %}
+                                
                                 <th>Penalidade</th>
                                 <th>Contrato</th>
                                 <th>Impacto ao Meio Ambiente</th>
@@ -57,80 +70,42 @@
                             </tr>
                         </thead>
                         <tbody>
-                            {# Nível 1 #}
-                            <tr>
-                                <td>1</td>
-                                <td>Muito Alto</td>
-                                <td>{{ entrada.valor_exposicao_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_midias_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_stakeholders_1|default_if_none:"-" }}</td>
-                                <td>-</td> {# Campo operacional, se não houver dado direto, mantenha um traço #}
-                                <td>{{ entrada.legal_penalidade_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.legal_contrato_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.amb_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.social_1|default_if_none:"-" }}</td>
-                                <td>{{ entrada.estrategia_1|default_if_none:"-" }}</td>
-                            </tr>
-                            {# Nível 2 #}
-                            <tr>
-                                <td>2</td>
-                                <td>Alto</td>
-                                <td>{{ entrada.valor_exposicao_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_midias_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_stakeholders_2|default_if_none:"-" }}</td>
-                                <td>-</td>
-                                <td>{{ entrada.legal_penalidade_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.legal_contrato_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.amb_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.social_2|default_if_none:"-" }}</td>
-                                <td>{{ entrada.estrategia_2|default_if_none:"-" }}</td>
-                            </tr>
-                            {# Nível 3 #}
-                            <tr>
-                                <td>3</td>
-                                <td>Médio</td>
-                                <td>{{ entrada.valor_exposicao_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_midias_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_stakeholders_3|default_if_none:"-" }}</td>
-                                <td>-</td>
-                                <td>{{ entrada.legal_penalidade_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.legal_contrato_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.amb_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.social_3|default_if_none:"-" }}</td>
-                                <td>{{ entrada.estrategia_3|default_if_none:"-" }}</td>
-                            </tr>
-                            {# Nível 4 #}
-                            <tr>
-                                <td>4</td>
-                                <td>Baixo</td>
-                                <td>{{ entrada.valor_exposicao_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_midias_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_stakeholders_4|default_if_none:"-" }}</td>
-                                <td>-</td>
-                                <td>{{ entrada.legal_penalidade_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.legal_contrato_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.amb_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.social_4|default_if_none:"-" }}</td>
-                                <td>{{ entrada.estrategia_4|default_if_none:"-" }}</td>
-                            </tr>
-                            {# Nível 5 #}
-                            <tr>
-                                <td>5</td>
-                                <td>Muito Baixo</td>
-                                <td>{{ entrada.valor_exposicao_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_midias_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.img_rep_stakeholders_5|default_if_none:"-" }}</td>
-                                <td>-</td>
-                                <td>{{ entrada.legal_penalidade_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.legal_contrato_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.amb_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.social_5|default_if_none:"-" }}</td>
-                                <td>{{ entrada.estrategia_5|default_if_none:"-" }}</td>
-                            </tr>
+                            {# Loop para cada linha de dados de nível #}
+                            {% for row in dados_tabela_por_nivel %}
+                                <tr>
+                                    <td>{{ row.nivel }}</td>
+                                    <td>{{ row.classificacao }}</td>
+                                    <td>{{ row.valor_exposicao|default_if_none:"-" }}</td>
+                                    <td>{{ row.img_rep_midias|default_if_none:"-" }}</td>
+                                    <td>{{ row.img_rep_stakeholders|default_if_none:"-" }}</td>
+                                    
+                                    {# CÉLULAS OPERACIONAIS DINÂMICAS #}
+                                    {% if row.operacionais %}
+                                        {% for valor_op_nivel in row.operacionais %}
+                                            <td>{{ valor_op_nivel|default_if_none:"-" }}</td>
+                                        {% endfor %}
+                                    {% else %}
+                                        {# Se não houver dados operacionais para este nível, preenche com "-" para o número correto de colunas #}
+                                        {% for _ in nomes_operacoes_colunas %}
+                                            <td>-</td>
+                                        {% empty %}
+                                            {# Se nomes_operacoes_colunas também está vazia, apenas um '-' para a célula única #}
+                                            <td>-</td>
+                                        {% endfor %}
+                                    {% endif %}
+                                    
+                                    <td>{{ row.legal_penalidade|default_if_none:"-" }}</td>
+                                    <td>{{ row.legal_contrato|default_if_none:"-" }}</td>
+                                    <td>{{ row.amb|default_if_none:"-" }}</td>
+                                    <td>{{ row.social|default_if_none:"-" }}</td>
+                                    <td>{{ row.estrategia|default_if_none:"-" }}</td>
+                                </tr>
+                            {% endfor %}
                         </tbody>
                     </table>
                 </div>
             </div>
+            {% endwith %}
         {% endfor %}
     {% else %}
         <div class="empty-table-message">

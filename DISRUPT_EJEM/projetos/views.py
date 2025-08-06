@@ -1,9 +1,10 @@
 from django.shortcuts import render, get_object_or_404, redirect
-from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm
-from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia 
+from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, EntrevistaBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm, OperacaoOperacionalFormSet
+from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, EntrevistaBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia, OperacaoOperacional
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
+from django.forms import inlineformset_factory
 
 admin.site.register(Drexus)
 
@@ -174,10 +175,67 @@ def cadastro_bia_view(request, projeto_id):
 
 def parametrizacao_bia_view(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
-    entradas_parametrizacao = ParametrizacaoBia.objects.filter(projeto=projeto).order_by('id')
+    
+    entradas_parametrizacao = ParametrizacaoBia.objects.filter(projeto=projeto).order_by('id').prefetch_related('operacoes_operacionais')
+    
+    parametrizacoes_para_template = []
+    
+    # Definir os nomes das classificações de impacto para cada nível
+    fix_classificacao_data = {
+        '1': 'Muito Alto',
+        '2': 'Alto',
+        '3': 'Médio',
+        '4': 'Baixo',
+        '5': 'Muito Baixo',
+    }
+    
+    for entrada in entradas_parametrizacao:
+        operacoes_operacionais = entrada.operacoes_operacionais.all().order_by('id')
+        
+        nomes_operacoes_colunas = [op.nome_operacao for op in operacoes_operacionais]
+        
+        # Estrutura para armazenar todos os dados da tabela por nível para esta ParametrizacaoBia
+        dados_tabela_por_nivel = []
+
+        for nivel_idx in range(1, 6): # Para cada nível de 1 a 5
+            nivel_str = str(nivel_idx)
+            
+            # Coletar dados da ParametrizacaoBia para o nível atual
+            row_data = {
+                'nivel': nivel_str,
+                'classificacao': fix_classificacao_data[nivel_str], # Usando o dicionário fixo
+                
+                # Acessando atributos diretamente do objeto 'entrada'
+                'valor_exposicao': getattr(entrada, f'valor_exposicao_{nivel_str}', '-'),
+                'img_rep_midias': getattr(entrada, f'img_rep_midias_{nivel_str}', '-'),
+                'img_rep_stakeholders': getattr(entrada, f'img_rep_stakeholders_{nivel_str}', '-'),
+                
+                'legal_penalidade': getattr(entrada, f'legal_penalidade_{nivel_str}', '-'),
+                'legal_contrato': getattr(entrada, f'legal_contrato_{nivel_str}', '-'),
+                
+                'amb': getattr(entrada, f'amb_{nivel_str}', '-'),
+                'social': getattr(entrada, f'social_{nivel_str}', '-'),
+                'estrategia': getattr(entrada, f'estrategia_{nivel_str}', '-'),
+                
+                'operacionais': [] # Lista para os valores de operações operacionais neste nível
+            }
+
+            # Coletar dados das OperacaoOperacional para o nível atual
+            for op in operacoes_operacionais:
+                valor_do_nivel = getattr(op, f'valor_nivel_{nivel_str}', '-')
+                row_data['operacionais'].append(valor_do_nivel)
+            
+            dados_tabela_por_nivel.append(row_data)
+
+        parametrizacoes_para_template.append({
+            'parametrizacao': entrada, # Mantemos o objeto ParametrizacaoBia para links de edição/exclusão
+            'nomes_operacoes_colunas': nomes_operacoes_colunas,
+            'dados_tabela_por_nivel': dados_tabela_por_nivel, # Passa a estrutura completa da tabela por nível
+        })
+
     context = {
         'projeto': projeto,
-        'entradas_parametrizacao': entradas_parametrizacao, # Passa todas as entradas para o template
+        'parametrizacoes_com_operacoes': parametrizacoes_para_template,
     }
     return render(request, 'projetos/PARAMETRIZACAO_BIA.html', context)
 
@@ -328,6 +386,39 @@ def adicionar_cadastro_bia(request, projeto_id):
     }
     return render(request, 'projetos/adicionar_cadastro_bia.html', context)
 
+#-------------------- Views para Edição e Exclusão de CADASTRO --------------------
+def editar_cadastro_bia(request, projeto_id, cadastro_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    cadastro_entrada = get_object_or_404(CadastroBia, id=cadastro_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = CadastroBiaForm(request.POST, instance=cadastro_entrada)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:cadastro_bia', projeto_id=projeto.id) 
+    else:
+        form = CadastroBiaForm(instance=cadastro_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'cadastro_entrada': cadastro_entrada, 
+    }
+    # Reutiliza o template de adicionar para a página de edição
+    return render(request, 'projetos/adicionar_cadastro_bia.html', context) 
+
+
+def deletar_cadastro_bia(request, projeto_id, cadastro_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    cadastro_entrada = get_object_or_404(CadastroBia, id=cadastro_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        cadastro_entrada.delete()
+        return redirect('projetos:cadastro_bia', projeto_id=projeto.id)
+    
+    # Se o método não for POST, apenas redireciona de volta para a lista
+    return redirect('projetos:cadastro_bia', projeto_id=projeto.id)
+
 #------------------------ FORMULÁRIO PARA ADICONAR CQP ---------------------------------------------------#
 def adicionar_cqp_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
@@ -381,19 +472,40 @@ def deletar_cqp_bia(request, projeto_id, cqp_id):
 #--------------------- FORMULÁRIO PARA ADICIONAR PARAMETRIZAÇÃO ------------------------------------------#
 def adicionar_parametrizacao_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
+    
     if request.method == 'POST':
         form = ParametrizacaoBiaForm(request.POST)
-        if form.is_valid():
-            novo_cadastro = form.save(commit=False)
-            novo_cadastro.projeto = projeto
-            novo_cadastro.save()
-            # Redireciona para a URL de visualização da tabela Parametrizacao_BIA
+        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=ParametrizacaoBia()) 
+
+        if form.is_valid() and formset.is_valid():
+            # ... (sua lógica de salvamento existente) ...
+            parametrizacao = form.save(commit=False)
+            parametrizacao.projeto = projeto
+            parametrizacao.save()
+            
+            operacoes_salvas = formset.save(commit=False) 
+            for operacao in operacoes_salvas:
+                operacao.parametrizacao_bia = parametrizacao
+                operacao.save()
+            
+            for obj in formset.deleted_objects:
+                obj.delete()
+
             return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
-    else:
+        else:
+            # >>>>> ADICIONE ESTAS DUAS LINHAS PARA VER OS ERROS DE VALIDAÇÃO <<<<<
+            print("\n----- ERROS DO FORMULÁRIO PRINCIPAL -----")
+            print(form.errors)
+            print("\n----- ERROS DO FORMSET -----")
+            print(formset.errors)
+            print("------------------------------------------\n")
+    else: # GET request
         form = ParametrizacaoBiaForm()
+        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=ParametrizacaoBia()) 
 
     context = {
         'form': form,
+        'formset': formset,
         'projeto': projeto
     }
     return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)
@@ -405,14 +517,61 @@ def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
 
     if request.method == 'POST':
         form = ParametrizacaoBiaForm(request.POST, instance=parametrizacao_entrada)
-        if form.is_valid():
+        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=parametrizacao_entrada)
+        
+        if form.is_valid() and formset.is_valid():
             form.save()
-            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id) 
-    else:
+            formset.save() 
+            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
+        else:
+            # >>>>> ADICIONE ESTAS DUAS LINHAS PARA VER OS ERROS DE VALIDAÇÃO <<<<<
+            print("\n----- ERROS DO FORMULÁRIO PRINCIPAL (EDIÇÃO) -----")
+            print(form.errors)
+            print("\n----- ERROS DO FORMSET (EDIÇÃO) -----")
+            print(formset.errors)
+            print("--------------------------------------------------\n")
+    else: # GET request
         form = ParametrizacaoBiaForm(instance=parametrizacao_entrada)
+        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=parametrizacao_entrada)
     
     context = {
         'form': form,
+        'formset': formset,
+        'projeto': projeto,
+        'parametrizacao_entrada': parametrizacao_entrada, 
+    }
+    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context) 
+
+#-------------------- Views para Edição e Exclusão de ParametrizacaoBia --------------------
+def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    parametrizacao_entrada = get_object_or_404(ParametrizacaoBia, id=parametrizacao_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = ParametrizacaoBiaForm(request.POST, instance=parametrizacao_entrada)
+        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=parametrizacao_entrada)
+        
+        if form.is_valid() and formset.is_valid():
+            form.save() # Salva o formulário principal
+            
+            # formset.save() sem commit=False já lida com tudo (criação, atualização, exclusão)
+            # Ele retorna uma tupla de (new_objects, changed_objects, deleted_objects)
+            # mas você não precisa iterar sobre eles manualmente para associar o pai,
+            # já que o formset sabe quem é o pai (parametrizacao_entrada).
+            formset.save() 
+            
+            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
+        else:
+            # Se o formulário ou formset não são válidos, eles são renderizados novamente com erros.
+            print("Formulário principal erros:", form.errors)
+            print("Formset erros:", formset.errors)
+    else: # GET request
+        form = ParametrizacaoBiaForm(instance=parametrizacao_entrada)
+        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=parametrizacao_entrada)
+    
+    context = {
+        'form': form,
+        'formset': formset,
         'projeto': projeto,
         'parametrizacao_entrada': parametrizacao_entrada, 
     }
@@ -421,12 +580,13 @@ def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
 def deletar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     parametrizacao_entrada = get_object_or_404(ParametrizacaoBia, id=parametrizacao_id, projeto=projeto)
-    
+
     if request.method == 'POST':
         parametrizacao_entrada.delete()
         return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
-    
-    return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id) 
+
+    # Se alguém tentar acessar a URL via GET, apenas redireciona para a lista
+    return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
 
 #---------------------- FORMULÁRIO PARA ADICIONAR PROBABILIDADE -----------------------------------------------#
 def adicionar_probabilidade_bia(request, projeto_id):
@@ -465,3 +625,101 @@ def adicionar_sistemas_ti_bia(request, projeto_id):
         'projeto': projeto
     }
     return render(request, 'projetos/adicionar_sistemas_ti_bia.html', context)
+
+#-------------------- Views para Edição e Exclusão de Sistemas de TI --------------------
+def editar_sistemas_ti_bia(request, projeto_id, sistema_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    sistema_entrada = get_object_or_404(SistemasTIBia, id=sistema_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = SistemasTIBiaForm(request.POST, instance=sistema_entrada)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id) 
+    else:
+        form = SistemasTIBiaForm(instance=sistema_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'sistema_entrada': sistema_entrada, 
+    }
+    # Reutiliza o mesmo template do formulário de adicionar
+    return render(request, 'projetos/adicionar_sistemas_ti_bia.html', context) 
+
+def deletar_sistemas_ti_bia(request, projeto_id, sistema_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    sistema_entrada = get_object_or_404(SistemasTIBia, id=sistema_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        sistema_entrada.delete()
+        return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id)
+    
+    # Se o método não for POST, apenas redireciona de volta para a lista
+    return redirect('projetos:sistemas_ti_bia', projeto_id=projeto.id)
+
+
+#-------------------------------------------------------
+def lista_entrevistas_bia(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    entrevistas = EntrevistaBia.objects.filter(projeto=projeto).order_by('id')
+    context = {
+        'projeto': projeto,
+        'entrevistas': entrevistas,
+    }
+    return render(request, 'projetos/ENTREVISTA_BIA.html', context)
+
+
+def adicionar_entrevista_bia(request, projeto_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    if request.method == 'POST':
+        form = EntrevistaBiaForm(request.POST)
+        if form.is_valid():
+            entrevista = form.save(commit=False)
+            entrevista.projeto = projeto
+            entrevista.save()
+            return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id) # Redireciona para a lista de entrevistas
+        else:
+            print("Erros no formulário da Entrevista BIA:", form.errors) # Para depuração
+    else:
+        form = EntrevistaBiaForm()
+
+    context = {
+        'form': form,
+        'projeto': projeto,
+    }
+    return render(request, 'projetos/adicionar_entrevista_bia.html', context)
+
+# Você também vai precisar de uma view para editar a entrevista, similar a editar_parametrizacao_bia
+def editar_entrevista_bia(request, projeto_id, entrevista_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    entrevista = get_object_or_404(EntrevistaBia, id=entrevista_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = EntrevistaBiaForm(request.POST, instance=entrevista)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
+        else:
+            print("Erros no formulário de edição da Entrevista BIA:", form.errors)
+    else:
+        form = EntrevistaBiaForm(instance=entrevista)
+
+    context = {
+        'form': form,
+        'projeto': projeto,
+        'entrevista': entrevista,
+    }
+    return render(request, 'projetos/adicionar_entrevista_bia.html', context) # Reutiliza o template de adicionar
+
+
+# E uma view para deletar, similar a deletar_parametrizacao_bia
+def deletar_entrevista_bia(request, projeto_id, entrevista_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    entrevista = get_object_or_404(EntrevistaBia, id=entrevista_id, projeto=projeto)
+
+    if request.method == 'POST':
+        entrevista.delete()
+        return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
+    
+    return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
