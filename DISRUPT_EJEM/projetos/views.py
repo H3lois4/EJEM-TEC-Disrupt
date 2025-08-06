@@ -12,6 +12,27 @@ def lista_projetos(request):
     projetos_andamento = Projeto.objects.filter(status__icontains="andamento")
     projetos_finalizados = Projeto.objects.filter(status__icontains="finalizado")
 
+    for projeto in projetos_andamento:
+        etapas_concluidas = 0
+        if CadastroBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        # if EntrevistaBia.objects.filter(projeto=projeto).exists():
+        #     etapas_concluidas += 1
+        if SistemasTIBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        if AQIBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        if CQPBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        if ParametrizacaoBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        if ProbabilidadeBia.objects.filter(projeto=projeto).exists():
+            etapas_concluidas += 1
+        # if TemposBia.objects.filter(projeto=projeto).exists():
+        #     etapas_concluidas += 1
+
+        projeto.progresso = etapas_concluidas * 12.5
+
     return render(request, 'projetos/lista_projetos.html', {
         'projetos_drexus': projetos_drexus,
         'projetos_andamento': projetos_andamento,
@@ -19,9 +40,36 @@ def lista_projetos(request):
     })
 
 # View de detalhe de um projeto específico
+
 def detalhe_projeto(request, id):
     projeto = get_object_or_404(Projeto, id=id)
-    return render(request, 'projetos/detalhe_projeto.html', {'projeto': projeto})
+
+    etapas_concluidas = 0
+
+    if CadastroBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    #if EntrevistaBia.objects.filter(projeto=projeto).exists():
+    # etapas_concluidas += 1
+    if SistemasTIBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    if AQIBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    if CQPBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    if ParametrizacaoBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    if ProbabilidadeBia.objects.filter(projeto=projeto).exists():
+        etapas_concluidas += 1
+    #if TemposBia.objects.filter(projeto=projeto).exists():
+    # etapas_concluidas += 1
+
+    progresso = etapas_concluidas * 12.5  # 12.5% por etapa
+
+    return render(request, 'projetos/detalhe_projeto.html', {
+        'projeto': projeto,
+        'progresso': progresso
+    })
+
 
 def criar_projeto(request):
     if request.method == 'POST':
