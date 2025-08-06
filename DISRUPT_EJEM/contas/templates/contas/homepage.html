@@ -1,11 +1,62 @@
-{% extends 'base.html' %}
+{% extends "base.html" %}
+{% load static %}
 
 {% block title %}Homepage | Disrupt-CT{% endblock %}
 
 {% block content %}
-    <div class="boas-vindas">
-        <p><strong>Bem-vindo(a)</strong> {{ user.first_name }}</p>
-        <p>Email: {{ user.email }}</p>
-        <p>ID: {{ user.id }}</p>
+    
+    <header>
+        <div class="titulo-secao">
+            <h1><strong>Bem-vindo(a)</strong> {{ user.first_name }}</h1>
+            <h3>Email: {{ user.email }}</h3>
+        </div>
+    </header>
+
+    <section class="secao-projetos">
+        <div class="titulo-secao">
+            <h2>"Texto que o Marcus vai mandar"</h2>
+        </div>
+        <div class="titulo-secao">
+            <input type="text" class="search-bar" placeholder="🔍 Pesquisar projeto...">
+        </div>
+    </section>  
+    
+    <section class="secao-projetos">
+        <div class="cards-grid">
+            <div class="card-header">
+                <h3>[Nº PROJETOS<br>EM ANDAMENTO]</h3>
+            </div>
+            <div class="card-header">
+                <h3>[Nº PROJETOS<br>FINALIZADOS]</h3>
+            </div>
+            <div class="card-header">
+                <h3>[CARGO NOS<br>PROJETOS]</h3>
+            </div>            
+        </div>
+  
+    <section class="secao-projetos">
+        <div class="header-interno">
+            <h1>PROJETOS RECENTES</h1>
+        </div>
+            <div class="cards-grid">
+
+                {% for projeto in projetos_andamento %}
+                    <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="card-link">
+                        <div class="card card-clicavel">
+                            <div class="card-header">
+                                <h3>{{ projeto.nome }}</h3>
+                            </div>
+                            <div class="card-body">
+                                <p class="card-descricao">{{ projeto.descricao|truncatechars:80 }}</p>
+                                <p class="card-info">[Andamento: {{ projeto.progresso }}%]</p>
+                            </div>
+                        </div>
+                    </a>
+                {% empty %}
+                    <p>Nenhum projeto recente.</p>
+                {% endfor %}
+            </div>
+    </section>
     </div>
+
 {% endblock %}
