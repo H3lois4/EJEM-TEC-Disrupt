@@ -1,8 +1,6 @@
 # models.py
 
 from django.db import models
-# Importe PERGUNTAS_TABELAS para usar em lógicas futuras se necessário
-# from Disrupt.utils.perguntas_tabelas import PERGUNTAS_TABELAS # Pode ser útil para validações ou metadados, mas não estritamente necessário para a definição do modelo em si.
 
 class Drexus(models.Model):
     nome = models.CharField(max_length=100)
@@ -230,14 +228,26 @@ class Projeto(models.Model):
 # --- Modelos BIA atualizados com base em perguntas_tabelas.py ---
 
 class CadastroBia(models.Model):
+    # Definindo as opções para o campo de probabilidade
+    PROBABILIDADE_CHOICES = [
+        ('Remota', 'Remota'),
+        ('Possível', 'Possível'),
+        ('Provável', 'Provável'),
+        ('Muito Provável', 'Muito Provável'),
+    ]
+
     projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='cadastros_bia')
     processos = models.CharField(max_length=255)
     area = models.CharField(max_length=255)
     nicho = models.CharField(max_length=255)
     responsavel = models.CharField(max_length=255)
     cenario = models.TextField()
-    # Este campo é string 'Muito Provável', 'Possível' no seu perguntas_tabelas.py
-    probabilidade = models.CharField(max_length=255) 
+    
+    probabilidade = models.CharField(
+        max_length=20,
+        choices=PROBABILIDADE_CHOICES,
+        default='Remota' # Define um valor padrão
+    )
 
     def __str__(self):
         return f"Cadastro BIA para {self.projeto.nome} - {self.processos}"
@@ -245,8 +255,6 @@ class CadastroBia(models.Model):
 class AQIBia(models.Model):
     projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='aqis_bia')
     processo = models.CharField(max_length=255)
-    # RTO/MTPD: No seu perguntas_tabelas.py, são strings como 'Tempo de Recuperação Objetivo (RTO em horas)'
-    # Aparentemente, eles são números na sua planilha original, mas aqui se quer string
     rto = models.CharField(max_length=255, null=True, blank=True) 
     mtpd = models.CharField(max_length=255, null=True, blank=True) 
     
@@ -308,6 +316,47 @@ class CQPBia(models.Model):
     def __str__(self):
         return f"CQP BIA para {self.processos} do Projeto {self.projeto.nome}"
 
+class EntrevistaBia(models.Model):
+    projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='entrevistas_bia')
+    area = models.CharField(max_length=255, verbose_name="Qual é a Área analisada?")
+    macroprocesso = models.CharField(max_length=255, verbose_name="Qual é o Macroprocesso analisado?")
+    processo = models.CharField(max_length=255, verbose_name="Qual é o Processo analisado?")
+    subprocesso = models.CharField(max_length=255, verbose_name="Qual é o Subprocesso analisado?")
+    descricao = models.TextField(verbose_name="Descreva resumidamente a atividade final!")
+    aspectos_regulatorios = models.TextField(verbose_name="Aspectos Regulatórios", blank=True, null=True)
+    aspectos_contratuais = models.TextField(verbose_name="Aspectos Contratuais", blank=True, null=True)
+    entradas_interface = models.TextField(verbose_name="Entradas (Interfaces)", blank=True, null=True)
+    saidas_interface = models.TextField(verbose_name="Saídas (Interfaces)", blank=True, null=True)
+    volumetrias_interface = models.TextField(verbose_name="Volumetrias (Interfaces)", blank=True, null=True)
+    volumetrias_criticas = models.TextField(verbose_name="Volumetrias Críticas", blank=True, null=True)
+    slas_volumetrias = models.CharField(max_length=255, verbose_name="SLAs (Volumetrias) em horas", blank=True, null=True)
+    rh = models.TextField(verbose_name="Recursos Humanos", blank=True, null=True)
+    regime_operacao_equipe = models.TextField(verbose_name="Regime de Operação da Equipe", blank=True, null=True)
+    equipe_critica = models.TextField(verbose_name="Equipe Crítica", blank=True, null=True)
+    contingencias_rh = models.TextField(verbose_name="Contingências (RH)", blank=True, null=True)
+    slas_rh = models.CharField(max_length=255, verbose_name="SLAs (RH) em horas", blank=True, null=True)
+    fornecedores = models.TextField(verbose_name="Fornecedores", blank=True, null=True)
+    lead_time_insumos = models.CharField(max_length=255, verbose_name="Lead Time (Insumos)", blank=True, null=True)
+    contingencias_insumos = models.TextField(verbose_name="Contingências (Insumos)", blank=True, null=True)
+    slas_insumos = models.CharField(max_length=255, verbose_name="SLAs (Insumos) em horas", blank=True, null=True)
+    sistemas_ti_ta = models.TextField(verbose_name="Sistemas TI TA", blank=True, null=True)
+    sistemas_criticos_usuario = models.TextField(verbose_name="Sistemas Críticos (Usuário)", blank=True, null=True)
+    contingencias_sistemas = models.TextField(verbose_name="Contingências (Sistemas)", blank=True, null=True)
+    slas_sistemas = models.CharField(max_length=255, verbose_name="SLAs (Sistemas) em horas", blank=True, null=True)
+    equipamentos = models.TextField(verbose_name="Equipamentos Utilizados", blank=True, null=True)
+    equipamentos_criticos = models.TextField(verbose_name="Equipamentos Críticos", blank=True, null=True)
+    slas_equipamentos = models.CharField(max_length=255, verbose_name="SLAs (Equipamentos) em horas", blank=True, null=True)
+    pontos_criticidade = models.TextField(verbose_name="Pontos de Criticidade", blank=True, null=True)
+    pior_cenario = models.TextField(verbose_name="Pior Cenário", blank=True, null=True)
+    mtpd_horas = models.CharField(max_length=255, verbose_name="MTPD em horas", blank=True, null=True)
+    descricao_motivo_mtpd = models.TextField(verbose_name="Descrição do Motivo MTPD", blank=True, null=True)
+    rto_horas = models.CharField(max_length=255, verbose_name="RTO em horas", blank=True, null=True)
+    rpo_horas = models.CharField(max_length=255, verbose_name="RPO em horas", blank=True, null=True)
+    observacoes = models.TextField(verbose_name="Observações Adicionais", blank=True, null=True)
+
+    def __str__(self):
+        return f"Entrevista BIA para {self.projeto.nome} - {self.macroprocesso}"
+
 
 class ParametrizacaoBia(models.Model):
     projeto = models.ForeignKey(Projeto, on_delete=models.CASCADE, related_name='parametrizacoes_bia')
@@ -320,7 +369,6 @@ class ParametrizacaoBia(models.Model):
     amb_1 = models.CharField(max_length=255, null=True, blank=True)
     social_1 = models.CharField(max_length=255, null=True, blank=True)
     estrategia_1 = models.CharField(max_length=255, null=True, blank=True)
-    operacional_nivel_1_impactos = models.JSONField(default=dict, blank=True, null=True)
 
     valor_exposicao_2 = models.CharField(max_length=255, null=True, blank=True)
     img_rep_midias_2 = models.CharField(max_length=255, null=True, blank=True)
@@ -330,7 +378,6 @@ class ParametrizacaoBia(models.Model):
     amb_2 = models.CharField(max_length=255, null=True, blank=True)
     social_2 = models.CharField(max_length=255, null=True, blank=True)
     estrategia_2 = models.CharField(max_length=255, null=True, blank=True)
-    operacional_nivel_2_impactos = models.JSONField(default=dict, blank=True, null=True)
 
     valor_exposicao_3 = models.CharField(max_length=255, null=True, blank=True)
     img_rep_midias_3 = models.CharField(max_length=255, null=True, blank=True)
@@ -340,7 +387,6 @@ class ParametrizacaoBia(models.Model):
     amb_3 = models.CharField(max_length=255, null=True, blank=True)
     social_3 = models.CharField(max_length=255, null=True, blank=True)
     estrategia_3 = models.CharField(max_length=255, null=True, blank=True)
-    operacional_nivel_3_impactos = models.JSONField(default=dict, blank=True, null=True)
 
     valor_exposicao_4 = models.CharField(max_length=255, null=True, blank=True)
     img_rep_midias_4 = models.CharField(max_length=255, null=True, blank=True)
@@ -350,7 +396,6 @@ class ParametrizacaoBia(models.Model):
     amb_4 = models.CharField(max_length=255, null=True, blank=True)
     social_4 = models.CharField(max_length=255, null=True, blank=True)
     estrategia_4 = models.CharField(max_length=255, null=True, blank=True)
-    operacional_nivel_4_impactos = models.JSONField(default=dict, blank=True, null=True)
 
     valor_exposicao_5 = models.CharField(max_length=255, null=True, blank=True)
     img_rep_midias_5 = models.CharField(max_length=255, null=True, blank=True)
@@ -360,7 +405,6 @@ class ParametrizacaoBia(models.Model):
     amb_5 = models.CharField(max_length=255, null=True, blank=True)
     social_5 = models.CharField(max_length=255, null=True, blank=True)
     estrategia_5 = models.CharField(max_length=255, null=True, blank=True)
-    operacional_nivel_5_impactos = models.JSONField(default=dict, blank=True, null=True)
 
 
     def __str__(self):
@@ -399,3 +443,39 @@ class SistemasTIBia(models.Model):
 
     def __str__(self):
         return f"Sistema de TI BIA para {self.aplicacoes_sistemas} do Projeto {self.projeto.nome}"
+    
+#parametrização
+class OperacaoOperacional(models.Model):
+    parametrizacao_bia = models.ForeignKey(
+        'ParametrizacaoBia',
+        on_delete=models.CASCADE,
+        related_name='operacoes_operacionais', # Este related_name é importante para acessar as operações a partir de ParametrizacaoBia
+        verbose_name="Parametrização BIA Associada"
+    )
+    nome_operacao = models.CharField(
+        max_length=255,
+        verbose_name="Qual o nome da operação a ser parametrizada?"
+    )
+    valor_nivel_1 = models.CharField(
+        max_length=255,
+        verbose_name="Qual o valor do operacional para o nível 1?"
+    )
+    valor_nivel_2 = models.CharField(
+        max_length=255,
+        verbose_name="Qual o valor do operacional para o nível 2?"
+    )
+    valor_nivel_3 = models.CharField(
+        max_length=255,
+        verbose_name="Qual o valor do operacional para o nível 3?"
+    )
+    valor_nivel_4 = models.CharField(
+        max_length=255,
+        verbose_name="Qual o valor do operacional para o nível 4?"
+    )
+    valor_nivel_5 = models.CharField(
+        max_length=255,
+        verbose_name="Qual o valor do operacional para o nível 5?"
+    )
+
+    def __str__(self):
+        return f"Operação: {self.nome_operacao} (Parametrização ID: {self.parametrizacao_bia.id})"

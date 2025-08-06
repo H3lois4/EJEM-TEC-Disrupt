@@ -1,0 +1,90 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Entrevistas BIA - {{ projeto.nome }}{% endblock %}
+
+{% block titulo_pagina %}
+    <span>ENTREVISTAS BIA</span>
+{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}"> {# Usaremos o estilo de tabelas existente #}
+{% endblock %}
+
+{% block content %}
+<div class="classificacao-container">
+    <header class="header-interno">
+        <h1>Entrevistas BIA para o Projeto: {{ projeto.nome }}</h1>
+    </header>
+
+    <div class="actions-row top-actions-row">
+        <a href="{% url 'projetos:adicionar_entrevista_bia' projeto.id %}" class="btn-principal">Adicionar Nova Entrevista BIA</a>
+    </div>
+
+    {% if entrevistas %}
+        <div class="table-responsive-custom"> {# Usando a classe que permite rolagem horizontal para tabelas grandes #}
+            <table class="parametrizacao-grid-table"> {# Reutilizando a classe de tabela que você já tem em tabelas.css #}
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Área</th>
+                        <th>Macroprocesso</th>
+                        <th>Processo</th>
+                        <th>Subprocesso</th>
+                        <th>MTPD (horas)</th>
+                        <th>RTO (horas)</th>
+                        {# Adicione mais cabeçalhos de coluna conforme os campos que você quer exibir #}
+                        <th>Aspectos Regulatórios</th>
+                        <th>Aspectos Contratuais</th>
+                        <th>Volumetrias Críticas</th>
+                        <th>SLAs Volumetrias</th>
+                        <th>RH</th>
+                        <th>Regime Operação</th>
+                        <th>Fornecedores</th>
+                        {# Adicione mais campos aqui se necessário #}
+                        <th>Ações</th> {# Coluna para Editar/Excluir #}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for entrevista in entrevistas %}
+                    <tr>
+                        <td>{{ entrevista.id }}</td>
+                        <td>{{ entrevista.area|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.macroprocesso|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.processo|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.subprocesso|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.mtpd_horas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.rto_horas|default_if_none:"-" }}</td>
+                        {# Exibindo mais campos em colunas #}
+                        <td>{{ entrevista.aspectos_regulatorios|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.aspectos_contratuais|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.volumetrias_criticas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.slas_volumetrias|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.rh|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.regime_operacao_equipe|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.fornecedores|default_if_none:"-" }}</td>
+                        {# Adicione mais <td> para os campos correspondentes aos <th> adicionados acima #}
+
+                        <td>
+                            <a href="{% url 'projetos:editar_entrevista_bia' projeto.id entrevista.id %}" class="btn-editar-tabela">Editar</a>
+                            <form method="post" action="{% url 'projetos:deletar_entrevista_bia' projeto.id entrevista.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrevista?');">Excluir</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div class="empty-table-message">
+            <p>Nenhuma entrevista BIA encontrada para este projeto ainda.</p>
+        </div>
+    {% endif %}
+
+    <div class="container-botao-voltar">
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar">Voltar para Detalhes do Projeto</a>
+    </div>
+</div>
+{% endblock %}

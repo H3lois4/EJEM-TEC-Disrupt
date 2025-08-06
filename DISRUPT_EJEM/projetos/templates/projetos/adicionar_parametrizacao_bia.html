@@ -1,10 +1,10 @@
 {% extends "base.html" %}
-{% load static %} {# Adicionado para consistência #}
+{% load static %}
 
-{% block title %}Adicionar Parametrização BIA{% endblock %} {# Corrigi o título para Parametrização #}
+{% block title %}Adicionar Parametrização BIA{% endblock %}
 
 {% block titulo_pagina %}
-    <span>ADICIONAR PARAMETRIZAÇÃO BIA</span> {# Corrigi o título para Parametrização #}
+    <span>ADICIONAR PARAMETRIZAÇÃO BIA</span>
 {% endblock %}
 
 {% block content %}
@@ -13,21 +13,17 @@
     </header>
 
     <div class="form-container">
-        <form method="post">
+        <form method="post" id="parametrizacao-form">
             {% csrf_token %}
             
-            {# Itera sobre todos os campos do formulário #}
+            <h2 class="form-section-title">Parametrização Geral</h2>
             {% for field in form %}
-                {# Exclui campos ocultos ou de CSRF que não precisam de estilização manual #}
                 {% if field.is_hidden %}
                     {{ field }}
-                {% elif field.name == 'csrfmiddlewaretoken' %}
-                    {# CSRF token é renderizado por {% csrf_token %} acima #}
                 {% else %}
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
-                        {# Para exibir erros específicos de campo, se houver #}
                         {% if field.errors %}
                             <ul class="errorlist">
                                 {% for error in field.errors %}
@@ -42,7 +38,56 @@
                 {% endif %}
             {% endfor %}
 
-            {# Para exibir erros não-campo (non-field errors) #}
+            <h2 class="form-section-title">Operações Operacionais</h2>
+            <div id="operacoes-formset-container">
+                {{ formset.management_form }}
+                
+                {% for form_operacao in formset %}
+                    <div class="operacao-item {% if form_operacao.instance.pk %}existing-form{% else %}new-form{% endif %}">
+                        <h3></h3>
+                        {# AQUI: Adicione esta linha de volta para renderizar o campo DELETE (agora HiddenInput) #}
+                        {{ form_operacao.DELETE }} 
+                        
+                        <div class="form-group">
+                            <label for="{{ form_operacao.nome_operacao.id_for_label }}">{{ form_operacao.nome_operacao.label }}</label>
+                            {{ form_operacao.nome_operacao }}
+                            {% if form_operacao.nome_operacao.errors %}<ul class="errorlist">{% for error in form_operacao.nome_operacao.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form_operacao.valor_nivel_1.id_for_label }}">{{ form_operacao.valor_nivel_1.label }}</label>
+                            {{ form_operacao.valor_nivel_1 }}
+                            {% if form_operacao.valor_nivel_1.errors %}<ul class="errorlist">{% for error in form_operacao.valor_nivel_1.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form_operacao.valor_nivel_2.id_for_label }}">{{ form_operacao.valor_nivel_2.label }}</label>
+                            {{ form_operacao.valor_nivel_2 }}
+                            {% if form_operacao.valor_nivel_2.errors %}<ul class="errorlist">{% for error in form_operacao.valor_nivel_2.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form_operacao.valor_nivel_3.id_for_label }}">{{ form_operacao.valor_nivel_3.label }}</label>
+                            {{ form_operacao.valor_nivel_3 }}
+                            {% if form_operacao.valor_nivel_3.errors %}<ul class="errorlist">{% for error in form_operacao.valor_nivel_3.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form_operacao.valor_nivel_4.id_for_label }}">{{ form_operacao.valor_nivel_4.label }}</label>
+                            {{ form_operacao.valor_nivel_4 }}
+                            {% if form_operacao.valor_nivel_4.errors %}<ul class="errorlist">{% for error in form_operacao.valor_nivel_4.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+                        <div class="form-group">
+                            <label for="{{ form_operacao.valor_nivel_5.id_for_label }}">{{ form_operacao.valor_nivel_5.label }}</label>
+                            {{ form_operacao.valor_nivel_5 }}
+                            {% if form_operacao.valor_nivel_5.errors %}<ul class="errorlist">{% for error in form_operacao.valor_nivel_5.errors %}<li>{{ error }}</li>{% endfor %}</ul>{% endif %}
+                        </div>
+
+                        <button type="button" class="btn-deletar">Remover esta operação</button>
+                    </div>
+                {% endfor %}
+            </div>
+
+            <div class="add-button-container">
+                <button type="button" id="add-operacao-btn" class="btn-principal">Adicionar nova operação ...</button>
+            </div>
+
             {% if form.non_field_errors %}
                 <div class="form-group">
                     <ul class="errorlist">
@@ -59,4 +104,6 @@
             </div>
         </form>
     </div>
+
+    <script src="{% static 'js/parametrizacao_bia_form.js' %}"></script>
 {% endblock %}
