@@ -9,6 +9,7 @@ urlpatterns = [
     path('<int:id>/', views.detalhe_projeto, name='detalhe_projeto'),
     path('<int:id>/planilha/', views.planilha_projeto, name='planilha_projeto'),
     path('novo/', views.criar_projeto, name='criar_projeto'),
+    path('projetos/<int:projeto_id>/resultado-drexus/', views.ver_resultado_drexus, name='ver_resultado_drexus'),
     
     #URLs DREXUS
     path('drexus/novo/', views.criar_drexus, name='criar_drexus'), 

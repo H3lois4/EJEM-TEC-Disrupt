@@ -48,41 +48,61 @@
 
         <div class="acoes-resultado">
     
-            <div class="botoes-grupo">
-                <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista</a>
-                <a href="{% url 'projetos:editar_drexus' drexus.pk %}" class="btn-editar">Editar</a>
-                <button type="button" class="btn-promover" data-modal-target="#modal-mover-bia-{{ drexus.id }}">Mover para BIA</button>
-            </div>
+            {% if drexus.status == 'ativo' %}
+                
+                {% comment %} Bloco de botões para um Drexus que AINDA NÃO foi movido {% endcomment %}
+                <div class="botoes-grupo">
+                    <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista</a>
+                    <a href="{% url 'projetos:editar_drexus' drexus.pk %}" class="btn-editar">Editar</a>
+                    <button type="button" class="btn-promover" data-modal-target="#modal-mover-bia-{{ drexus.id }}">Mover para BIA</button>
+                </div>
+                <button type="button" class="btn-deletar" data-modal-target="#modal-excluir-drexus-{{ drexus.id }}">Excluir Drexus</button>
 
-            <button type="button" class="btn-deletar" data-modal-target="#modal-excluir-drexus-{{ drexus.id }}">Excluir Drexus</button>
+            {% else %}
+
+                {% comment %} Bloco de botões para um Drexus que JÁ FOI MOVIDO (virou histórico) {% endcomment %}
+                <div class="botoes-grupo">
+                    <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista Principal</a>
+                    
+                    
+                    {% if projeto_bia_relacionado %}
+                        <a href="{% url 'projetos:detalhe_projeto' projeto_bia_relacionado.id %}" class="btn-editar">Voltar para o Projeto BIA</a>
+                    {% endif %}
+                </div>
+                
+            {% endif %}
 
         </div>
     </div>
     
-    <div id="modal-mover-bia-{{ drexus.id }}" class="modal-overlay">
-        <div class="modal-content">
-            <p>Você deseja <strong class="destaque-verde">mover</strong> o registro drexus <strong>"{{ drexus.nome }}"</strong> de ID <strong>{{ drexus.id }} para a BIA?</p>
-            <div class="modal-actions">
-                <form action="{% url 'projetos:mover_drexus' drexus.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-confirmar-modal">Sim, mover para BIA</button>
-                </form>
-                <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+    {% comment %} Os modais só precisam existir se o Drexus estiver ativo {% endcomment %}
+    {% if drexus.status == 'ativo' %}
+        <div id="modal-mover-bia-{{ drexus.id }}" class="modal-overlay">
+            <div class="modal-content">
+                <p>Você deseja <strong class="destaque-verde">mover</strong> o registro drexus <strong>"{{ drexus.nome }}"</strong> de ID <strong>{{ drexus.id }} para a BIA?</p>
+                <div class="modal-actions">
+                    <form action="{% url 'projetos:mover_drexus' drexus.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-confirmar-modal">Sim, mover para BIA</button>
+                    </form>
+                    <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
 
-    <div id="modal-excluir-drexus-{{ drexus.id }}" class="modal-overlay">
-        <div class="modal-content">
-        <p><strong>Você tem certeza que deseja</strong> <strong class="destaque-vermelho">excluir</strong> <strong>o registro drexus "{{ drexus.nome }}" de ID {{ drexus.id }}?</strong></p>
-        <p class="aviso"><strong class="destaque-vermelho">Atenção:</strong> Esta ação não poderá ser desfeita!</p>
-            <div class="modal-actions">
-                <form action="{% url 'projetos:deletar_drexus' drexus.id %}" method="POST">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-confirmar-modal">Sim, excluir</button>
-                </form>
-                <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+        <div id="modal-excluir-drexus-{{ drexus.id }}" class="modal-overlay">
+            <div class="modal-content">
+                <p><strong>Você tem certeza que deseja</strong> <strong class="destaque-vermelho">excluir</strong> <strong>o registro drexus "{{ drexus.nome }}" de ID {{ drexus.id }}?</strong></p>
+                <p class="aviso"><strong class="destaque-vermelho">Atenção:</strong> Esta ação não poderá ser desfeita!</p>
+                <div class="modal-actions">
+                    <form action="{% url 'projetos:deletar_drexus' drexus.id %}" method="POST">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-confirmar-modal">Sim, excluir</button>
+                    </form>
+                    <button type="button" class="btn-cancelar-modal" data-modal-close>Não, cancelar</button>
+                </div>
             </div>
         </div>
-    </div>
+    {% endif %}
+
 {% endblock %}

@@ -37,14 +37,25 @@
                 <p>{{ projeto.descricao|truncatechars:120 }}</p>
             </div>
         </div>
-        <a href="#" class="card-link efeito-flutuar">
+        {% if projeto.analise_drexus_original %}
+        <a href="{% url 'projetos:ver_resultado_drexus' projeto.id %}" class="card-link efeito-flutuar">
             <div class="info-card-detalhe">
                 <div class="info-card-header">Informações</div>
                 <div class="info-card-body">
-                    <p>DREXUS</p>
+                    <p>Ver Resultado da Drexus</p>
                 </div>
             </div>
         </a>
+    {% else %}
+        <div class="card-link-disabled">
+            <div class="info-card-detalhe">
+                <div class="info-card-header">Informações</div>
+                <div class="info-card-body">
+                    <p>Criado diretamente na BIA</p>
+                </div>
+            </div>
+        </div>
+    {% endif %}
     </div>
 
     <div class="acoes-grid-container">

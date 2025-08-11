@@ -57,7 +57,7 @@
                     <div class="celula">{{ entrada.impacto_financeiro_8h }}</div>
                     <div class="celula">{{ entrada.impacto_financeiro_24h }}</div>
                     <div class="celula">{{ entrada.impacto_financeiro_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_real }}</div>
+                    <div class="celula">{{ entrada.impacto_financeiro_REAL }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -67,12 +67,12 @@
             <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
             <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
                 {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_imagem_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_imagem_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_imagem_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_imagem_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_imagem_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_imagem_real }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_1h }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_4h }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_8h }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_24h }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_48h }}</div>
+                    <div class="celula">{{ entrada.impacto_img_rep_REAL }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -87,7 +87,7 @@
                     <div class="celula">{{ entrada.impacto_operacional_8h }}</div>
                     <div class="celula">{{ entrada.impacto_operacional_24h }}</div>
                     <div class="celula">{{ entrada.impacto_operacional_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_real }}</div>
+                    <div class="celula">{{ entrada.impacto_operacional_REAL }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -102,7 +102,7 @@
                     <div class="celula">{{ entrada.impacto_legal_8h }}</div>
                     <div class="celula">{{ entrada.impacto_legal_24h }}</div>
                     <div class="celula">{{ entrada.impacto_legal_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_real }}</div>
+                    <div class="celula">{{ entrada.impacto_legal_REAL }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -117,7 +117,7 @@
                     <div class="celula">{{ entrada.impacto_ambiental_8h }}</div>
                     <div class="celula">{{ entrada.impacto_ambiental_24h }}</div>
                     <div class="celula">{{ entrada.impacto_ambiental_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_real }}</div>
+                    <div class="celula">{{ entrada.impacto_ambiental_REAL }}</div>
                 {% endfor %}
             </div>
         </div>
@@ -127,6 +127,21 @@
             <div class="grid-celulas" style="grid-template-columns: 1fr;">
                 {% for entrada in entradas_aqi %}
                     <div class="celula">{{ entrada.base }}</div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="tabela-bloco" style="width: 150px;">
+            <h2>AÇÕES</h2>
+            <div class="grid-celulas">
+                {% for entrada in entradas_aqi %}
+                <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                    <a href="{% url 'projetos:editar_aqi_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
+                    <form method="post" action="{% url 'projetos:deletar_aqi_bia' projeto.id entrada.id %}" style="display:inline; margin: 0;">
+                        {% csrf_token %}
+                        <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrada?');">Excluir</button>
+                    </form>
+                </div>
                 {% endfor %}
             </div>
         </div>

@@ -3,6 +3,12 @@
 from django.db import models
 
 class Drexus(models.Model):
+    # Variáveis para mover o projeto entre categorias
+    STATUS_CHOICES = [
+        ('ativo', 'Ativo'),
+        ('movido', 'Movido para BIA'),
+    ]
+
     nome = models.CharField(max_length=100)
     descricao = models.TextField()
     diagnostico = models.CharField(max_length=100,default="")
@@ -37,6 +43,8 @@ class Drexus(models.Model):
 
     # Nota final
     nota_final = models.FloatField(default=0)
+
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='ativo')
 
     def __str__(self):
         return self.nome
@@ -220,6 +228,13 @@ class Projeto(models.Model):
         max_length=20,
         choices=STATUS_CHOICES,
         default='andamento',
+    )
+
+    analise_drexus_original = models.OneToOneField(
+        Drexus,
+        on_delete=models.SET_NULL, # Se o Drexus for deletado, o campo fica nulo
+        null=True, # Permite que o campo seja nulo no banco de dados
+        blank=True # Permite que o campo esteja vazio nos formulários
     )
 
     def __str__(self):

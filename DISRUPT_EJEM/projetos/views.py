@@ -9,7 +9,7 @@ from django.forms import inlineformset_factory
 admin.site.register(Drexus)
 
 def lista_projetos(request):
-    projetos_drexus = Drexus.objects.all()
+    projetos_drexus = Drexus.objects.filter(status='ativo')
     projetos_andamento = Projeto.objects.filter(status__icontains="andamento")
     projetos_finalizados = Projeto.objects.filter(status__icontains="finalizado")
 
@@ -317,14 +317,35 @@ def editar_projeto(request, id):
 def mover_drexus(request, drexus_id):
     if request.method == 'POST':
         drexus_a_mover = get_object_or_404(Drexus, id=drexus_id)
+        
+        # 1. Cria o novo projeto BIA, passando o vínculo para a análise original
         novo_projeto = Projeto.objects.create(
             nome=drexus_a_mover.nome,
             descricao=drexus_a_mover.descricao,
-            status='andamento'
+            status='andamento',
+            analise_drexus_original=drexus_a_mover 
         )
-        drexus_a_mover.delete()
+        
+        # 2. Muda o status do Drexus para "movido"
+        drexus_a_mover.status = 'movido'
+        drexus_a_mover.save()
+        
         return redirect('projetos:detalhe_projeto', id=novo_projeto.id)
     return redirect('projetos:lista_projetos')
+
+def ver_resultado_drexus(request, projeto_id):
+    # Pega o projeto BIA pelo ID
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    # Acessa a análise Drexus vinculada a ele
+    drexus_original = projeto.analise_drexus_original
+    
+    context = {
+        # Passa o objeto Drexus para o mesmo template que você já usa!
+        'drexus': drexus_original,
+        'projeto_bia_relacionado': projeto # Opcional, para um link de "voltar"
+    }
+    # Reutiliza o seu template de resultado já existente!
+    return render(request, 'projetos/resultado.html', context)
 
 # Função para mover projetos em andamento para projetos finalizados
 def finalizar_projeto(request, id):

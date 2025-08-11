@@ -66,7 +66,7 @@ PERGUNTAS_TABELAS = {
         'impacto_aplicacoes_8h': 'Qual o impacto das aplicações e sistemas após 8 hora?',
         'impacto_aplicacoes_12h': 'Qual o impacto das aplicações e sistemas após 12 horas?',
         'impacto_aplicacoes_24h': 'Qual o impacto das aplicações e sistemas após 24 hora?',
-        'impacto_aplicacoes_+24h': 'Qual o impacto das aplicações e sistemas após mais de 24 horas?',
+        'impacto_aplicacoes_mais_24h': 'Qual o impacto das aplicações e sistemas após mais de 24 horas?',
         'rto': 'Qual o RTO?',
         'rpo': 'Qual o RPO?',
         'observacao': "Observações:"    
