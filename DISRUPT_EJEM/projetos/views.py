@@ -676,6 +676,35 @@ def adicionar_probabilidade_bia(request, projeto_id):
     }
     return render(request, 'projetos/adicionar_probabilidade_bia.html', context)
 
+#-------------------- Views para Edição e Exclusão de Sistemas de TI --------------------
+def editar_probabilidade_bia(request, projeto_id, prob_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    prob_entrada = get_object_or_404(ProbabilidadeBia, id=prob_id, projeto=projeto)
+
+    if request.method == 'POST':
+        form = ProbabilidadeBiaForm(request.POST, instance=prob_entrada)
+        if form.is_valid():
+            form.save()
+            return redirect('projetos:PROBABILIDADE_BIA', id=projeto.id) 
+    else:
+        form = ProbabilidadeBiaForm(instance=prob_entrada)
+    
+    context = {
+        'form': form,
+        'projeto': projeto,
+    }
+    return render(request, 'projetos/adicionar_probabilidade_bia.html', context) 
+
+
+def deletar_probabilidade_bia(request, projeto_id, prob_id):
+    projeto = get_object_or_404(Projeto, id=projeto_id)
+    prob_entrada = get_object_or_404(ProbabilidadeBia, id=prob_id, projeto=projeto)
+    
+    if request.method == 'POST':
+        prob_entrada.delete()
+    
+    return redirect('projetos:PROBABILIDADE_BIA', id=projeto.id)
+
 #------------------------FORMULÁRIO PARA ADICIONAR SISTEMAS DE TI ----------------------------------------------#
 def adicionar_sistemas_ti_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
@@ -759,7 +788,6 @@ def adicionar_entrevista_bia(request, projeto_id):
     }
     return render(request, 'projetos/adicionar_entrevista_bia.html', context)
 
-# Você também vai precisar de uma view para editar a entrevista, similar a editar_parametrizacao_bia
 def editar_entrevista_bia(request, projeto_id, entrevista_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     entrevista = get_object_or_404(EntrevistaBia, id=entrevista_id, projeto=projeto)
@@ -781,8 +809,6 @@ def editar_entrevista_bia(request, projeto_id, entrevista_id):
     }
     return render(request, 'projetos/adicionar_entrevista_bia.html', context) # Reutiliza o template de adicionar
 
-
-# E uma view para deletar, similar a deletar_parametrizacao_bia
 def deletar_entrevista_bia(request, projeto_id, entrevista_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
     entrevista = get_object_or_404(EntrevistaBia, id=entrevista_id, projeto=projeto)

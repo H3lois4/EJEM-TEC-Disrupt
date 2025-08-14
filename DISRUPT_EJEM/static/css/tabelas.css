@@ -163,14 +163,6 @@
 /* --- Estilos da Tabela HTML Principal de Parametrização (<table class="parametrizacao-grid-table">) --- */
 .parametrizacao-grid-table {
     width: 100%; /* Ocupa a largura disponível no wrapper responsivo */
-    /*
-        AJUSTE MIN-WIDTH AQUI: Este valor força a largura mínima da tabela.
-        Calcule aproximadamente a soma das larguras de todas as suas colunas
-        para garantir que elas não quebrem e que a rolagem apareça.
-        Ex: 120 (Nível) + 150 (Classif.) + 150 (Fin.) + 200 (Img.Midias) + 200 (Img.Stake) +
-            150 (Oper.) + 200 (Legal Pen.) + 200 (Legal Contr.) + 200 (Amb.) + 200 (Social) + 250 (Estrat.)
-            = ~2000px (aprox). Comece grande e diminua.
-    */
     min-width: 1600px; /* Exemplo: Ajuste este valor! */
     border-collapse: collapse; /* Remove espaçamento entre bordas de células */
     background-color: #fff;
@@ -322,4 +314,78 @@
 
 .btn-deletar-tabela:hover {
     background-color: #c82333; 
+}
+
+.tabelas-wrapper--align-start {
+    align-items: flex-start;
+}
+
+.dados-grid {
+    display: grid;
+    /* Define o tamanho das colunas: ID, PROCESSOS, NICHO, AÇÕES */
+    grid-template-columns: 80px 1.5fr 1fr 150px; 
+    
+    flex-grow: 2; /* Faz a grade ocupar o espaço disponível */
+    background-color: #fff;
+    border: 1px solid var(--cor-borda-sutil, #ddd);
+    border-radius: 8px;
+    overflow: hidden; /* Garante que o conteúdo respeite as bordas arredondadas */
+}
+
+/* Estilo para as células de CABEÇALHO da grade */
+.grid-header {
+    padding: 12px;
+    font-size: 0.8rem;
+    text-align: center;
+    font-weight: bold;
+    color: var(--cor-texto-suave, #666);
+    border-bottom: 2px solid var(--cor-amarelo, #F7B500);
+}
+
+/* Estilo para as células de DADOS da grade */
+.grid-cell {
+    padding: 8px 12px;
+    border-top: 1px solid var(--cor-borda-sutil, #ddd);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.9rem;
+    min-height: 55px; /* Altura mínima para linhas com pouco texto */
+}
+
+/* Cria as linhas verticais entre as colunas */
+.grid-header:not(:last-child),
+.grid-cell:not(:nth-child(4n)) { /* O '4n' representa 4 colunas */
+    border-right: 1px solid var(--cor-borda-sutil, #ddd);
+}
+
+.form-group select {
+    /* 1. Remove a aparência padrão do navegador */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    
+    /* 2. Adiciona nossa própria seta como imagem de fundo */
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 0.75rem center;
+    background-size: 16px 12px;
+    
+    /* 3. Aplica EXATAMENTE os mesmos estilos dos outros campos */
+    width: 100%;
+    padding: 10px 12px;
+    font-size: 1rem;
+    color: #333;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+    transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+/* Efeito de foco para o SELECT */
+.form-group select:focus {
+    outline: none;
+    border-color: var(--cor-amarelo, #F7B500);
+    box-shadow: 0 0 0 3px rgba(247, 181, 0, 0.25);
 }

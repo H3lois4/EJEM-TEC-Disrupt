@@ -4,7 +4,7 @@
 {% block title %}Cadastro BIA - {{ projeto.nome }}{% endblock %}
 
 {% block titulo_pagina %}
-    <span>CADASTRO</span>
+    <span>CADASTRO BIA</span>
 {% endblock %}
 
 {% block extra_css %}
@@ -17,95 +17,98 @@
         <h1>Cadastro BIA do Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    <div class="tabelas-wrapper">
+    {% if entradas_cadastro %}
+        <div class="tabelas-wrapper" style="margin-top: 25px;">
 
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>ID</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula">{{ cadastro.id }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>PROCESSOS</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ cadastro.processos|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco" style="min-width: 180px;">
-            <h2>ÁREA</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula">{{ cadastro.area|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco" style="min-width: 180px;">
-            <h2>NICHO</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula">{{ cadastro.nicho|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="min-width: 180px;">
-            <h2>RESPONSÁVEL</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula">{{ cadastro.responsavel|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>CENÁRIO</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ cadastro.cenario|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="min-width: 150px;">
-            <h2>PROBABILIDADE</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula">{{ cadastro.probabilidade|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 150px;">
-            <h2>AÇÕES</h2>
-            <div class="grid-celulas">
-                {% for cadastro in entradas_cadastro %}
-                <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-                    <a href="{% url 'projetos:editar_cadastro_bia' projeto.id cadastro.id %}" class="btn-editar-tabela">Editar</a>
-                    <form method="post" action="{% url 'projetos:deletar_cadastro_bia' projeto.id cadastro.id %}" style="display:inline; margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir este cadastro?');">Excluir</button>
-                    </form>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>ID</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula">{{ cadastro.id }}</div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
 
-    </div>
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>PROCESSOS</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ cadastro.processos|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="min-width: 180px;">
+                <h2>ÁREA</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula">{{ cadastro.area|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="min-width: 180px;">
+                <h2>NICHO</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula">{{ cadastro.nicho|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="min-width: 180px;">
+                <h2>RESPONSÁVEL</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula">{{ cadastro.responsavel|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>CENÁRIO</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ cadastro.cenario|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="min-width: 150px;">
+                <h2>PROBABILIDADE</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula">{{ cadastro.probabilidade|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 150px;">
+                <h2>AÇÕES</h2>
+                <div class="grid-celulas">
+                    {% for cadastro in entradas_cadastro %}
+                    <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                        <a href="{% url 'projetos:editar_cadastro_bia' projeto.id cadastro.id %}" class="btn-editar-tabela">Editar</a>
+                        <form method="post" action="{% url 'projetos:deletar_cadastro_bia' projeto.id cadastro.id %}" style="display:inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir este cadastro?');">Excluir</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
     
-    {% if not entradas_cadastro %}
-    <p style="text-align: center; margin-top: 20px; color: var(--cor-texto-suave);">Nenhum cadastro BIA encontrado para este projeto.</p>
+    {% else %}
+        <div class="empty-table-message">
+            <p>Nenhum cadastro BIA encontrado para este projeto.</p>
+        </div>
     {% endif %}
 
     <div style="margin-top: 25px; display: flex; gap: 15px;">
         <a href="{% url 'projetos:adicionar_cadastro_bia' projeto.id %}" class="btn-principal">Adicionar Novo Cadastro...</a>
-        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes</a>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes do Projeto</a>
     </div>
 
 </div>

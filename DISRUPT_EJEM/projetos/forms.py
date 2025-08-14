@@ -72,10 +72,14 @@ class AQIBiaForm(forms.ModelForm):
 class CadastroBiaForm(forms.ModelForm):
     class Meta:
         model = CadastroBia
-        exclude = ['projeto'] 
+        exclude = ['projeto']
+        widgets = {
+            'probabilidade': forms.Select(attrs={'class': 'seu-estilo-aqui'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Este código que busca os nomes das perguntas pode continuar aqui sem problemas
         if 'CADASTRO_BIA' in PERGUNTAS_TABELAS:
             cadastro_perguntas = PERGUNTAS_TABELAS['CADASTRO_BIA']
             for field_name, field in self.fields.items():

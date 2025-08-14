@@ -14,143 +14,151 @@
 {% block content %}
 <div class="classificacao-container">
     <header class="header-interno">
-        <h1>{{ projeto.nome }}</h1>
+        <h1>Análise Quantitativa do Impacto para o Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    <div class="tabelas-wrapper">
+    {% if entradas_aqi %}
+        <div class="tabelas-wrapper" style="margin-top: 25px;">
 
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>ID</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="flex-grow: 1; min-width: 200px;">
-            <h2>PROCESSOS</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.processo }}</div>{% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 120px;">
-            <h2>RTO / h</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.rto }}</div>{% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco" style="width: 120px;">
-            <h2>MTPD / h</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.mtpd }}</div>{% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco tabela-impacto">
-            <h2>IMPACTO - FINANCEIRO</h2>
-            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
-                {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_financeiro_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_financeiro_REAL }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco tabela-impacto">
-            <h2>IMPACTO - IMAGEM E REPUTAÇÃO</h2>
-            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
-                {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_img_rep_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_img_rep_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_img_rep_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_img_rep_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_img_rep_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_img_rep_REAL }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco tabela-impacto">
-            <h2>IMPACTO - OPERACIONAL</h2>
-            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
-                 {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_operacional_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_operacional_REAL }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco tabela-impacto">
-            <h2>IMPACTO - LEGAL E COMPLIANCE</h2>
-            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
-                 {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_legal_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_legal_REAL }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco tabela-impacto">
-            <h2>IMPACTO - AMBIENTAL</h2>
-            <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
-            <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
-                 {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.impacto_ambiental_1h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_4h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_8h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_24h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_48h }}</div>
-                    <div class="celula">{{ entrada.impacto_ambiental_REAL }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 100px;">
-            <h2>BASE</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_aqi %}
-                    <div class="celula">{{ entrada.base }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 150px;">
-            <h2>AÇÕES</h2>
-            <div class="grid-celulas">
-                {% for entrada in entradas_aqi %}
-                <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-                    <a href="{% url 'projetos:editar_aqi_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
-                    <form method="post" action="{% url 'projetos:deletar_aqi_bia' projeto.id entrada.id %}" style="display:inline; margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrada?');">Excluir</button>
-                    </form>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>ID</h2>
+                <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                    {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
                 </div>
-                {% endfor %}
             </div>
+
+            <div class="tabela-bloco" style="flex-grow: 1; min-width: 200px;">
+                <h2>PROCESSOS</h2>
+                <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                    {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.processo }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 120px;">
+                <h2>RTO / h</h2>
+                <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                    {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.rto }}</div>{% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="width: 120px;">
+                <h2>MTPD / h</h2>
+                <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                    {% for entrada in entradas_aqi %}<div class="celula">{{ entrada.mtpd }}</div>{% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco tabela-impacto">
+                <h2>IMPACTO - FINANCEIRO</h2>
+                <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+                <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                    {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.impacto_financeiro_1h }}</div>
+                        <div class="celula">{{ entrada.impacto_financeiro_4h }}</div>
+                        <div class="celula">{{ entrada.impacto_financeiro_8h }}</div>
+                        <div class="celula">{{ entrada.impacto_financeiro_24h }}</div>
+                        <div class="celula">{{ entrada.impacto_financeiro_48h }}</div>
+                        <div class="celula">{{ entrada.impacto_financeiro_REAL }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco tabela-impacto">
+                <h2>IMPACTO - IMAGEM E REPUTAÇÃO</h2>
+                <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+                <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                    {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.impacto_img_rep_1h }}</div>
+                        <div class="celula">{{ entrada.impacto_img_rep_4h }}</div>
+                        <div class="celula">{{ entrada.impacto_img_rep_8h }}</div>
+                        <div class="celula">{{ entrada.impacto_img_rep_24h }}</div>
+                        <div class="celula">{{ entrada.impacto_img_rep_48h }}</div>
+                        <div class="celula">{{ entrada.impacto_img_rep_REAL }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco tabela-impacto">
+                <h2>IMPACTO - OPERACIONAL</h2>
+                <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+                <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                     {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.impacto_operacional_1h }}</div>
+                        <div class="celula">{{ entrada.impacto_operacional_4h }}</div>
+                        <div class="celula">{{ entrada.impacto_operacional_8h }}</div>
+                        <div class="celula">{{ entrada.impacto_operacional_24h }}</div>
+                        <div class="celula">{{ entrada.impacto_operacional_48h }}</div>
+                        <div class="celula">{{ entrada.impacto_operacional_REAL }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco tabela-impacto">
+                <h2>IMPACTO - LEGAL E COMPLIANCE</h2>
+                <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+                <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                     {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.impacto_legal_1h }}</div>
+                        <div class="celula">{{ entrada.impacto_legal_4h }}</div>
+                        <div class="celula">{{ entrada.impacto_legal_8h }}</div>
+                        <div class="celula">{{ entrada.impacto_legal_24h }}</div>
+                        <div class="celula">{{ entrada.impacto_legal_48h }}</div>
+                        <div class="celula">{{ entrada.impacto_legal_REAL }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco tabela-impacto">
+                <h2>IMPACTO - AMBIENTAL</h2>
+                <div class="sub-header"><span>1</span><span>4</span><span>8</span><span>24</span><span>48</span><span>REAL</span></div>
+                <div class="grid-celulas" style="grid-template-columns: repeat(6, 1fr);">
+                     {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.impacto_ambiental_1h }}</div>
+                        <div class="celula">{{ entrada.impacto_ambiental_4h }}</div>
+                        <div class="celula">{{ entrada.impacto_ambiental_8h }}</div>
+                        <div class="celula">{{ entrada.impacto_ambiental_24h }}</div>
+                        <div class="celula">{{ entrada.impacto_ambiental_48h }}</div>
+                        <div class="celula">{{ entrada.impacto_ambiental_REAL }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 100px;">
+                <h2>BASE</h2>
+                <div class="grid-celulas" style="grid-template-columns: 1fr;">
+                    {% for entrada in entradas_aqi %}
+                        <div class="celula">{{ entrada.base }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="width: 150px;">
+                <h2>AÇÕES</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_aqi %}
+                    <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                        <a href="{% url 'projetos:editar_aqi_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
+                        <form method="post" action="{% url 'projetos:deletar_aqi_bia' projeto.id entrada.id %}" style="display:inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrada?');">Excluir</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
         </div>
 
+    {% else %}
+        <div class="empty-table-message">
+            <p>Nenhuma análise AQI encontrada para este projeto.</p>
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 25px; display: flex; gap: 15px;">
+        <a href="{% url 'projetos:adicionar_aqi_bia' projeto.id %}" class="btn-principal">Adicionar Nova AQI</a>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes do Projeto</a>
     </div>
 
-    <div style="margin-top: 25px;">
-        <a href="{% url 'projetos:adicionar_aqi_bia' projeto.id %}" class="btn-adicionar-aqi">Adicionar nova AQI...</a>
-        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
-    </div>
 </div>
 {% endblock %}
