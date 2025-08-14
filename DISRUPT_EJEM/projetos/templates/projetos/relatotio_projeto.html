@@ -1,0 +1,282 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Relatório – {{ projeto.nome }}</title>
+  <style>
+    body { font-family: Arial, sans-serif; font-size: 12px; color: #111; }
+    h1, h2 { margin: 0 0 8px; }
+    h1 { text-align: center; font-size: 18px; }
+    section { margin-top: 18px; }
+    table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+    th, td { border: 1px solid #444; padding: 6px; text-align: left; vertical-align: top; }
+    th { background: #f1f1f1; }
+    .muted { color: #666; font-style: italic; }
+    .meta { font-size: 11px; color: #666; text-align: right; }
+    .header-table { width: 100%; margin-bottom: 15px; }
+  </style>
+</head>
+<body>
+  <table class="header-table">
+    <tr>
+      <td><h1>Relatório do Projeto</h1></td>
+      <td class="meta">
+        <strong>Projeto:</strong> {{ projeto.nome }}<br>
+        <strong>Gerado em:</strong> {{ now|date:"d/m/Y H:i" }}
+      </td>
+    </tr>
+  </table>
+
+  <!-- ENTREVISTAS -->
+  <section>
+    <h2>Entrevistas</h2>
+    {% if entrevistas %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Resumo</th>
+            <th>Observações</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for e in entrevistas %}
+          <tr>
+            <td>{{ e.id }}</td>
+            <td>{{ e.resumo|default:"—" }}</td>
+            <td>{{ e.observacoes|default:"—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Entrevistas para este projeto.</p>
+    {% endif %}
+  </section>
+
+  <!-- SISTEMAS DE TI -->
+  <section>
+    <h2>Sistemas de TI</h2>
+    {% if sistemas_ti %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Subprocessos</th>
+            <th>Aplicações/Sistemas</th>
+            <th>URL</th>
+            <th>RTO</th>
+            <th>RPO</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in sistemas_ti %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td>{{ s.subprocessos }}</td>
+            <td>{{ s.aplicacoes_sistemas }}</td>
+            <td>{{ s.url|default:"—" }}</td>
+            <td>{{ s.rto }}</td>
+            <td>{{ s.rpo }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Sistemas de TI.</p>
+    {% endif %}
+  </section>
+
+  <!-- CADASTRO -->
+  <section>
+    <h2>Cadastro</h2>
+    {% if cadastros %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Processos</th>
+            <th>Área</th>
+            <th>Nicho</th>
+            <th>Responsável</th>
+            <th>Cenário</th>
+            <th>Probabilidade</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for c in cadastros %}
+          <tr>
+            <td>{{ c.id }}</td>
+            <td>{{ c.processos }}</td>
+            <td>{{ c.area }}</td>
+            <td>{{ c.nicho }}</td>
+            <td>{{ c.responsavel }}</td>
+            <td>{{ c.cenario }}</td>
+            <td>{{ c.probabilidade }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Cadastro.</p>
+    {% endif %}
+  </section>
+
+  <!-- AQI -->
+  <section>
+    <h2>AQI</h2>
+    {% if aqis %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Processo</th>
+            <th>RTO</th>
+            <th>MTPD</th>
+            <th>Impacto Financeiro (1h/4h/8h/24h/48h/Real)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in aqis %}
+          <tr>
+            <td>{{ a.id }}</td>
+            <td>{{ a.processo }}</td>
+            <td>{{ a.rto|default:"—" }}</td>
+            <td>{{ a.mtpd|default:"—" }}</td>
+            <td>
+              {{ a.impacto_financeiro_1h|default:"—" }} /
+              {{ a.impacto_financeiro_4h|default:"—" }} /
+              {{ a.impacto_financeiro_8h|default:"—" }} /
+              {{ a.impacto_financeiro_24h|default:"—" }} /
+              {{ a.impacto_financeiro_48h|default:"—" }} /
+              {{ a.impacto_financeiro_REAL|default:"—" }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de AQI.</p>
+    {% endif %}
+  </section>
+
+  <!-- CQP -->
+  <section>
+    <h2>CQP</h2>
+    {% if cqps %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Classificação Impacto</th>
+            <th>Probabilidade</th>
+            <th>Total Criticidade</th>
+            <th>Processos Envolvidos</th>
+            <th>RTO</th>
+            <th>Área</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for q in cqps %}
+          <tr>
+            <td>{{ q.id }}</td>
+            <td>{{ q.classificacao_impacto }}</td>
+            <td>{{ q.probabilidade }}</td>
+            <td>{{ q.total_criticidade }}</td>
+            <td>{{ q.processos }}</td>
+            <td>{{ q.rto }}</td>
+            <td>{{ q.area }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de CQP.</p>
+    {% endif %}
+  </section>
+
+  <!-- PARAMETRIZAÇÃO -->
+  <section>
+    <h2>Parametrização</h2>
+    {% if parametrizacoes %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Valores (exposição/imagem/legal/...)</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for p in parametrizacoes %}
+          <tr>
+            <td>{{ p.id }}</td>
+            <td>
+              Exposição: {{ p.valor_exposicao_1|default:"—" }} •
+              Imagem/Mídias: {{ p.img_rep_midias_1|default:"—" }} •
+              Penalidade: {{ p.legal_penalidade_1|default:"—" }}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Parametrização.</p>
+    {% endif %}
+  </section>
+
+  <!-- PROBABILIDADE -->
+  <section>
+    <h2>Probabilidade</h2>
+    {% if probabilidades %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Processos</th>
+            <th>Nicho</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for pb in probabilidades %}
+          <tr>
+            <td>{{ pb.id }}</td>
+            <td>{{ pb.processos }}</td>
+            <td>{{ pb.nicho }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Probabilidade.</p>
+    {% endif %}
+  </section>
+
+  <!-- TEMPOS -->
+  <section>
+    <h2>Tempos</h2>
+    {% if tempos %}
+      <table>
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Descrição</th>
+            <th>Valor</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for t in tempos %}
+          <tr>
+            <td>{{ t.id }}</td>
+            <td>{{ t.descricao|default:"—" }}</td>
+            <td>{{ t.valor|default:"—" }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    {% else %}
+      <p class="muted">Sem dados de Tempos.</p>
+    {% endif %}
+  </section>
+</body>
+</html>

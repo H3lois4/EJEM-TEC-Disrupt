@@ -717,6 +717,17 @@ a.btn-editar:hover {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+/* (Botão para gerar relatório - ñ esta reconhecendo esse css)
+.btn-relatorio { 
+    background-color: var(--cor-verde-claro); 
+    color: var(--cor-texto-claro); 
+}
+.btn-relatorio:hover {
+    background-color: var(--cor-verde-escuro); 
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+} */
+
 .btn-editar {
     background-color: var(--cor-amarelo); /* Define o fundo como a cor amarela principal */
     color: var(--cor-preto);               /* Define a cor do texto como preto para contraste */
