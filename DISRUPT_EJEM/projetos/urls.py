@@ -62,4 +62,8 @@ urlpatterns = [
     #URLs Deletar BIA/ PROJETOS/ FINALIZADOS
     path('projeto/deletar/<int:pk>/', views.deletar_projeto, name='deletar_projeto'),
     path('drexus/deletar/<int:pk>/', views.deletar_drexus, name='deletar_drexus'),
+
+    #URL para gerar PDF
+    path('relatorio/', views.gerar_pdf, name='gerar_pdf'),
+
 ]

@@ -1,10 +1,19 @@
 from django.shortcuts import render, get_object_or_404, redirect
+from django.http import HttpResponse
+from django.template.loader import get_template
 from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, EntrevistaBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm, OperacaoOperacionalFormSet
 from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, EntrevistaBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia, OperacaoOperacional
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
 from django.forms import inlineformset_factory
+from xhtml2pdf import pisa
+import io 
+
+from .models import (
+    Projeto, CadastroBia, AQIBia, CQPBia, ParametrizacaoBia,
+    ProbabilidadeBia, SistemasTIBia
+)
 
 admin.site.register(Drexus)
 
@@ -818,3 +827,57 @@ def deletar_entrevista_bia(request, projeto_id, entrevista_id):
         return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
     
     return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
+
+# Função para gerar relatório BIA
+
+def gerar_pdf(request, id):
+    projeto = get_object_or_404(Projeto, id=id)
+
+    # Coleta por related_name (os que você já tem):
+    cadastros = projeto.cadastros_bia.all()
+    aqis = projeto.aqis_bia.all()
+    cqps = projeto.cqps_bia.all()
+    parametrizacoes = projeto.parametrizacoes_bia.all()
+    probabilidades = projeto.probabilidades_bia.all()
+    sistemas_ti = projeto.sistemas_ti_bia.all()
+
+    entrevistas_manager = getattr(projeto, 'entrevistas_bia', None)
+    entrevistas = entrevistas_manager.all() if entrevistas_manager else []
+
+    tempos_manager = getattr(projeto, 'tempos_bia', None)
+    tempos = tempos_manager.all() if tempos_manager else []
+
+    context = {
+        'projeto': projeto,
+        'cadastros': cadastros,
+        'aqis': aqis,
+        'cqps': cqps,
+        'parametrizacoes': parametrizacoes,
+        'probabilidades': probabilidades,
+        'sistemas_ti': sistemas_ti,
+        'entrevistas': entrevistas,
+        'tempos': tempos,
+    }
+
+    # Renderiza o template HTML
+    template = get_template('projetos/relatorio_projeto.html')
+    html = template.render(context)
+
+    # Gera o PDF na memória
+    response = HttpResponse(content_type='application/pdf')
+    response['Content-Disposition'] = f'inline; filename="relatorio_projeto_{projeto.id}.pdf"'
+
+    result = io.BytesIO()
+    pisa_status = pisa.CreatePDF(
+        src=html,
+        dest=result,
+        encoding='utf-8',
+        link_callback=None  # podemos adicionar função p/ arquivos estáticos depois
+    )
+
+    if pisa_status.err:
+        return HttpResponse('Erro ao gerar PDF', status=500)
+
+    response.write(result.getvalue())
+    return response
+

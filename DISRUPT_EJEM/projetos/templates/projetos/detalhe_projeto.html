@@ -77,6 +77,7 @@
             {% if projeto.status == 'andamento' %}
                 <a href="{% url 'projetos:editar_projeto' projeto.id %}" class="btn-editar">Editar</a>
                 <button type="button" class="btn-finalizar" data-modal-target="#modal-finalizar-projeto">Finalizar Projeto</button>
+                <button type="button" class="btn-deletar">Gerar Relatório</button>
             {% endif %}
         </div>
         
