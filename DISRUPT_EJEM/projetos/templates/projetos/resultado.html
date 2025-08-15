@@ -50,7 +50,6 @@
     
             {% if drexus.status == 'ativo' %}
                 
-                {% comment %} Bloco de botões para um Drexus que AINDA NÃO foi movido {% endcomment %}
                 <div class="botoes-grupo">
                     <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista</a>
                     <a href="{% url 'projetos:editar_drexus' drexus.pk %}" class="btn-editar">Editar</a>
@@ -60,7 +59,6 @@
 
             {% else %}
 
-                {% comment %} Bloco de botões para um Drexus que JÁ FOI MOVIDO (virou histórico) {% endcomment %}
                 <div class="botoes-grupo">
                     <a href="{% url 'projetos:lista_projetos' %}" class="btn-voltar">Voltar para Lista Principal</a>
                     
@@ -75,7 +73,6 @@
         </div>
     </div>
     
-    {% comment %} Os modais só precisam existir se o Drexus estiver ativo {% endcomment %}
     {% if drexus.status == 'ativo' %}
         <div id="modal-mover-bia-{{ drexus.id }}" class="modal-overlay">
             <div class="modal-content">

@@ -1,8 +1,8 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from django.http import HttpResponse
 from django.template.loader import get_template
-from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, EntrevistaBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm, OperacaoOperacionalFormSet
-from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, EntrevistaBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia, OperacaoOperacional
+from .forms import DrexusForm, ProjetoForm, CadastroBiaForm, AQIBiaForm, CQPBiaForm, EntrevistaBiaForm, ParametrizacaoBiaForm, ProbabilidadeBiaForm, SistemasTIBiaForm
+from .models import Projeto, Drexus, CadastroBia, AQIBia, CQPBia, EntrevistaBia, ParametrizacaoBia, ProbabilidadeBia, SistemasTIBia
 from django.contrib import admin
 from .models import Drexus
 from Disrupt.utils.perguntas_drexus import PERGUNTAS_DREXUS 
@@ -550,44 +550,23 @@ def deletar_cqp_bia(request, projeto_id, cqp_id):
 #--------------------- FORMULÁRIO PARA ADICIONAR PARAMETRIZAÇÃO ------------------------------------------#
 def adicionar_parametrizacao_bia(request, projeto_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
-    
     if request.method == 'POST':
         form = ParametrizacaoBiaForm(request.POST)
-        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=ParametrizacaoBia()) 
-
-        if form.is_valid() and formset.is_valid():
-            # ... (sua lógica de salvamento existente) ...
+        if form.is_valid():
             parametrizacao = form.save(commit=False)
             parametrizacao.projeto = projeto
             parametrizacao.save()
-            
-            operacoes_salvas = formset.save(commit=False) 
-            for operacao in operacoes_salvas:
-                operacao.parametrizacao_bia = parametrizacao
-                operacao.save()
-            
-            for obj in formset.deleted_objects:
-                obj.delete()
-
             return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
-        else:
-            # >>>>> ADICIONE ESTAS DUAS LINHAS PARA VER OS ERROS DE VALIDAÇÃO <<<<<
-            print("\n----- ERROS DO FORMULÁRIO PRINCIPAL -----")
-            print(form.errors)
-            print("\n----- ERROS DO FORMSET -----")
-            print(formset.errors)
-            print("------------------------------------------\n")
-    else: # GET request
+    else:
         form = ParametrizacaoBiaForm()
-        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=ParametrizacaoBia()) 
 
     context = {
         'form': form,
-        'formset': formset,
         'projeto': projeto
     }
     return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)
 
+
 #-------------------- Views para Edição e Exclusão de ParametrizacaoBia --------------------
 def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
@@ -595,65 +574,17 @@ def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
 
     if request.method == 'POST':
         form = ParametrizacaoBiaForm(request.POST, instance=parametrizacao_entrada)
-        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=parametrizacao_entrada)
-        
-        if form.is_valid() and formset.is_valid():
+        if form.is_valid():
             form.save()
-            formset.save() 
             return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
-        else:
-            # >>>>> ADICIONE ESTAS DUAS LINHAS PARA VER OS ERROS DE VALIDAÇÃO <<<<<
-            print("\n----- ERROS DO FORMULÁRIO PRINCIPAL (EDIÇÃO) -----")
-            print(form.errors)
-            print("\n----- ERROS DO FORMSET (EDIÇÃO) -----")
-            print(formset.errors)
-            print("--------------------------------------------------\n")
-    else: # GET request
+    else:
         form = ParametrizacaoBiaForm(instance=parametrizacao_entrada)
-        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=parametrizacao_entrada)
     
     context = {
         'form': form,
-        'formset': formset,
-        'projeto': projeto,
-        'parametrizacao_entrada': parametrizacao_entrada, 
+        'projeto': projeto
     }
-    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context) 
-
-#-------------------- Views para Edição e Exclusão de ParametrizacaoBia --------------------
-def editar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
-    projeto = get_object_or_404(Projeto, id=projeto_id)
-    parametrizacao_entrada = get_object_or_404(ParametrizacaoBia, id=parametrizacao_id, projeto=projeto)
-
-    if request.method == 'POST':
-        form = ParametrizacaoBiaForm(request.POST, instance=parametrizacao_entrada)
-        formset = OperacaoOperacionalFormSet(request.POST, prefix='operacoes', instance=parametrizacao_entrada)
-        
-        if form.is_valid() and formset.is_valid():
-            form.save() # Salva o formulário principal
-            
-            # formset.save() sem commit=False já lida com tudo (criação, atualização, exclusão)
-            # Ele retorna uma tupla de (new_objects, changed_objects, deleted_objects)
-            # mas você não precisa iterar sobre eles manualmente para associar o pai,
-            # já que o formset sabe quem é o pai (parametrizacao_entrada).
-            formset.save() 
-            
-            return redirect('projetos:parametrizacao_bia', projeto_id=projeto.id)
-        else:
-            # Se o formulário ou formset não são válidos, eles são renderizados novamente com erros.
-            print("Formulário principal erros:", form.errors)
-            print("Formset erros:", formset.errors)
-    else: # GET request
-        form = ParametrizacaoBiaForm(instance=parametrizacao_entrada)
-        formset = OperacaoOperacionalFormSet(prefix='operacoes', instance=parametrizacao_entrada)
-    
-    context = {
-        'form': form,
-        'formset': formset,
-        'projeto': projeto,
-        'parametrizacao_entrada': parametrizacao_entrada, 
-    }
-    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context) 
+    return render(request, 'projetos/adicionar_parametrizacao_bia.html', context)
 
 def deletar_parametrizacao_bia(request, projeto_id, parametrizacao_id):
     projeto = get_object_or_404(Projeto, id=projeto_id)
