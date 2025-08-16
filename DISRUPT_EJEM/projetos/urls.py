@@ -62,6 +62,6 @@ urlpatterns = [
     path('drexus/deletar/<int:pk>/', views.deletar_drexus, name='deletar_drexus'),
 
     #URL para gerar PDF
-    path('relatorio/', views.gerar_pdf, name='gerar_pdf'),
+    path('<int:id>/relatorio/', views.gerar_pdf, name='gerar_pdf'),
 
 ]

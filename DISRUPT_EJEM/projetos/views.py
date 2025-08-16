@@ -802,12 +802,12 @@ def deletar_entrevista_bia(request, projeto_id, entrevista_id):
     
     return redirect('projetos:lista_entrevistas_bia', projeto_id=projeto.id)
 
-# Função para gerar relatório BIA
 
+# Função para gerar relatório BIA
 def gerar_pdf(request, id):
     projeto = get_object_or_404(Projeto, id=id)
 
-    # Coleta por related_name (os que você já tem):
+    # Coleta por related_name
     cadastros = projeto.cadastros_bia.all()
     aqis = projeto.aqis_bia.all()
     cqps = projeto.cqps_bia.all()
@@ -815,11 +815,8 @@ def gerar_pdf(request, id):
     probabilidades = projeto.probabilidades_bia.all()
     sistemas_ti = projeto.sistemas_ti_bia.all()
 
-    entrevistas_manager = getattr(projeto, 'entrevistas_bia', None)
-    entrevistas = entrevistas_manager.all() if entrevistas_manager else []
-
-    tempos_manager = getattr(projeto, 'tempos_bia', None)
-    tempos = tempos_manager.all() if tempos_manager else []
+    entrevistas = projeto.entrevistas_bia.all() if hasattr(projeto, 'entrevistas_bia') else []
+    tempos = projeto.tempos_bia.all() if hasattr(projeto, 'tempos_bia') else []
 
     context = {
         'projeto': projeto,
@@ -837,21 +834,22 @@ def gerar_pdf(request, id):
     template = get_template('projetos/relatorio_projeto.html')
     html = template.render(context)
 
-    # Gera o PDF na memória
-    response = HttpResponse(content_type='application/pdf')
-    response['Content-Disposition'] = f'inline; filename="relatorio_projeto_{projeto.id}.pdf"'
-
+    # Cria o buffer para salvar o PDF
     result = io.BytesIO()
+
+    # Converte HTML para PDF
     pisa_status = pisa.CreatePDF(
         src=html,
         dest=result,
-        encoding='utf-8',
-        link_callback=None  # podemos adicionar função p/ arquivos estáticos depois
+        encoding='utf-8'
     )
 
     if pisa_status.err:
         return HttpResponse('Erro ao gerar PDF', status=500)
 
-    response.write(result.getvalue())
+    # Resposta com download automático
+    response = HttpResponse(result.getvalue(), content_type='application/pdf')
+    response['Content-Disposition'] = f'attachment; filename="relatorio_projeto_{projeto.id}.pdf"'
     return response
+
 
