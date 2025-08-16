@@ -58,8 +58,8 @@ def detalhe_projeto(request, id):
 
     if CadastroBia.objects.filter(projeto=projeto).exists():
         etapas_concluidas += 1
-    #if EntrevistaBia.objects.filter(projeto=projeto).exists():
-    # etapas_concluidas += 1
+    if EntrevistaBia.objects.filter(projeto=projeto).exists():
+     etapas_concluidas += 1
     if SistemasTIBia.objects.filter(projeto=projeto).exists():
         etapas_concluidas += 1
     if AQIBia.objects.filter(projeto=projeto).exists():
