@@ -17,168 +17,171 @@
         <h1>Sistemas de TI do Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    <div class="tabelas-wrapper">
+    {% if entradas_sistemas_ti %}
+        <div class="tabelas-wrapper" style="margin-top: 25px;">
 
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>ID</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.id }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>SUBPROCESSOS</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.subprocessos|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>APLICAÇÕES E SISTEMAS</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.aplicacoes_sistemas|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="min-width: 180px;">
-            <h2>URL</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">
-                    {% if sistema.url %}
-                        <a href="{{ sistema.url }}" target="_blank" title="{{ sistema.url }}">{{ sistema.url|truncatechars:25 }}</a>
-                    {% else %} - {% endif %}
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>ID</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.id }}</div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
 
-        <div class="tabela-bloco" style="min-width: 150px;">
-            <h2>ALTERNATIVA MANUAL</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula" style="white-space: normal;">{{ sistema.alternativa_manual|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>30min</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_30min|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>1H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_1h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>2H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_2h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>6H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_6h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>8H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_8h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>12H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_12h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>24H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_24h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>>24H</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.impacto_aplicacoes_mais_24h|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 120px;">
-            <h2>RTO</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.rto|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 120px;">
-            <h2>RPO</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula">{{ sistema.rpo|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>OBSERVAÇÕES</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.observacao|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="width: 150px;">
-            <h2>AÇÕES</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for sistema in entradas_sistemas_ti %}
-                <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-                    <a href="{% url 'projetos:editar_sistemas_ti_bia' projeto.id sistema.id %}" class="btn-editar-tabela">Editar</a>
-                    <form method="post" action="{% url 'projetos:deletar_sistemas_ti_bia' projeto.id sistema.id %}" style="display:inline; margin: 0;">
-                        {% csrf_token %}
-                        <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir este sistema?');">Excluir</button>
-                    </form>
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>SUBPROCESSOS</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.subprocessos|default_if_none:"-" }}</div>
+                    {% endfor %}
                 </div>
-                {% endfor %}
             </div>
-        </div>
 
-    </div>
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>APLICAÇÕES E SISTEMAS</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.aplicacoes_sistemas|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="min-width: 180px;">
+                <h2>URL</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">
+                        {% if sistema.url %}
+                            <a href="{{ sistema.url }}" target="_blank" title="{{ sistema.url }}">{{ sistema.url|truncatechars:25 }}</a>
+                        {% else %} - {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="min-width: 150px;">
+                <h2>ALTERNATIVA MANUAL</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula" style="white-space: normal;">{{ sistema.alternativa_manual|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>30min</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_30min|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>1H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_1h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>2H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_2h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>6H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_6h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>8H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_8h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>12H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_12h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>24H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_24h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>>24H</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.impacto_aplicacoes_mais_24h|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 120px;">
+                <h2>RTO</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.rto|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 120px;">
+                <h2>RPO</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula">{{ sistema.rpo|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>OBSERVAÇÕES</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start; padding: 8px;">{{ sistema.observacao|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 150px;">
+                <h2>AÇÕES</h2>
+                <div class="grid-celulas">
+                    {% for sistema in entradas_sistemas_ti %}
+                    <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                        <a href="{% url 'projetos:editar_sistemas_ti_bia' projeto.id sistema.id %}" class="btn-editar-tabela">Editar</a>
+                        <form method="post" action="{% url 'projetos:deletar_sistemas_ti_bia' projeto.id sistema.id %}" style="display:inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir este sistema?');">Excluir</button>
+                        </form>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+
+        </div>
     
-    {% if not entradas_sistemas_ti %}
-    <p style="text-align: center; margin-top: 20px; color: var(--cor-texto-suave);">Nenhum sistema de TI encontrado para este projeto.</p>
+    {% else %}
+        <div class="empty-table-message" style="margin-top: 25px;">
+            <p>Nenhum sistema de TI encontrado para este projeto.</p>
+        </div>
     {% endif %}
 
     <div style="margin-top: 25px; display: flex; gap: 15px;">

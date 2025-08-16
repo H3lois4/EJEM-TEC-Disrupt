@@ -72,10 +72,14 @@ class AQIBiaForm(forms.ModelForm):
 class CadastroBiaForm(forms.ModelForm):
     class Meta:
         model = CadastroBia
-        exclude = ['projeto'] 
+        exclude = ['projeto']
+        widgets = {
+            'probabilidade': forms.Select(attrs={'class': 'seu-estilo-aqui'}),
+        }
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+        # Este código que busca os nomes das perguntas pode continuar aqui sem problemas
         if 'CADASTRO_BIA' in PERGUNTAS_TABELAS:
             cadastro_perguntas = PERGUNTAS_TABELAS['CADASTRO_BIA']
             for field_name, field in self.fields.items():
@@ -220,32 +224,3 @@ class SistemasTIBiaForm(forms.ModelForm):
             for field_name, field in self.fields.items():
                 if field_name in sistemas_ti_perguntas:
                     field.label = sistemas_ti_perguntas[field_name]
-
-class OperacaoOperacionalForm(forms.ModelForm):
-    class Meta:
-        model = OperacaoOperacional
-        fields = [
-            'nome_operacao',
-            'valor_nivel_1', 'valor_nivel_2', 'valor_nivel_3',
-            'valor_nivel_4', 'valor_nivel_5'
-        ]
-        widgets = {
-            'nome_operacao': forms.TextInput(attrs={'placeholder': ''}),
-            'valor_nivel_1': forms.TextInput(attrs={'placeholder': ''}),
-            'valor_nivel_2': forms.TextInput(attrs={'placeholder': ''}),
-            'valor_nivel_3': forms.TextInput(attrs={'placeholder': ''}),
-            'valor_nivel_4': forms.TextInput(attrs={'placeholder': ''}),
-            'valor_nivel_5': forms.TextInput(attrs={'placeholder': ''}),
-        }
-
-# FORMSET PARA OPERAÇÕES OPERACIONAIS
-OperacaoOperacionalFormSet = inlineformset_factory(
-    ParametrizacaoBia,
-    OperacaoOperacional,
-    form=OperacaoOperacionalForm,
-    extra=0,
-    can_delete=True,  # <-- MUDE ISTO PARA TRUE!
-    min_num=1,
-    validate_min=True,
-    widgets={'DELETE': forms.HiddenInput()}, # <-- ADICIONE ESTA LINHA DE VOLTA!
-)

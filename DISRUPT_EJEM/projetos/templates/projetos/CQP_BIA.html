@@ -8,10 +8,7 @@
 {% endblock %}
 
 {% block extra_css %}
-    {# Reutilizamos o mesmo CSS da página AQI, pois o padrão visual é o mesmo #}
     <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
-    {# Se layout_interno.css for necessário para outros elementos, mantenha-o ou adicione-o #}
-    {# <link rel="stylesheet" href="{% static 'css/layout_interno.css' %}"> #}
 {% endblock %}
 
 {% block content %}
@@ -20,101 +17,97 @@
         <h1>Classificação Qualitativa dos Processos do Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    <div class="tabelas-wrapper">
-        {# Cabeçalhos das colunas #}
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>ID</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.id }}</div>
-                {% empty %}
-                    {# A célula vazia aqui é apenas para manter a estrutura do layout se não houver dados #}
-                    {# Você pode remover esta linha ou estilizá-la para não aparecer. #}
-                    {# <div class="celula" style="border: none; background: transparent; height: 35px;"></div> #}
-                {% endfor %}
+    {% if entradas_cqp %}
+        <div class="tabelas-wrapper" style="margin-top: 25px;">
+            
+            <div class="tabela-bloco" style="width: 80px;">
+                <h2>ID</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.id }}</div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-        <div class="tabela-bloco" style="flex-grow: 1; min-width: 220px;">
-            <h2>CLASSIFICAÇÃO DO IMPACTO</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.classificacao_impacto|default_if_none:"-" }}</div>
-                {% endfor %}
+            <div class="tabela-bloco" style="flex-grow: 1; min-width: 220px;">
+                <h2>CLASSIFICAÇÃO DO IMPACTO</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.classificacao_impacto|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
             </div>
-        </div>
 
-        <div class="tabela-bloco" style="min-width: 150px;">
-            <h2>PROBABILIDADE</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.probabilidade|default_if_none:"-" }}</div>
-                {% endfor %}
+            <div class="tabela-bloco" style="min-width: 150px;">
+                <h2>PROBABILIDADE</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.probabilidade|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
             </div>
+            
+            <div class="tabela-bloco" style="min-width: 150px;">
+                <h2>TOTAL DE CRITICIDADE</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.total_criticidade|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
+                <h2>PROCESSOS</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula" style="white-space: normal; text-align: left; justify-content: flex-start;">{{ entrada.processos|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div class="tabela-bloco" style="width: 120px;">
+                <h2>RTO</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.rto|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="min-width: 150px;">
+                <h2>ÁREA</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula">{{ entrada.area|default_if_none:"-" }}</div>
+                    {% endfor %}
+                </div>
+            </div>
+
+            <div class="tabela-bloco" style="width: 150px;">
+                <h2>AÇÕES</h2>
+                <div class="grid-celulas">
+                    {% for entrada in entradas_cqp %}
+                        <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
+                            <a href="{% url 'projetos:editar_cqp_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
+                            <form method="post" action="{% url 'projetos:deletar_cqp_bia' projeto.id entrada.id %}" style="display:inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrada?');">Excluir</button>
+                            </form>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+
         </div>
         
-        <div class="tabela-bloco" style="min-width: 150px;">
-            <h2>TOTAL DE CRITICIDADE</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.total_criticidade|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
+    {% else %}
+        <div class="empty-table-message" style="margin-top: 25px;">
+            <p>Nenhuma análise CQP BIA encontrada para este projeto.</p>
         </div>
-
-        <div class="tabela-bloco" style="flex-grow: 2; min-width: 250px;">
-            <h2>PROCESSOS</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.processos|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-        
-        <div class="tabela-bloco" style="width: 120px;">
-            <h2>RTO</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.rto|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        <div class="tabela-bloco" style="min-width: 150px;">
-            <h2>ÁREA</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula">{{ entrada.area|default_if_none:"-" }}</div>
-                {% endfor %}
-            </div>
-        </div>
-
-        {# Coluna de Ações (Editar/Excluir) #}
-        <div class="tabela-bloco" style="width: 150px;">
-            <h2>AÇÕES</h2>
-            <div class="grid-celulas" style="grid-template-columns: 1fr;">
-                {% for entrada in entradas_cqp %}
-                    <div class="celula" style="display: flex; flex-direction: column; justify-content: center; gap: 5px;">
-                        <a href="{% url 'projetos:editar_cqp_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
-                        <form method="post" action="{% url 'projetos:deletar_cqp_bia' projeto.id entrada.id %}" style="display:inline;">
-                            {% csrf_token %}
-                            <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrada?');">Excluir</button>
-                        </form>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-
-    </div>
-    
-    {# Mensagem se não houver entradas #}
-    {% if not entradas_cqp %}
-    <p style="text-align: center; margin-top: 20px; color: var(--cor-texto-suave);">Nenhuma análise CQP BIA encontrada para este projeto.</p>
     {% endif %}
 
-    {# Movi os botões para depois do div.tabelas-wrapper #}
     <div style="margin-top: 25px; display: flex; gap: 15px;">
-        <a href="{% url 'projetos:adicionar_cqp_bia' projeto.id %}" class="btn-principal">Adicionar nova CQP</a>
+        <a href="{% url 'projetos:adicionar_cqp_bia' projeto.id %}" class="btn-principal">Adicionar Nova CQP</a>
         <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes do Projeto</a>
     </div>
 

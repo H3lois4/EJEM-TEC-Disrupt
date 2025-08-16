@@ -3,60 +3,67 @@
 
 {% block title %}Homepage | Disrupt-CT{% endblock %}
 
+{% block titulo_pagina %}
+    <span>HOMEPAGE</span>
+{% endblock %}
+
 {% block content %}
+<div class="homepage-container">
     
-    <header>
-        <div class="titulo-secao">
-            <h1><strong>Bem-vindo(a)</strong> {{ user.first_name }}</h1>
-            <h3>Email: {{ user.email }}</h3>
-        </div>
+    <header class="welcome-header">
+        <h1><strong>Bem-vindo(a),</strong> {{ user.first_name|default:user.username }}!</h1>
+        <h3>Email: {{ user.email }}</h3>
     </header>
 
-    <section class="secao-projetos">
+    <section class="search-section">
         <div class="titulo-secao">
-            <h2>"Texto que o Marcus vai mandar"</h2>
+            <h2>Pesquisar Projetos</h2>
         </div>
-        <div class="titulo-secao">
-            <input type="text" class="search-bar" placeholder="🔍 Pesquisar projeto...">
-        </div>
+        <input type="text" class="search-bar" placeholder="🔍 Digite o nome do projeto...">
     </section>  
     
-    <section class="secao-projetos">
-        <div class="cards-grid">
-            <div class="card-header">
-                <h3>[Nº PROJETOS<br>EM ANDAMENTO]</h3>
+    <section class="stats-section">
+        <div class="titulo-secao">
+            <h2>Suas Estatísticas</h2>
+        </div>
+        <div class="stats-grid">
+            <div class="stat-card">
+                <span class="stat-number">{{ projetos_andamento.count }}</span>
+                <span class="stat-label">PROJETOS EM ANDAMENTO</span>
             </div>
-            <div class="card-header">
-                <h3>[Nº PROJETOS<br>FINALIZADOS]</h3>
+            <div class="stat-card">
+                <span class="stat-number">{{ projetos_finalizados.count }}</span>
+                <span class="stat-label">PROJETOS FINALIZADOS</span>
             </div>
-            <div class="card-header">
-                <h3>[CARGO NOS<br>PROJETOS]</h3>
+            <div class="stat-card">
+                <span class="stat-number">N/A</span>
+                <span class="stat-label">CARGO NOS PROJETOS</span>
             </div>            
         </div>
-  
-    <section class="secao-projetos">
-        <div class="header-interno">
-            <h1>PROJETOS RECENTES</h1>
-        </div>
-            <div class="cards-grid">
-
-                {% for projeto in projetos_andamento %}
-                    <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="card-link">
-                        <div class="card card-clicavel">
-                            <div class="card-header">
-                                <h3>{{ projeto.nome }}</h3>
-                            </div>
-                            <div class="card-body">
-                                <p class="card-descricao">{{ projeto.descricao|truncatechars:80 }}</p>
-                                <p class="card-info">[Andamento: {{ projeto.progresso }}%]</p>
-                            </div>
-                        </div>
-                    </a>
-                {% empty %}
-                    <p>Nenhum projeto recente.</p>
-                {% endfor %}
-            </div>
     </section>
-    </div>
+  
+    <section class="recentes-section">
+        <div class="titulo-secao">
+            <h2>PROJETOS RECENTES</h2>
+        </div>
+        <div class="cards-grid">
+            {% for projeto in projetos_andamento %}
+                <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="card-link efeito-flutuar">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3>{{ projeto.nome }}</h3>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-descricao">{{ projeto.descricao|truncatechars:80 }}</p>
+                            <p class="card-info">Andamento: {{ projeto.progresso|floatformat:0 }}%</p>
+                        </div>
+                    </div>
+                </a>
+            {% empty %}
+                <p>Nenhum projeto em andamento para exibir.</p>
+            {% endfor %}
+        </div>
+    </section>
 
+</div>
 {% endblock %}

@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static %}
 
-{% block title %}PROBABILIDADE BIA {{ projeto.nome }}{% endblock %}
+{% block title %}Probabilidade BIA - {{ projeto.nome }}{% endblock %}
 
 {% block titulo_pagina %}
     <span>PROBABILIDADE</span>
@@ -17,35 +17,32 @@
         <h1>{{ projeto.nome }}</h1>
     </header>
 
-    <div class="tabelas-wrapper">
-        <!-- Tabela 1: ID/Processo -->
-        <div class="tabela-bloco" style="width: 80px;">
-            <h2>ID</h2>
-            <div class="grid-celulas">
-                {% for entrada in entradas_probabilidade %}<div class="celula">{{ entrada.id }}</div>{% endfor %}
-            </div>
-        </div>
+    {% if entradas_probabilidade %}
+        <div class="tabelas-wrapper" style="align-items: flex-start; margin-top: 25px;">
 
-        <div class="tabela-bloco" style="flex-grow: 1.5; min-width: 220px;">
-            <h2>PROCESSOS</h2>
-            <div class="grid-celulas">
-                {% for entrada in entradas_probabilidade %}<div class="celula">{{ entrada.processos }}</div>{% endfor %}
-            </div>
-        </div>
-        
-        <!-- Tabela 2: Nicho -->
-        <div class="tabela-bloco" style="flex-grow: 1; min-width: 150px;">
-            <h2>NICHO</h2>
-            <div class="grid-celulas">
-                {% for entrada in entradas_probabilidadeo %}<div class="celula">{{ entrada.nicho }}</div>{% endfor %}
-            </div>
-        </div>
+            <div class="dados-grid">
+                
+                <div class="grid-header">ID</div>
+                <div class="grid-header">PROCESSOS</div>
+                <div class="grid-header">NICHO</div>
+                <div class="grid-header">AÇÕES</div>
 
-        <!-- Tabela 3: Legenda -->
-        <div class="tabela probabilidade">
-            <h2>LEGENDA</h2>
-            <div class="grid-celulas">
-                {% for entrada in entradas_probabilidadeo %}<div class="celula"></div>{% endfor %}
+                {% for entrada in entradas_probabilidade %}
+                    <div class="grid-cell">{{ entrada.id }}</div>
+                    <div class="grid-cell" style="white-space: normal; text-align: left; justify-content: flex-start;">{{ entrada.processos }}</div>
+                    <div class="grid-cell" style="white-space: normal;">{{ entrada.nicho }}</div>
+                    <div class="grid-cell" style="flex-direction: column; gap: 5px;">
+                        <a href="{% url 'projetos:editar_probabilidade_bia' projeto.id entrada.id %}" class="btn-editar-tabela">Editar</a>
+                        <form method="post" action="{% url 'projetos:deletar_probabilidade_bia' projeto.id entrada.id %}" style="display:inline; margin: 0;">
+                            {% csrf_token %}
+                            <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir este processo?');">Excluir</button>
+                        </form>
+                    </div>
+                {% endfor %}
+                
+            </div>
+            <div class="tabela probabilidade" style="min-width: 400px; flex-grow: 1;">
+                <h2>LEGENDA</h2>
                 <table class="legenda">
                     <thead>
                         <tr>
@@ -74,10 +71,16 @@
                 </table>
             </div>
         </div>
-    </div>
-    <div style="margin-top: 25px;">
-        <a href="{% url 'projetos:adicionar_probabilidade_bia' projeto.id %}" class="btn-adicionar-aqi">Adicionar novo Processo...</a>
-        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar" style="margin-left: 15px;">Voltar para Detalhes</a>
+
+    {% else %}
+        <div class="empty-table-message" style="margin-top: 25px;">
+            <p>Nenhum processo adicionado para análise de probabilidade.</p>
+        </div>
+    {% endif %}
+
+    <div style="margin-top: 25px; display: flex; gap: 15px;">
+        <a href="{% url 'projetos:adicionar_probabilidade_bia' projeto.id %}" class="btn-principal">Adicionar novo Processo...</a>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes do Projeto</a>
     </div>
 </div>
 {% endblock %}

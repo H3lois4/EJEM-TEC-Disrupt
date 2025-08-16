@@ -8,7 +8,7 @@
 {% endblock %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}"> {# Usaremos o estilo de tabelas existente #}
+    <link rel="stylesheet" href="{% static 'css/tabelas.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -17,13 +17,9 @@
         <h1>Entrevistas BIA para o Projeto: {{ projeto.nome }}</h1>
     </header>
 
-    <div class="actions-row top-actions-row">
-        <a href="{% url 'projetos:adicionar_entrevista_bia' projeto.id %}" class="btn-principal">Adicionar Nova Entrevista BIA</a>
-    </div>
-
     {% if entrevistas %}
-        <div class="table-responsive-custom"> {# Usando a classe que permite rolagem horizontal para tabelas grandes #}
-            <table class="parametrizacao-grid-table"> {# Reutilizando a classe de tabela que você já tem em tabelas.css #}
+        <div class="table-responsive-custom" style="margin-top: 25px;">
+            <table class="parametrizacao-grid-table">
                 <thead>
                     <tr>
                         <th>ID</th>
@@ -31,18 +27,38 @@
                         <th>Macroprocesso</th>
                         <th>Processo</th>
                         <th>Subprocesso</th>
-                        <th>MTPD (horas)</th>
-                        <th>RTO (horas)</th>
-                        {# Adicione mais cabeçalhos de coluna conforme os campos que você quer exibir #}
+                        <th>Descrição</th>
                         <th>Aspectos Regulatórios</th>
                         <th>Aspectos Contratuais</th>
+                        <th>Entradas (Interfaces)</th>
+                        <th>Saídas (Interfaces)</th>
+                        <th>Volumetrias (Interfaces)</th>
                         <th>Volumetrias Críticas</th>
-                        <th>SLAs Volumetrias</th>
-                        <th>RH</th>
-                        <th>Regime Operação</th>
+                        <th>SLAs Volumetrias (h)</th>
+                        <th>Recursos Humanos</th>
+                        <th>Regime de Operação</th>
+                        <th>Equipe Crítica</th>
+                        <th>Contingências (RH)</th>
+                        <th>SLAs (RH)</th>
                         <th>Fornecedores</th>
-                        {# Adicione mais campos aqui se necessário #}
-                        <th>Ações</th> {# Coluna para Editar/Excluir #}
+                        <th>Lead Time (Insumos)</th>
+                        <th>Contingências (Insumos)</th>
+                        <th>SLAs (Insumos)</th>
+                        <th>Sistemas TI/TA</th>
+                        <th>Sistemas Críticos (Usuário)</th>
+                        <th>Contingências (Sistemas)</th>
+                        <th>SLAs (Sistemas)</th>
+                        <th>Equipamentos</th>
+                        <th>Equipamentos Críticos</th>
+                        <th>SLAs (Equipamentos)</th>
+                        <th>Pontos de Criticidade</th>
+                        <th>Pior Cenário</th>
+                        <th>MTPD (h)</th>
+                        <th>Motivo MTPD</th>
+                        <th>RTO (h)</th>
+                        <th>RPO (h)</th>
+                        <th>Observações</th>
+                        <th>Ações</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,21 +69,40 @@
                         <td>{{ entrevista.macroprocesso|default_if_none:"-" }}</td>
                         <td>{{ entrevista.processo|default_if_none:"-" }}</td>
                         <td>{{ entrevista.subprocesso|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.mtpd_horas|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.rto_horas|default_if_none:"-" }}</td>
-                        {# Exibindo mais campos em colunas #}
-                        <td>{{ entrevista.aspectos_regulatorios|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.aspectos_contratuais|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.volumetrias_criticas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.descricao|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.aspectos_regulatorios|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.aspectos_contratuais|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.entradas_interface|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.saidas_interface|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.volumetrias_interface|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.volumetrias_criticas|truncatewords:15|default_if_none:"-" }}</td>
                         <td>{{ entrevista.slas_volumetrias|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.rh|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.regime_operacao_equipe|default_if_none:"-" }}</td>
-                        <td>{{ entrevista.fornecedores|default_if_none:"-" }}</td>
-                        {# Adicione mais <td> para os campos correspondentes aos <th> adicionados acima #}
-
+                        <td>{{ entrevista.rh|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.regime_operacao_equipe|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.equipe_critica|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.contingencias_rh|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.slas_rh|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.fornecedores|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.lead_time_insumos|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.contingencias_insumos|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.slas_insumos|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.sistemas_ti_ta|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.sistemas_criticos_usuario|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.contingencias_sistemas|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.slas_sistemas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.equipamentos|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.equipamentos_criticos|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.slas_equipamentos|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.pontos_criticidade|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.pior_cenario|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.mtpd_horas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.descricao_motivo_mtpd|truncatewords:15|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.rto_horas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.rpo_horas|default_if_none:"-" }}</td>
+                        <td>{{ entrevista.observacoes|truncatewords:15|default_if_none:"-" }}</td>
                         <td>
                             <a href="{% url 'projetos:editar_entrevista_bia' projeto.id entrevista.id %}" class="btn-editar-tabela">Editar</a>
-                            <form method="post" action="{% url 'projetos:deletar_entrevista_bia' projeto.id entrevista.id %}" style="display:inline;">
+                            <form method="post" action="{% url 'projetos:deletar_entrevista_bia' projeto.id entrevista.id %}" style="display:inline; margin-top: 5px;">
                                 {% csrf_token %}
                                 <button type="submit" class="btn-deletar-tabela" onclick="return confirm('Tem certeza que deseja excluir esta entrevista?');">Excluir</button>
                             </form>
@@ -78,13 +113,14 @@
             </table>
         </div>
     {% else %}
-        <div class="empty-table-message">
-            <p>Nenhuma entrevista BIA encontrada para este projeto ainda.</p>
+        <div class="empty-table-message" style="margin-top: 20px;">
+            <p>Nenhuma entrevista BIA encontrada para este projeto.</p>
         </div>
     {% endif %}
 
-    <div class="container-botao-voltar">
-        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-voltar">Voltar para Detalhes do Projeto</a>
+    <div style="margin-top: 25px; display: flex; gap: 15px;">
+        <a href="{% url 'projetos:adicionar_entrevista_bia' projeto.id %}" class="btn-principal">Adicionar Nova Entrevista</a>
+        <a href="{% url 'projetos:detalhe_projeto' projeto.id %}" class="btn-secundario">Voltar para Detalhes do Projeto</a>
     </div>
 </div>
 {% endblock %}

@@ -1,11 +1,53 @@
 {% extends "base.html" %}
-{% load static %} {# Adicionado para consistência #}
+{% load static %}
 
 {% block title %}Adicionar Cadastro BIA{% endblock %}
 
 {% block titulo_pagina %}
     <span>ADICIONAR CADASTRO BIA</span>
 {% endblock %}
+
+{% block extra_css %}
+    <style>
+        /* Regra para estilizar o campo de SELEÇÃO (dropdown) */
+        .form-container select {
+            /* 1. Remove a aparência padrão do navegador */
+            appearance: none;
+            -webkit-appearance: none;
+            -moz-appearance: none;
+            
+            /* 2. Adiciona nossa própria seta como imagem de fundo */
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3e%3cpath fill='none' stroke='%23343a40' stroke-linecap='round' stroke-linejoin='round' stroke-width='2' d='M2 5l6 6 6-6'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 0.75rem center;
+            background-size: 16px 12px;
+        }
+
+        /* Estilo para unificar TODOS os campos do formulário */
+        .form-container input[type="text"],
+        .form-container textarea,
+        .form-container select {
+            width: 100%;
+            padding: 10px 12px;
+            font-size: 1rem;
+            color: #333;
+            background-color: #fff;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            box-sizing: border-box;
+            transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+        }
+
+        /* Efeito de foco para quando o usuário clica em um campo */
+        .form-container input:focus,
+        .form-container textarea:focus,
+        .form-container select:focus {
+            outline: none;
+            border-color: var(--cor-amarelo, #F7B500);
+            box-shadow: 0 0 0 3px rgba(247, 181, 0, 0.25);
+        }
+    </style>
+    {% endblock %}
 
 {% block content %}
     <header class="header-interno">
@@ -16,9 +58,8 @@
         <form method="post">
             {% csrf_token %}
             
-            {# Itera sobre todos os campos do formulário #}
+            {# O loop continua o mesmo. O CSS acima vai encontrar o campo <select> automaticamente. #}
             {% for field in form %}
-                {# Exclui campos ocultos ou de CSRF que não precisam de estilização manual #}
                 {% if field.is_hidden %}
                     {{ field }}
                 {% elif field.name == 'csrfmiddlewaretoken' %}
@@ -27,7 +68,6 @@
                     <div class="form-group">
                         <label for="{{ field.id_for_label }}">{{ field.label }}</label>
                         {{ field }}
-                        {# Para exibir erros específicos de campo, se houver #}
                         {% if field.errors %}
                             <ul class="errorlist">
                                 {% for error in field.errors %}
@@ -42,7 +82,6 @@
                 {% endif %}
             {% endfor %}
 
-            {# Para exibir erros não-campo (non-field errors) #}
             {% if form.non_field_errors %}
                 <div class="form-group">
                     <ul class="errorlist">
