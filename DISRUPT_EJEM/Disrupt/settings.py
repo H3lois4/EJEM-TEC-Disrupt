@@ -86,7 +86,7 @@ WSGI_APPLICATION = 'Disrupt.wsgi.application'
 # }
 
 DATABASES = {
-   'default': dj_database_url.parse("postgresql://disrupt1_user:ewxuVXfYO63vHuofXPkMfYVEAsMKTXFL@dpg-d23c5jh5pdvs739qfdqg-a.virginia-postgres.render.com/disrupt1")
+   'default': dj_database_url.parse("postgresql://disruptct_user:CcWp07qa2XLmcokNSFnGsFh02VrmT2ed@dpg-d2t1lrnfte5s739pim6g-a.virginia-postgres.render.com/disruptct")
 }
 
 # Password validation
